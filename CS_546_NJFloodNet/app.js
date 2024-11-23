@@ -55,7 +55,6 @@ app.use(rewriteUnsupportedBrowserMethods);
 //   },
 // });
 
-// This "main" needs to match whatever our default layout name is
 var hbs = exphbs.create({ defaultLayout: "main" });
 
 app.engine("handlebars", hbs.engine);
