@@ -11,3 +11,14 @@
  * - updateNote(noteId, updateData): Update a specific note.
  * - deleteNote(noteId): Remove a note.
  */
+// Add a note to a sensor
+function addNote(sensorId, noteData) {}
+
+// Retrieve all notes for a sensor
+function getNotes(sensorId) {}
+
+// Update a specific note
+function updateNote(noteId, updateData) {}
+
+// Delete a note
+function deleteNote(noteId) {}

@@ -11,3 +11,13 @@
  * - updateReport(reportId, updateData): Update an existing report.
  * - deleteReport(reportId): Remove a report.
  */
+// Add a new report, including optional image uploads
+function addReport(reportData) {}
+
+// Retrieve all reports with optional filters
+function getAllReports(filters) {}
+
+// Update an existing report
+function updateReport(reportId, updateData) {}
+
+// Delete a report

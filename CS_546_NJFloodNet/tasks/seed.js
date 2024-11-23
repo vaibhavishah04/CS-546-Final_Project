@@ -11,3 +11,18 @@
  * - addSampleSensors(): Add sample sensors.
  * - addSampleMeasurements(): Add sample measurements.
  */
+/**
+ * Seed the database with initial data for users, sensors, and measurements.
+ */
+
+// Seed all collections
+function seedDatabase() {}
+
+// Add sample users to the database
+function seedUsers() {}
+
+// Add sample sensors to the database
+function seedSensors() {}
+
+// Add sample measurements to the database
+function seedMeasurements() {}

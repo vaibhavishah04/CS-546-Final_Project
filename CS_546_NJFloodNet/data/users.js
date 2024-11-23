@@ -1,13 +1,22 @@
 /**
- * users.js
- * 
- * Tasks:
- * 1. Create, retrieve, update, and delete user data.
- * 2. Handle user authentication (e.g., login, password hashing).
- * 3. Check if a user has admin privileges.
- * 
- * Functions:
- * - createUser(data): Add a new user to the database.
- * - validateUser(username, password): Validate login credentials.
- * - checkIfAdmin(userId): Check if the user is an admin.
+ * Manage user-related database operations.
+ * Includes user creation, login validation, and admin checks.
  */
+
+// Create a new user with hashed password
+function createUser(userData) {}
+
+// Validate user login credentials
+function validateUserCredentials(username, password) {}
+
+// Check if the user has admin privileges
+function isAdmin(userId) {}
+
+// Retrieve a user by their ID
+function getUserById(userId) {}
+
+// Update user information
+function updateUser(userId, updateData) {}
+
+// Delete a user
+function deleteUser(userId) {}
