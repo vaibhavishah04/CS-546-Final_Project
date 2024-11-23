@@ -1,0 +1,20 @@
+{
+  "name": "cs_546_njfloodnet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaibhavishah04/CS-546-Final_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vaibhavishah04/CS-546-Final_Project/issues"
+  },
+  "type": "module"
+}
