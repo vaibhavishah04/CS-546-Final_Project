@@ -1,5 +1,3 @@
-# Save the generated README content to a file
-readme_content = """
 # NJFloodNet - Real-Time Flood and Rainfall Data Monitoring
 
 ## **Project Description**
