@@ -25,7 +25,7 @@ const port = 3000;
 import express from "express";
 const app = express();
 import configRoutes from "./routes/index.js";
-import exphbs from "express-handlebars";
+// import exphbs from "express-handlebars";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   if (req.body && req.body._method) {
@@ -37,10 +37,13 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 
 // Middleware
 // TODO: maybe move this into another file?
-app.use("/public", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
+app.use("/public", express.static("public"));
+
+// View Engine
+app.set("view engine", "ejs");
 
 // Example of how to create handlebars helper function:
 // var hbs = exphbs.create({
@@ -55,10 +58,10 @@ app.use(rewriteUnsupportedBrowserMethods);
 //   },
 // });
 
-var hbs = exphbs.create({ defaultLayout: "main" });
+// var hbs = exphbs.create({ defaultLayout: "main" });
 
-app.engine("handlebars", hbs.engine);
-app.set("view engine", "handlebars");
+// app.engine("handlebars", hbs.engine);
+// app.set("view engine", "handlebars");
 
 configRoutes(app);
 
