@@ -5,7 +5,7 @@ import usersRoutes from "./users.js";
 const constructorMethod = (app) => {
   app.get("/", (req, res) => {
     // TODO: Decide if our home page is going to be the map
-    return res.render("map");
+    return res.render("pages/map");
   });
 
   app.use("/measurements", measurementsRoutes);
