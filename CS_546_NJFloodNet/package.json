@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/vaibhavishah04/CS-546-Final_Project/issues"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "ejs": "^3.1.10"
+  }
 }
