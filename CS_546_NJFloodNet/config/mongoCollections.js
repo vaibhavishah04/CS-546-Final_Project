@@ -14,4 +14,8 @@ const getCollectionFn = (collection) => {
 };
 
 // TODO: Make this whatever collections we have
-export const teams = getCollectionFn("teams");
+export const reports = getCollectionFn("Reports");
+export const users = getCollectionFn("Users");
+export const sensors = getCollectionFn("Sensors")
+
+
