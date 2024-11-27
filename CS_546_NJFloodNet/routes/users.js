@@ -40,7 +40,7 @@ router.route("/login").post(async (req, res) => {
   // POST ENDPOINT
 });
 
-router.get("/profile").post(async (req, res) => {
+router.route("/profile").post(async (req, res) => {
   // GET ENDPOINT
 });
 
