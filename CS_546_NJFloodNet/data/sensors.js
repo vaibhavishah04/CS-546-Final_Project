@@ -5,7 +5,7 @@
 import { sensors } from "../config/mongoCollections";
 import { ObjectId } from "mongodb"
 import sensorVal from "../sensor_val.js"
-export { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor as default }
+export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
 
 
 // Add a new sensor to the database
@@ -49,19 +49,19 @@ const getAllSensors = async () => {
 }
 
 // Retrieve sensor details by ID, name, or number
-const getSensorByIdOrName = async (identifier) => {
+const getSensorByIdOrName = async (identifier, options={}) => {
     const sensorCollection = await sensors();
     try {
         if (sensorVal.valid_obj_id(identifier)) {
-            const sensor = await sensorCollection.findOne({ _id: ObjectId.createFromHexString(identifier) });
+            const sensor = await sensorCollection.findOne({ _id: ObjectId.createFromHexString(identifier) }, options);
             if (!sensor) throw new Error("Sensor not found.");
             return sensor
         } else if (sensorVal.valid_sensor_number(identifier)) {
-            const sensor = await sensorCollection.findOne({ sensorNumber: identifier });
+            const sensor = await sensorCollection.findOne({ sensorNumber: identifier }, options);
             if (!sensor) throw new Error("Sensor not found.");
             return sensor
         } else if (sensorVal.valid_string(identifier)) {
-            const sensor = await sensorCollection.findOne({ sensorName: identifier });
+            const sensor = await sensorCollection.findOne({ sensorName: identifier }, options);
             if (!sensor) throw new Error("Sensor not found.");
             return sensor
         } else throw new Error("Invalid identifier.");
