@@ -1,7 +1,134 @@
-/* 
+/*
  * styles.css
- * 
+ *
  * Tasks:
  * 1. Define the overall style for the application.
  * 2. Ensure consistent design across all pages.
  */
+
+ /*
+    Color Palette
+
+    blue #3b93bd
+    lighter blue #7cb6d1
+    lightest blue (lettering) #c2d2da
+    dark blue #164960
+    black #061411
+
+ */
+
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #164960;
+    border-bottom: 2px solid #7cb6d1;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: #c2d2da;
+}
+
+.user-action {
+    font-size: 16px;
+}
+
+.user-action a {
+    text-decoration: none;
+    color: #c2d2da;
+}
+
+.user-action a:hover {
+    text-decoration: underline;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Footer styles */
+footer {
+    background-color: #c2d2da;
+    text-align: center;
+    padding: 8px 10px;
+    border-top: 2px solid #7cb6d1;
+    color: #061411;
+    position: relative;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 150px;
+    margin: 10px;
+    text-align: left;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.footer-column p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.footer-column i {
+    margin-right: 5px;
+    color: #061411;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #061411;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+    color: #7cb6d1;
+}
+
+.footer-rights {
+    font-size: 12px;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    margin: 0;
+    text-align: right;
+}
+
+
+
+
+
+
