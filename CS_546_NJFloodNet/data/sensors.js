@@ -2,7 +2,7 @@
  * Manage CRUD operations for sensors and their data.
  */
 
-import { sensors } from "../config/mongoCollections";
+import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb"
 import sensorVal from "../sensor_val.js"
 export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
