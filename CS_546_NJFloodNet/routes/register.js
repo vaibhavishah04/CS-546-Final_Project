@@ -13,7 +13,7 @@ router
       next();
     },
     async (req, res) => {
-      return res.render("pages/signup");
+      return res.render("pages/register");
     }
   )
   .post(
@@ -91,7 +91,7 @@ router
 
       // if there are errors, render the page with the errors
       if (errors.length > 0) {
-        return res.status(400).render("pages/signup", {
+        return res.status(400).render("pages/register", {
           errors,
         });
       }
@@ -110,7 +110,7 @@ router
           false
         );
       } catch (e) {
-        return res.status(400).render("pages/signup", {
+        return res.status(400).render("pages/register", {
           errors: [e],
         });
       }
