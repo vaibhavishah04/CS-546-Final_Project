@@ -48,7 +48,7 @@ router
 
       let userInfo;
       try {
-        userInfo = await signInUser(username, password);
+        userInfo = await validateUserCredentials(username, password);
       } catch (e) {
         return res.status(400).render("signin", {
           errors: [e],
