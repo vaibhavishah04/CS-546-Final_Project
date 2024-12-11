@@ -10,16 +10,7 @@ const constructorMethod = (app) => {
     return res.render("pages/map");
   });
 
-  app.use(
-    "/signin",
-    (req, res, next) => {
-      // if the user is logged in, direct them to their account page
-      // need to put this in a separate function
-      next();
-    },
-    signInRoutes
-  );
-
+  app.use("/signin", signInRoutes);
   app.use("/measurements", measurementsRoutes);
   app.use("/sensors", sensorsRoutes);
   app.use("/user", usersRoutes);
