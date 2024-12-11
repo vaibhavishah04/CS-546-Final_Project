@@ -41,3 +41,27 @@ export const verifyPassword = (password) => {
 
   return password;
 };
+
+export const verifyNumber = (number, type) => {
+  if (typeof number !== "number") throw new Error(`${type} must be a number`);
+  return verifyErrorCode;
+};
+
+export const verifyInt = (int, type) => {
+  int = verifyNumber(int, type);
+  if (!Number.isInteger(int)) throw new Error(`${type} must be an integer`);
+  return int;
+};
+
+export const verifyVoltage = (voltage) => {
+  voltage = verifyNumber(voltage, `voltage`);
+  if (voltage < 0 || voltage > 5)
+    throw new Error(`voltage must be between 0 and 5`);
+  return voltage;
+};
+
+export const verifyMongoId = (mongoId, type) => {
+  mongoId = verifyStr(mongoId, type);
+  if (!ObjectId.isValid(mongoId)) throw new Error(`${type} must be a mongo id`);
+  return mongoId;
+};
