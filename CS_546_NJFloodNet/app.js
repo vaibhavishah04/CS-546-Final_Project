@@ -51,6 +51,12 @@ app.use(
   })
 );
 
+//app.use((req, res, next) => {
+  // Replace null with actual user logic when ready
+  //res.locals.user = null; // Example: req.session.user
+  //next();
+//});
+
 // View Engine
 app.set("view engine", "ejs");
 

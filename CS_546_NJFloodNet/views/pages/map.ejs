@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
+
 
     <title>NJ FloodNet</title>
   </head>
 
   <body>
-    <header><%- include('../partials/header'); %></header>
+    <div><%- include('../partials/header'); %></div>
 
-    <h1>This is some main text</h1>
-    
-    <footer>This is a footer, maybe to be replaced with an include as above</footer>
+    <main>
+      <div id="map"></div>
+    </main>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js"></script>
+    <script src="/public/js/map.js"></script>
+
+    <div><%- include('../partials/footer'); %></div>
   </body>
+
 </html>
+
