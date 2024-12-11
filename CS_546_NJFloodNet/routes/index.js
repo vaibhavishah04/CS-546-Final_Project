@@ -1,6 +1,7 @@
 import measurementsRoutes from "./measurements.js";
 import sensorsRoutes from "./sensors.js";
 import usersRoutes from "./users.js";
+import signInRoutes from "./signin.js";
 
 const constructorMethod = (app) => {
   app.get("/", (req, res) => {
@@ -8,15 +9,14 @@ const constructorMethod = (app) => {
     return res.render("pages/map");
   });
 
-  app.get(
-    "/login",
+  app.use(
+    "/signin",
     (req, res, next) => {
       // if the user is logged in, direct them to their account page
       // need to put this in a separate function
+      next();
     },
-    (req, res) => {
-      return res.render("pages/login");
-    }
+    signInRoutes
   );
 
   app.use("/measurements", measurementsRoutes);
