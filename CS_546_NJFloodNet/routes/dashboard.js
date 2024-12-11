@@ -21,4 +21,5 @@ router.route("/").get(
   }
 );
 
+router.route('/dashboard/:')
 export default router;

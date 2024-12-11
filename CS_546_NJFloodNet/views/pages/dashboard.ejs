@@ -57,12 +57,36 @@
             </table>
         </section>
 
-        <section>
-          <h2> FloodNet Chart for Location</h2>
-          <div id="chart-container">
-            <canvas id="floodChart" width="400" height="200"></canvas>
-          </div>
-        </section>
+        <h2>Search measurement</h2>
+        <form id = "searchmeasurement_form" action="" method ="GET">
+          <div class="form-group">
+            <label for="sensorLocation">Sensor Location:</label>
+            <input type="text" id="sensorLocation" name="sensorLocation" placeholder="Enter location">
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate">
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate">
+        </div>
+        <button type="submit">Search</button>
+    </form>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Sensor Name</th>
+                <th>Location</th>
+                <th>Water Level (ft)</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+           </table>
+        </form>
     </main>
     <div><%- include('../partials/footer'); %></div>
 
