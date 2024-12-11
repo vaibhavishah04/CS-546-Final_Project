@@ -32,12 +32,19 @@ const router = Router();
 // TODO: Make helper file?
 // import { verifyStr } from "../helpers.js";
 
-router.route("/register").post(async (req, res) => {
-  // POST ENDPOINT
-});
+router.route("/profile").get(
+  (req, res, next) => {
+    // TODO: if not signed in, redirect to signin page
+    if (!req.session.userInfo) {
+      return res.redirect("/signin");
+    }
+    next();
+  },
+  async (req, res) => {
+    let userInfo = req.session.userInfo;
 
-router.route("/profile").post(async (req, res) => {
-  // GET ENDPOINT
-});
+    return res.render("pages/profile", { userInfo });
+  }
+);
 
 export default router;
