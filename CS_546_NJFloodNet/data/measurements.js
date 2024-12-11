@@ -116,12 +116,4 @@ const deleteMeasurement = async (measurementId) => {
   return updated_sensor;
 };
 
-export default {
-  addMeasurement,
-  getMeasurements,
-  updateMeasurement,
-  deleteMeasurement,
-};
-
-
 export default {addMeasurement, getMeasurements, updateMeasurement, deleteMeasurement};

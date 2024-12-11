@@ -3,8 +3,8 @@
  */
 
 import { sensors } from "../config/mongoCollections.js";
-import { ObjectId } from "mongodb"
-import sensorVal from "../validation/sensor_val.js"
+import { ObjectId } from "mongodb";
+import sensorVal from "../validation/sensor_val.js";
 
 
 // Add a new sensor to the database
