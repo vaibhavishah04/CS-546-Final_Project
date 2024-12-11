@@ -13,7 +13,7 @@ router
       next();
     },
     async (req, res) => {
-      return res.render("pages/register");
+      return res.render("pages/signup");
     }
   )
   .post(
