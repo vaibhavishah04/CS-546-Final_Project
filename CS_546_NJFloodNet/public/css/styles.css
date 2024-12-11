@@ -74,10 +74,11 @@ main {
 footer {
     background-color: #c2d2da;
     text-align: center;
-    padding: 8px 10px;
     color: #061411;
     position: relative;
     box-shadow: 0px -5px 5px #06141180;
+    border-top: 2px solid #7cb6d1;
+    padding: 3px 0;
 }
 
 .footer-container {
@@ -87,6 +88,8 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     position: relative;
+    border-top: 2px solid #7cb6d1;
+    border-bottom: 2px solid #7cb6d1;
 }
 
 .footer-column {
@@ -124,8 +127,17 @@ footer {
 .footer-rights {
     font-size: 12px;
     position: absolute;
-    bottom: 5px;
+    top: 5px;
     right: 10px;
+    margin: 0;
+    text-align: right;
+}
+
+.footer-class {
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    left: 10px;
     margin: 0;
     text-align: right;
 }
