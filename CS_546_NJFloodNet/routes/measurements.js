@@ -28,17 +28,124 @@
 
 import { Router } from "express";
 const router = Router();
+import {
+  verifyInt,
+  verifyMongoId,
+  verifyNumber,
+  verifyStr,
+  verifyVoltage,
+} from "../helpers.js";
+import measurementsData from "../data/measurements.js";
+import sensorData from "../data/sensors.js";
 // TODO: Data functions
 // import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
 // TODO: Make helper file?
 // import { verifyStr } from "../helpers.js";
 
 router.route("/").post(async (req, res) => {
-  // POST ENDPOINT
+  // get data from req.body
+  let {
+    sensorId,
+    timestamp,
+    errorCode,
+    voltage,
+    distanceMm,
+    eventAccMm,
+    rainAccMm,
+    totalAccMm,
+    rainIntensity,
+  } = req.body;
+
+  // Do error checking
+  let errors = [];
+
+  try {
+    sensorId = verifyMongoId(sensorId, `sensorId`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    timestamp = verifyStr(timestamp, `timestamp`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    errorCode = verifyInt(errorCode, `errorCode`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    voltage = verifyVoltage(voltage);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    distanceMm = verifyNumber(distanceMm, `distanceMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    eventAccMm = verifyNumber(eventAccMm, `eventAccMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    rainAccMm = verifyNumber(rainAccMm, `rainAccMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    totalAccMm = verifyNumber(totalAccMm, `totalAccMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    rainIntensity = verifyNumber(rainIntensity, `rainIntensity`);
+  } catch (e) {
+    errors.push(e);
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  // add data to the sensor
+  // addMeasurement(sensorId, measurementData)
+  try {
+    let sensor = measurementsData.addMeasurement(sensorId, {
+      timestamp,
+      errorCode,
+      voltage,
+      distanceMm,
+      eventAccMm,
+      rainAccMm,
+      totalAccMm,
+      rainIntensity,
+    });
+  } catch (e) {
+    return res.status(400).json({ error: `Adding measurement failed` });
+  }
+
+  return res.redirect(`/${sensorId}`);
 });
 
 router.route("/:sensorId").get(async (req, res) => {
-  // GET ENDPOINT
+  let sensorId = req.params.sensorId;
+
+  try {
+    sensorId = verifyMongoId(sensorId, `sensorId`);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+
+  let sensor;
+  try {
+    sensor = sensorData.getSensorByIdOrName(sensorId);
+  } catch (e) {
+    return res.status(404).json({ error: e });
+  }
+
+  return res.render("pages/measurement", { sensor });
 });
 
 export default router;
