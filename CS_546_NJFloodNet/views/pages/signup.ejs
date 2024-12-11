@@ -5,62 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
 
-    <title>NJ FloodNet</title>
+    <title>Create Account</title>
   </head>
 
   <body>
     <header><%- include('../partials/header'); %></header>
 
-    <h1>This is a sign in page</h1>
+    <main id="signup-container">
+      <h1 class="signup-page-title">Create Your Account</h1>
 
-    <form id="log_in_form" method="POST" action="/signin">
-      <div>
-        <label for="username">Enter your username:</label>
-        <input type="text" id="username" name="username" required />
-      </div>
+      <form class="signup-form" method="POST" action="/signup">
+        <div class="signup-form-row">
+          <div class="signup-form-group">
+            <label class="signup-label" for="username">Username:</label>
+            <input class="signup-input" type="text" id="username" name="username" required />
+          </div>
 
-      <div>
-        <label for="email">Enter your email:</label>
-        <input type="text" id="email" name="email" required />
-      </div>
+          <div class="signup-form-group">
+            <label class="signup-label" for="email">Email:</label>
+            <input class="signup-input" type="email" id="email" name="email" required />
+          </div>
+        </div>
 
-      <div>
-        <label for="city">Enter your city:</label>
-        <input type="text" id="city" name="city" required />
-      </div>
+        <div class="signup-form-row">
+          <div class="signup-form-group">
+            <label class="signup-label" for="city">City:</label>
+            <input class="signup-input" type="text" id="city" name="city" required />
+          </div>
 
-      <div>
-        <label for="state">Enter your state:</label>
-        <input type="text" id="state" name="state" required />
-      </div>
+          <div class="signup-form-group">
+            <label class="signup-label" for="state">State:</label>
+            <input class="signup-input" type="text" id="state" name="state" required />
+          </div>
+        </div>
 
-      <div>
-        <label for="firstName">First name:</label>
-        <input type="text" id="firstName" name="firstName" required />
-      </div>
+        <div class="signup-form-row">
+          <div class="signup-form-group">
+            <label class="signup-label" for="firstName">First Name:</label>
+            <input class="signup-input" type="text" id="firstName" name="firstName" required />
+          </div>
 
-      <div>
-        <label for="lastName">Last name:</label>
-        <input type="text" id="lastName" name="lastName" required />
-      </div>
+          <div class="signup-form-group">
+            <label class="signup-label" for="lastName">Last Name:</label>
+            <input class="signup-input" type="text" id="lastName" name="lastName" required />
+          </div>
+        </div>
 
-      <div>
-        <label for="password">Enter your password:</label>
-        <input type="password" id="password" name="password" required />
-      </div>
+        <div class="signup-form-row">
+          <div class="signup-form-group">
+            <label class="signup-label" for="password">Password:</label>
+            <input class="signup-input" type="password" id="password" name="password" required />
+          </div>
 
-      <div>
-        <label for="passwordConf">Enter your password again:</label>
-        <input type="password" id="passwordConf" name="passwordConf" required />
-      </div>
+          <div class="signup-form-group">
+            <label class="signup-label" for="passwordConf">Confirm Password:</label>
+            <input class="signup-input" type="password" id="passwordConf" name="passwordConf" required />
+          </div>
+        </div>
 
-      <div>
-        <button type="submit" id="submit_button">Sign In</button>
-      </div>
-    </form>
-
-    <footer>
-      This is a footer, maybe to be replaced with an include as above
-    </footer>
+        <div class="signup-form-group">
+          <button type="submit" class="signup-button" id="submit_button">Sign Up</button>
+        </div>
+      </form>
+    </main>
   </body>
 </html>
+
