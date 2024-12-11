@@ -65,3 +65,9 @@ export const verifyMongoId = (mongoId, type) => {
   if (!ObjectId.isValid(mongoId)) throw new Error(`${type} must be a mongo id`);
   return mongoId;
 };
+
+export const verifyArray = (array, type) => {
+  if (!Array.isArray(array))
+    throw new Error(`${type} must be an array. It was ${typeof array} instead`);
+  return array;
+};
