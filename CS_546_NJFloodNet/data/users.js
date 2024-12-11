@@ -206,11 +206,5 @@ export const updatePassword = async(email, oldPassword, newPassword) =>{
   return {'passwordUpdated':true}
 }
 
-export const getAllUsers = async() =>{
-  const usersCollection = await users()
 
-  let allUsers = await usersCollection.find({}).toArray()
-  return allUsers.filter(user => user.role === 'developer' || user.role === 'tester')
-}
-
-export default{signUpUser,signInUser,getUsers, updatePassword, getUser, getAllUsers}
+export default{signUpUser,signInUser,getUsers, updatePassword, getUser}
