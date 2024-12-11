@@ -25,7 +25,7 @@ const port = 3000;
 import express from "express";
 const app = express();
 import configRoutes from "./routes/index.js";
-// import exphbs from "express-handlebars";
+import session from "express-session";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   if (req.body && req.body._method) {
