@@ -42,26 +42,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 app.use("/public", express.static("public"));
 
+app.use(
+  session({
+    name: "AuthenticationState",
+    secret: "PatrickHill",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
 // View Engine
 app.set("view engine", "ejs");
-
-// Example of how to create handlebars helper function:
-// var hbs = exphbs.create({
-//   defaultLayout: "main",
-//   helpers: {
-//     isNA: (value) => {
-//       return value === "N/A";
-//     },
-//     hbsEq: (v1, v2) => {
-//       return v1 == v2;
-//     },
-//   },
-// });
-
-// var hbs = exphbs.create({ defaultLayout: "main" });
-
-// app.engine("handlebars", hbs.engine);
-// app.set("view engine", "handlebars");
 
 configRoutes(app);
 

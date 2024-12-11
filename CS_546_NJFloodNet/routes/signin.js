@@ -1,5 +1,7 @@
 import { Router } from "express";
 const router = Router();
+import usersData from "../data/users.js";
+import { verifyPassword, verifyUsername } from "../helpers.js";
 
 router
   .route("/")
@@ -48,14 +50,17 @@ router
 
       let userInfo;
       try {
-        userInfo = await validateUserCredentials(username, password);
+        userInfo = await usersData.validateUserCredentials(username, password);
       } catch (e) {
         return res.status(400).render("signin", {
           errors: [e],
         });
       }
 
-      req.session.userInfo = userInfo;
+      req.session.userInfo = {
+        username: userInfo.username,
+        isAdmin: userInfo.isAdmin,
+      };
 
       return res.redirect("/dashboard");
     }
