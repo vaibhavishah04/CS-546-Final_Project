@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+
+    <title>NJ FloodNet</title>
+  </head>
+
+  <body>
+    <div><%- include('../partials/header'); %></div>
+
+    <% sensors.forEach((e) => { %>
+    <div>
+      <p>Sensor <%- e.sensorNumber %></p>
+      <p>Location: <%- e.location %></p>
+      <p>Status: <%- e.status %></p>
+    </div>
+    <% }) %>
+
+    <div><%- include('../partials/footer'); %></div>
+  </body>
+</html>
