@@ -425,6 +425,11 @@ button:active {
     text-align: left;
 }
 
+.signup-form-group p {
+    color: #164960;
+    text-align: center;
+}
+
 .signup-label {
     display: block;
     font-size: 1.2rem;
