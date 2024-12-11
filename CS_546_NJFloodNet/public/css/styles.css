@@ -47,6 +47,16 @@ body {
     color: #c2d2da;
 }
 
+.logo a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+.logo a:hover {
+    text-decoration: underline;
+    color: #c2d2da;
+}
+
 .user-action {
     font-size: 16px;
 }
@@ -141,6 +151,13 @@ footer {
     left: 10px;
     margin: 0;
     text-align: right;
+}
+
+@media (max-width: 675px) {
+    .footer-rights,
+    .footer-class {
+        display: none; /* Hide these elements */
+    }
 }
 
 /* map styles */
@@ -278,7 +295,7 @@ section h2 {
     font-weight: bold;
 }
 
-/* Sign-in/Register styles */
+/* Sign-in styles */
 #signin-container {
     background-color: #ffffff;
     padding: 2rem;
@@ -365,4 +382,87 @@ button:active {
 #log_in_form .form-group a:hover {
     color: #3b93bd;
     text-decoration: underline;
+}
+
+/* Signup page styles */
+#signup-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+    max-height: 700px;
+    width: 90%;
+    text-align: center;
+    border: 2px solid #164960;
+}
+
+.signup-page-title {
+    font-size: 1.8rem;
+    color: #164960;
+    margin-bottom: 1rem;
+}
+
+/* Signup form styles */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.0rem;
+}
+
+.signup-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.signup-form-group {
+    flex: 1 1 calc(50% - 1.5rem);
+    text-align: left;
+}
+
+.signup-label {
+    display: block;
+    font-size: 1.2rem;
+    color: #164960;
+    margin-bottom: 0.5rem;
+}
+
+.signup-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: 1px solid #164960;
+    border-radius: 5px;
+    outline: none;
+}
+
+.signup-input:focus {
+    border-color: #164960;
+    box-shadow: 0px 0px 5px rgba(22, 73, 96, 0.5);
+}
+
+.signup-button {
+    width: 400px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #164960;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 auto;
+}
+
+.signup-button:hover {
+    background-color: #122f3e;
+}
+
+.signup-button:active {
+    background-color: #122f3e;
 }

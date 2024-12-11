@@ -3,7 +3,7 @@ import sensorsRoutes from "./sensors.js";
 import usersRoutes from "./users.js";
 import signInRoutes from "./signin.js";
 import dashboardRoutes from "./dashboard.js";
-import registerRoutes from "./register.js";
+import signUpRoutes from "./signup.js";
 
 const constructorMethod = (app) => {
   app.get("/", (req, res) => {
@@ -12,7 +12,7 @@ const constructorMethod = (app) => {
   });
 
   app.use("/signin", signInRoutes);
-  app.use("/register", registerRoutes);
+  app.use("/signup", signUpRoutes);
   app.use("/measurements", measurementsRoutes);
   app.use("/sensors", sensorsRoutes);
   app.use("/user", usersRoutes);
