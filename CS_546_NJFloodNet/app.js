@@ -25,7 +25,7 @@ const port = 3000;
 import express from "express";
 const app = express();
 import configRoutes from "./routes/index.js";
-// import exphbs from "express-handlebars";
+import session from "express-session";
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
   if (req.body && req.body._method) {
@@ -42,32 +42,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);
 app.use("/public", express.static("public"));
 
-app.use((req, res, next) => {
+app.use(
+  session({
+    name: "AuthenticationState",
+    secret: "PatrickHill",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+//app.use((req, res, next) => {
   // Replace null with actual user logic when ready
-  res.locals.user = null; // Example: req.session.user
-  next();
-});
+  //res.locals.user = null; // Example: req.session.user
+  //next();
+//});
 
 // View Engine
 app.set("view engine", "ejs");
-
-// Example of how to create handlebars helper function:
-// var hbs = exphbs.create({
-//   defaultLayout: "main",
-//   helpers: {
-//     isNA: (value) => {
-//       return value === "N/A";
-//     },
-//     hbsEq: (v1, v2) => {
-//       return v1 == v2;
-//     },
-//   },
-// });
-
-// var hbs = exphbs.create({ defaultLayout: "main" });
-
-// app.engine("handlebars", hbs.engine);
-// app.set("view engine", "handlebars");
 
 configRoutes(app);
 

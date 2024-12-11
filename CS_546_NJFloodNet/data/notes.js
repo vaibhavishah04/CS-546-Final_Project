@@ -54,13 +54,49 @@ const getNotes = async (sensorId) => {
 }
 
 // Update a specific note
-const updateNote = async (noteId, updateData) => {
-    // what should our entry point be? Users? Sensors?
-    return null
-}
+const updateNote = async (sensorId, noteId, updateData) => {
+    try {
+        // check if sensor exists
+        let sensor = await sensorData.getSensorByIdOrName(sensorId)
+        // Find the note and update it
+        let note = sensor.notes.find((note) => note._id.toString() === noteId)
+        if (!note) throw new Error(`Note with id ${noteId} not found.`)
+        
+        // Check if the updateData is valid
+        if (!sensorVal.valid_notes([updateData])) throw new Error("Invalid noteData")
+        	
+        // Update the note with the new data
+        Object.assign(note, updateData)
+        await sensorData.updateSensor(sensorId, sensor) 
+        return note
+    } catch (e) {
+        throw new Error(e)
+    }
+} 
 
 // Delete a note
-const deleteNote = async (noteId) => {
-    // what should our entry point be? Users? Sensors?
-    return null
+const deleteNote = async (sensorId, noteId, userId) => {
+    try {
+        // check if sensor exists
+        let sensor = await sensorData.getSensorByIdOrName(sensorId)
+        
+        // Find the index of the note to be deleted
+        let index = sensor.notes.findIndex((note) => note._id.toString() === noteId);
+        
+        // If the note is not found, throw an error
+        if (index === -1) throw new Error(`Note with id ${noteId} not found.`)
+        
+        // Check if the user is authorized to delete the note
+        if (sensor.notes[index].user_id !== userId) throw new Error("You are not authorized to delete this note.")
+            
+        // Remove the note from the sensor's notes array
+        let deletedNote = sensor.notes.splice(index, 1)[0]
+        
+        // Save the updated sensor document
+        await sensorData.updateSensor(sensorId, sensor)
+
+        return deletedNote
+    } catch (e){
+        throw new Error(e)
+    }
 }
