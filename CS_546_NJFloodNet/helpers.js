@@ -6,20 +6,20 @@ export const verifyStr = (s, type) => {
   return s;
 };
 
-export const verifyUserId = (userId) => {
-  const userIdMinLen = 5;
-  const userIdLaxLen = 10;
+export const verifyUsername = (username) => {
+  const usernameMinLen = 5;
+  const usernameLaxLen = 10;
 
-  userId = verifyStr(userId, `userId`);
+  username = verifyStr(username, `username`);
   // simple regex that checks for no spaces
-  let userIdRegex = /^(?!.*[\s]).+$/;
-  if (!userIdRegex.test(userId))
+  let usernameRegex = /^(?!.*[\s]).+$/;
+  if (!usernameRegex.test(username))
     throw new Error(`User ID a string without spaces`);
-  if (userId.length < userIdMinLen || userId.length > userIdLaxLen)
+  if (username.length < usernameMinLen || username.length > usernameLaxLen)
     throw new Error(
-      `userId must be between ${userIdMinLen} and ${userIdLaxLen} characters`
+      `username must be between ${usernameMinLen} and ${usernameLaxLen} characters`
     );
-  return userId.toLowerCase();
+  return username.toLowerCase();
 };
 
 export const verifyPassword = (password) => {
