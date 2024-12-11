@@ -36,10 +36,6 @@ router.route("/register").post(async (req, res) => {
   // POST ENDPOINT
 });
 
-router.route("/signIn").post(async (req, res) => {
-  // POST ENDPOINT
-});
-
 router.route("/profile").post(async (req, res) => {
   // GET ENDPOINT
 });
