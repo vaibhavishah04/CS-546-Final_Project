@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
+
+    <title>NJ FloodNet</title>
+  </head>
+
+  <body>
+    <header><%- include('../partials/header'); %></header>
+
+    <h1>This is a sign in page</h1>
+
+    <form id="log_in_form" method="POST" action="/signin">
+      <div>
+        <label for="username">Enter your username:</label>
+        <input type="text" id="username" name="username" required />
+      </div>
+
+      <div>
+        <label for="email">Enter your email:</label>
+        <input type="text" id="email" name="email" required />
+      </div>
+
+      <div>
+        <label for="city">Enter your city:</label>
+        <input type="text" id="city" name="city" required />
+      </div>
+
+      <div>
+        <label for="state">Enter your state:</label>
+        <input type="text" id="state" name="state" required />
+      </div>
+
+      <div>
+        <label for="firstName">First name:</label>
+        <input type="text" id="firstName" name="firstName" required />
+      </div>
+
+      <div>
+        <label for="lastName">Last name:</label>
+        <input type="text" id="lastName" name="lastName" required />
+      </div>
+
+      <div>
+        <label for="password">Enter your password:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <div>
+        <label for="passwordConf">Enter your password again:</label>
+        <input type="password" id="passwordConf" name="passwordConf" required />
+      </div>
+
+      <div>
+        <button type="submit" id="submit_button">Sign In</button>
+      </div>
+    </form>
+
+    <footer>
+      This is a footer, maybe to be replaced with an include as above
+    </footer>
+  </body>
+</html>
