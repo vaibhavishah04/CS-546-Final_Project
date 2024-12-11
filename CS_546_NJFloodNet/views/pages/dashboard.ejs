@@ -2,12 +2,69 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
 
-    <title>NJ FloodNet</title>
+    <title>NJ FloodNet</title> 
   </head>
 
   <body>
-    <p>this is a dashboard</p>
-  </body>
+    <div><%- include('../partials/header'); %></div>
+
+    <header>
+
+      <div class="logo">
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="/">Map</a></li>
+          <li><a href="/about">About FloodNet</a></li>
+          <li><a href="/reporting">Reporting</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+      </nav>
+        <!--<h1>NJ Flood Net</h1> 
+        <p>Tracking and mitigating flood risks in New Jersey</p> -->
+    </header>
+    <div class="main-container">
+      
+    <main>
+        <section>
+            <h2>Flood Data </h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Sensor Name</th>
+                        <th>Location</th>
+                        <th>Water Level (ft)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% sensors.forEach((sensor,index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= sensor.sensorName%></td>
+                            <td><%= sensor.location %></td>
+                            <td><%= sensor.waterLevel %></td>
+                            <td><%= sensor.status %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+          <h2> FloodNet Chart for Location</h2>
+          <div id="chart-container">
+            <canvas id="floodChart" width="400" height="200"></canvas>
+          </div>
+        </section>
+    </main>
+    <div><%- include('../partials/footer'); %></div>
+
+</body>
 </html>

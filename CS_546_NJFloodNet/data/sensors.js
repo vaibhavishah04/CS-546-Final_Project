@@ -4,8 +4,7 @@
 
 import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb"
-import sensorVal from "../sensor_val.js"
-export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
+import sensorVal from "../validation/sensor_val.js"
 
 
 // Add a new sensor to the database
@@ -99,3 +98,5 @@ const deleteSensor = async (sensorId) => {
         throw new Error("Error deleting sensor.");
     }
 }
+
+export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
