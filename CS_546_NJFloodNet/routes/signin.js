@@ -8,7 +8,7 @@ router
   .get(
     (req, res, next) => {
       if (req.session.username) {
-        res.redirect("/signin");
+        return res.redirect("/dashboard");
       }
       next();
     },
@@ -52,7 +52,7 @@ router
       try {
         userInfo = await usersData.validateUserCredentials(username, password);
       } catch (e) {
-        return res.status(400).render("signin", {
+        return res.status(400).render("pages/signin", {
           errors: [e],
         });
       }
