@@ -1,15 +1,6 @@
-import bcrypt from "bcrpytjs";
+import bcrypt from "bcryptjs";
 import { users } from "../config/mongoCollections.js";
 import userVal from "../validation/user_val.js";
-
-export default {
-  createUser,
-  validateUserCredentials,
-  isAdmin,
-  getUserById,
-  updateUser,
-  deleteUser,
-};
 
 /**
  * Manage user-related database operations.
@@ -155,4 +146,13 @@ const deleteUser = async (username) => {
 
   // Delete the user document from the database
   return userData.deleteOne({ _id: username });
+};
+
+export default {
+  createUser,
+  validateUserCredentials,
+  isAdmin,
+  getUserById,
+  updateUser,
+  deleteUser,
 };
