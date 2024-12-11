@@ -7,14 +7,14 @@
  *
  * Endpoints:
  * - POST /register: Register a new user.
- * - POST /login: Log in an existing user.
+ * - POST /signin: Sign in an existing user.
  * - GET /profile: Retrieve user profile data.
  */
 // Register a new user
 // function registerUser(req, res) {}
 
-// Log in an existing user
-// function loginUser(req, res) {}
+// Sign in an existing user
+// function signInUser(req, res) {}
 
 // Retrieve the profile of the logged-in user
 // function getUserProfile(req, res) {}
@@ -36,7 +36,7 @@ router.route("/register").post(async (req, res) => {
   // POST ENDPOINT
 });
 
-router.route("/login").post(async (req, res) => {
+router.route("/signIn").post(async (req, res) => {
   // POST ENDPOINT
 });
 
