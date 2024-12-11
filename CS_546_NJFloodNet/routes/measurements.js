@@ -145,6 +145,7 @@ router.route("/:sensorId").get(async (req, res) => {
     return res.status(404).json({ error: e });
   }
 
+  // TODO: Add measurement page?
   return res.render("pages/measurement", { sensor });
 });
 
