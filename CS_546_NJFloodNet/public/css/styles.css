@@ -46,6 +46,16 @@ body {
     color: #c2d2da;
 }
 
+.logo a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+.logo a:hover {
+    text-decoration: underline;
+    color: #c2d2da;
+  }
+
 .user-action {
     font-size: 16px;
 }
@@ -140,6 +150,12 @@ footer {
     left: 10px;
     margin: 0;
     text-align: right;
+}
+
+@media (max-width: 675px) {
+    .footer-rights, .footer-class {
+        display: none;
+    }
 }
 
 /* map styles */
