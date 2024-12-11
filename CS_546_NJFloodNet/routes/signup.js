@@ -7,7 +7,7 @@ router
   .route("/")
   .get(
     (req, res, next) => {
-      if (req.session.username) {
+      if (req.session.userInfo) {
         return res.redirect("/dashboard");
       }
       next();
@@ -18,7 +18,7 @@ router
   )
   .post(
     (req, res, next) => {
-      if (req.session.username) {
+      if (req.session.userInfo) {
         return res
           .status(400)
           .json({ error: "sign up attempt while signed in" });
@@ -120,7 +120,7 @@ router
         isAdmin: userInfo.isAdmin,
       };
 
-      return res.redirect("/dashboard");
+      return res.redirect("/signin");
     }
   );
 

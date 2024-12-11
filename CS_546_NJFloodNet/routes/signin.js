@@ -7,7 +7,7 @@ router
   .route("/")
   .get(
     (req, res, next) => {
-      if (req.session.username) {
+      if (req.session.userInfo) {
         return res.redirect("/dashboard");
       }
       next();
@@ -18,7 +18,7 @@ router
   )
   .post(
     (req, res, next) => {
-      if (req.session.username) {
+      if (req.session.userInfo) {
         return res
           .status(400)
           .json({ error: "sign in attempt while signed in" });
@@ -52,7 +52,7 @@ router
       try {
         userInfo = await usersData.validateUserCredentials(username, password);
       } catch (e) {
-        return res.status(400).render("pages/signin", {
+        return res.status(400).render("", {
           errors: [e],
         });
       }
