@@ -14,6 +14,16 @@
     <main id="signin-container">
     <h1 class="page-title">Sign In to Your Account</h1>
 
+    <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+      <div class="error-messages">
+        <ul>
+          <% errors.forEach((error) => { %>
+            <li><%= error %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
     <form id="log_in_form" method="POST" action="/signin">
       <div class="form-group">
         <label for="username">Username:</label>
@@ -33,6 +43,7 @@
         <a href="/signup">Create an Account</a>
       </div>
     </form>
+
   </main>
 
   </body>
