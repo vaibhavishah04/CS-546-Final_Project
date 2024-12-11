@@ -139,7 +139,7 @@ const result = await userscollection.findOne({userId:userId}, { projection: { fi
 
 return result;
 };
-
+/*
 // Retrieve a user by their ID
 function getUserById(userId) {}
 
@@ -148,6 +148,69 @@ function updateUser(userId, updateData) {}
 
 // Delete a user
 function deleteUser(userId) {}
+*/
 
+export const getUsers = async (members_id) => {
+  const usersCollection = await users()
+  const user_details = await usersCollection.findOne({ _id: new ObjectId(members_id) })
+  return {
+      firstName: user_details.firstName,
+      lastName: user_details.lastName,
+      email: user_details.email,
+      role: user_details.role,
+      _id: user_details._id
+  }
 
+}
 
+export const getUser = async (user_id)=>{
+  const usersCollection = await users()
+  const user = await usersCollection.findOne({_id:new ObjectId()})
+  return user
+
+}
+
+export const updatePassword = async(email, oldPassword, newPassword) =>{
+  const usersCollection = await users()
+  
+  if(!email || !oldPassword || !newPassword){
+      throw "All fields mus be supplied"
+  }
+  
+  email = validation.checkString(email,'Email')
+  email = email.toLowerCase()
+  oldPassword = validation.checkString(oldPassword,'Old Password')
+  validation.checkPassword(oldPassword,'Old Password')
+  newPassword = validation.checkString(newPassword,'New Password')
+  validation.checkPassword(newPassword,'New Password')
+  const hashed_new_password = await bcrypt.hash(newPassword, 10)
+  newPassword = hashed_new_password
+  const user = await usersCollection.findOne({email: email.toLowerCase()})
+  if(!user){
+      throw "User not found"
+  }
+  // if(oldPassword !== user.password){
+  //     throw "Old Password is incorrect";
+  // }
+  const old_password_match = await bcrypt.compare(oldPassword, user.password)
+  if(!old_password_match){
+      throw "Old Password is incorrect"
+ }
+
+ if(oldPassword === newPassword) throw "Both passwords are same"
+  
+  const result = await usersCollection.updateOne({email: email.toLowerCase()},{$set:{password: hashed_new_password,firstLogin:false}});
+  if(result.modifiedCount === 0){
+      throw "Password not updated"
+  }
+  return {'passwordUpdated':true}
+}
+
+export const getAllUsers = async() =>{
+  const usersCollection = await users()
+
+  let allUsers = await usersCollection.find({}).toArray()
+  return allUsers.filter(user => user.role === 'developer' || user.role === 'tester')
+}
+
+export default{signUpUser,signInUser,getUsers, updatePassword, getUser, getAllUsers}
