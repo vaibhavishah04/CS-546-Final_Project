@@ -2,7 +2,7 @@
  * Manage user-related database operations.
  * Includes user creation, signin validation, and admin checks.
  */
-import { verifyUserId, verifyPassword } from "../helpers";
+import { verifyUsername, verifyPassword } from "../helpers";
 import { users } from "../config/mongoCollections.js";
 import bcrypt from "bcrypt";
 
@@ -10,15 +10,15 @@ import bcrypt from "bcrypt";
 function createUser(userData) {}
 
 // Validate user signIn credentials
-export const validateUserCredentials = async (userId, password) => {
-  // verify userId
-  userId = verifyUserId(userId);
+export const validateUserCredentials = async (username, password) => {
+  // verify username
+  username = verifyUsername(username);
   // verify password
   password = verifyPassword(password);
   // get the user obj from db
   const usersCollection = await users();
-  const user = await usersCollection.findOne({ userId });
-  if (!user) throw new Error(`Either the userId or password is invalid`);
+  const user = await usersCollection.findOne({ username });
+  if (!user) throw new Error(`Either the username or password is invalid`);
   // use bcrypt to check if the password is valid
   let verified = false;
   try {
@@ -27,7 +27,7 @@ export const validateUserCredentials = async (userId, password) => {
     // no op
   }
 
-  if (!verified) throw new Error(`Either the userId or password is invalid`);
+  if (!verified) throw new Error(`Either the username or password is invalid`);
 
   let { username, isAdmin } = user;
 
@@ -36,13 +36,13 @@ export const validateUserCredentials = async (userId, password) => {
 };
 
 // Check if the user has admin privileges
-function isAdmin(userId) {}
+function isAdmin(username) {}
 
 // Retrieve a user by their ID
-function getUserById(userId) {}
+function getUserById(username) {}
 
 // Update user information
-function updateUser(userId, updateData) {}
+function updateUser(username, updateData) {}
 
 // Delete a user
-function deleteUser(userId) {}
+function deleteUser(username) {}
