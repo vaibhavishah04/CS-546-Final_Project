@@ -12,8 +12,8 @@ router.route("/").get(
     try{
 
       const sensors = await sensordata.getAllSensors();
-      const measurements = await measurementdata.getMeasurements();
-      return res.render("pages/dashboard", {sensors, measurements});
+      //const measurements = await measurementdata.getMeasurements();
+      return res.render("pages/dashboard", {sensors});
     }
     catch(e){
         res.status(500).send({message:e});
