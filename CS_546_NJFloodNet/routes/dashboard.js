@@ -11,15 +11,26 @@ router.route("/").get(
   async (req, res) => {
     try{
 
-      const sensors = await sensordata.getAllSensors();
+      const sensors1 = await sensordata.getAllSensors();
       //const measurements = await measurementdata.getMeasurements();
-      return res.render("pages/dashboard", {sensors});
+      return res.render("pages/dashboard", {sensors: sensors1});
     }
     catch(e){
-        res.status(500).send({message:e});
+        res.status(500).send({error: 'No Result Found!'});
     }
   }
 );
 
-router.route('/dashboard/:')
+// router.route('/dashboard/:').post(
+//   (req,res, next) =>{
+//     try{
+
+//       if()
+//     }
+//     catch(e)
+//     {
+//       res.status(404).send('error',{error : 'No Result Found!'})
+//     }
+//   }
+// )
 export default router;
