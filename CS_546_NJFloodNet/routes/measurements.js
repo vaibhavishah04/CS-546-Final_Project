@@ -29,21 +29,15 @@
 import { Router } from "express";
 const router = Router();
 import {
-  verifyDecodedDump,
   verifyInt,
   verifyMongoId,
   verifyNumber,
-  verifyStr,
   verifyTimestamp,
   verifyVoltage,
   verifySensorNumber,
 } from "../helpers.js";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
-// TODO: Data functions
-// import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
-// TODO: Make helper file?
-// import { verifyStr } from "../helpers.js";
 
 router.route("/").post(async (req, res) => {
   // get data from req.body
