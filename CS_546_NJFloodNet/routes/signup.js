@@ -19,12 +19,14 @@ router
   .post(
     (req, res, next) => {
       if (req.session.userInfo) {
-        return res
-          .status(400)
-          .json({ error: "sign up attempt while signed in" });
+        console.error("User is already signed in.");
+        return res.status(400).json({ error: "Sign-up attempt while signed in" });
       }
+      next();
     },
     async (req, res) => {
+      console.log("Received form data:", req.body);
+
       let {
         username,
         email,
@@ -35,70 +37,68 @@ router
         password,
         passwordConf,
       } = req.body;
-      // set up to list all errors with signing up
+
       let errors = [];
-      // verify username
+
+      // Validation steps with logging
       try {
         username = verifyUsername(username);
       } catch (e) {
-        errors.push(e);
+        console.error("Username validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify email
       try {
         email = verifyStr(email, `email`);
       } catch (e) {
-        errors.push(e);
+        console.error("Email validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify city
       try {
         city = verifyStr(city, `city`);
       } catch (e) {
-        errors.push(e);
+        console.error("City validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify state
       try {
         state = verifyStr(state, `state`);
       } catch (e) {
-        errors.push(e);
+        console.error("State validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify firstName
       try {
         firstName = verifyStr(firstName, `firstName`);
       } catch (e) {
-        errors.push(e);
+        console.error("First name validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify lastName
       try {
         lastName = verifyStr(lastName, `lastName`);
       } catch (e) {
-        errors.push(e);
+        console.error("Last name validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify password
       try {
         password = verifyPassword(password);
       } catch (e) {
-        errors.push(e);
-      }
-      // verify passwordConf
-      try {
-        passwordConf = verifyStr(passwordConf, `passwordConf`);
-      } catch (e) {
-        errors.push(e);
+        console.error("Password validation error:", e.message || e);
+        console.trace(); // Add this to log the stack trace
+        errors.push(e.message || e);
       }
       if (password !== passwordConf) {
-        errors.push(`Passwords must be the same`);
+        console.error("Password mismatch error.");
+        errors.push("Passwords must be the same");
       }
 
-      // if there are errors, render the page with the errors
       if (errors.length > 0) {
-        return res.status(400).render("pages/register", {
+        console.error("Validation errors:", errors);
+        return res.status(400).render("pages/signup", {
           errors,
+          formData: { username, email, city, state, firstName, lastName },
         });
       }
 
       let userInfo;
       try {
-        // TODO: how to administer admin status?
         userInfo = await usersData.createUser(
           username,
           firstName,
@@ -109,9 +109,12 @@ router
           password,
           false
         );
+        console.log("User created successfully:", userInfo);
       } catch (e) {
-        return res.status(400).render("pages/register", {
-          errors: [e],
+        console.error("Error creating user:", e.message || e);
+        return res.status(400).render("pages/signup", {
+          errors: [e.message || e],
+          formData: { username, email, city, state, firstName, lastName },
         });
       }
 

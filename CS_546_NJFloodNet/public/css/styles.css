@@ -303,8 +303,9 @@ section h2 {
     border-radius: 8px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     max-width: 500px;
-    max-height: 500px;
+    max-height: 550px;
     width: 90%;
+    height: 90%;
     text-align: center;
     border: 2px solid #164960;
 }
@@ -392,10 +393,15 @@ button:active {
     border-radius: 8px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     max-width: 700px;
-    max-height: 700px;
+    max-height: 800px;
     width: 90%;
     text-align: center;
     border: 2px solid #164960;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    overflow: hidden;
 }
 
 .signup-page-title {
@@ -423,6 +429,11 @@ button:active {
 .signup-form-group {
     flex: 1 1 calc(50% - 1.5rem);
     text-align: left;
+}
+
+.signup-form-group p {
+    color: #164960;
+    text-align: center;
 }
 
 .signup-label {
@@ -466,3 +477,18 @@ button:active {
 .signup-button:active {
     background-color: #122f3e;
 }
+
+.error-messages {
+    color: red;
+    background-color: #fdd;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
+.error-messages ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
