@@ -61,16 +61,16 @@ const getAllSensors = async () => {
 const getSensorByIdOrName = async (identifier, options = {}) => {
   const sensorCollection = await sensors();
   try {
-    if (sensorVal.valid_obj_id(identifier)) {
+    if (sensorVal.valid_sensor_number(identifier)) {
       const sensor = await sensorCollection.findOne(
-        { _id: ObjectId.createFromHexString(identifier) },
+        { sensorNumber: identifier },
         options
       );
       if (!sensor) throw new Error("Sensor not found.");
       return sensor;
-    } else if (sensorVal.valid_sensor_number(identifier)) {
+    } else if (sensorVal.valid_obj_id(identifier)) {
       const sensor = await sensorCollection.findOne(
-        { sensorNumber: identifier },
+        { _id: ObjectId.createFromHexString(identifier) },
         options
       );
       if (!sensor) throw new Error("Sensor not found.");
