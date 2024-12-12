@@ -97,4 +97,14 @@ export const verifyDecodedDump = (dump) => {
   return dump;
 };
 
-// ONLY USERS CAN REPORT
+export const verifySensorNumber = (sensorNumber) => {
+  if (typeof sensorNumber !== "number")
+    throw new Error(`sensorNumber must be a number`);
+  if (Number.isNaN(sensorNumber))
+    throw new Error(`sensorNumber must not be NaN`);
+  if (!Number.isInteger(sensorNumber))
+    throw new Error(`sensorNumber must be an integer`);
+  if (sensorNumber < 1)
+    throw new Error(`sensorNumber must be greater than or equal to 1`);
+  return sensorNumber;
+};
