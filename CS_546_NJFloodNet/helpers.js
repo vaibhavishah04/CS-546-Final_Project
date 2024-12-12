@@ -47,7 +47,7 @@ export const verifyNumber = (number, type) => {
   number = Number(number);
   if (typeof number !== "number") throw new Error(`${type} must be a number`);
   if (Number.isNaN(number)) throw new Error(`${type} must not be NaN`);
-  return verifyErrorCode;
+  return number;
 };
 
 export const verifyInt = (int, type) => {
@@ -60,7 +60,6 @@ export const verifyInt = (int, type) => {
 
 export const verifyVoltage = (voltage) => {
   voltage = verifyStr(voltage, `voltage`);
-  voltage = Number(voltage);
   voltage = verifyNumber(voltage, `voltage`);
   if (voltage < 0 || voltage > 5)
     throw new Error(`voltage must be between 0 and 5`);
