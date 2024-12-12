@@ -77,22 +77,26 @@ const createUser = async (
 
 // Validate user login credentials
 const validateUserCredentials = async (username, password) => {
-  // Check if the username and password are valid
+  // Validate inputs
   let usernameOk = userVal.valid_username(username);
   let passwordOk = userVal.valid_password(password);
   if (!usernameOk || !passwordOk)
     throw new Error("Invalid username or password");
+
   // Fetch the user document from the database
   const userData = await users();
   const user = await userData.findOne({ username });
   if (!user) throw new Error("User not found");
 
   // Compare the provided password with the hashed password in the database
-  const hashedPassword = hashPassword(password);
-  if (user.hashedPassword !== hashedPassword)
-    throw new Error("Invalid password");
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) throw new Error("Invalid username or password");
+
   // User credentials are valid, return the user document
-  return user;
+  return {
+    username: user.username,
+    isAdmin: user.isAdmin || false,
+  };
 };
 
 // Check if the user has admin privileges

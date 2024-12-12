@@ -6,17 +6,19 @@
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>NJ FloodNet</title> 
+    <title>NJ FloodNet</title>
   </head>
 
   <body>
+    <!-- Include header -->
     <div><%- include('../partials/header'); %></div>
 
     <header>
-
-      <div class="logo">
-      </div>
+      <div class="logo"></div>
       <nav class="navigation">
         <ul>
           <li><a href="/">Map</a></li>
@@ -25,70 +27,86 @@
           <li><a href="/contact">Contact Us</a></li>
         </ul>
       </nav>
-        <!--<h1>NJ Flood Net</h1> 
-        <p>Tracking and mitigating flood risks in New Jersey</p> -->
     </header>
-    <div class="main-container">
-      
-    <main>
-        <section>
-            <h2>Flood Data </h2>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Sensor Name</th>
-                        <th>Location</th>
-                        <th>Water Level (ft)</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% sensors.forEach((sensor,index) => { %>
-                        <tr>
-                            <td><%= index + 1 %></td>
-                            <td><%= sensor.sensorName%></td>
-                            <td><%= sensor.location %></td>
-                            <td><%= sensor.waterLevel %></td>
-                            <td><%= sensor.status %></td>
-                        </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        </section>
 
-        <h2>Search measurement</h2>
-        <form id = "searchmeasurement_form" action="" method ="GET">
-          <div class="form-group">
-            <label for="sensorLocation">Sensor Location:</label>
-            <input type="text" id="sensorLocation" name="sensorLocation" placeholder="Enter location">
-        </div>
-        <div class="form-group">
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate">
-        </div>
-        <div class="form-group">
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate">
-        </div>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container my-4">
+      <h1 class="text-center mb-4">Flood Dashboard</h1>
+      <div id="dashboard" class="row g-4">
+        <% if (typeof sensors !== 'undefined' && sensors.length > 0) { %>
+          <% sensors.forEach(function(sensor) { %>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-header text-center">
+                  <h5 class="card-title"><%= sensor.sensorName %></h5>
+                  <p class="card-text"><%= sensor.location %></p>
+                  <small>Deployed on <%= sensor.deploymentDate || 'N/A' %></small>
+                </div>
+                <div class="card-body text-center">
+                  <canvas id="chart-<%= sensor._id %>" class="chart"></canvas>
+                </div>
+                <div class="card-footer text-center">
+                  <p class="mb-2">Last Seen: <%= sensor.measurements.length > 0 ? sensor.measurements[sensor.measurements.length - 1].timestamp : 'N/A' %></p>
+                   <button class="btn btn-primary btn-sm">Explore Data</button>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-center">No sensors available.</p>
+        <% } %>
+      </div>
+    </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Sensor Name</th>
-                <th>Location</th>
-                <th>Water Level (ft)</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-           </table>
-        </form>
-    </main>
+  <!--  <div class="modal fade" id="exploreDataModal" tabindex="-1" aria-labelledby="exploreDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exploreDataModalLabel">Explore Data - <span id="modal-sensor-name"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">button</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <canvas id="chart-modal" class="chart"></canvas>
+            </div>
+            <div class="col-md-6">
+              <table class="">
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  -->
+
+    <!-- JavaScript Block for rendering charts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        <% sensors.forEach(function(sensor) { %>
+           ctx = document.getElementById('chart-<%= sensor._id %>').getContext('2d');
+    
+          // Extract timestamps and floodDepths (or other relevant data)
+           timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
+           floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
+    
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: timestamps,
+              datasets: [{
+                label: 'Flood Depth (mm)',
+                data: floodDepths,
+                borderColor: '#3b93bd',
+                backgroundColor: 'rgba(0, 123, 255, 0.2)'
+              }]
+            },
+            options: { responsive: true }
+          });
+        <% }); %>
+      });
+    </script>
+    
     <div><%- include('../partials/footer'); %></div>
-
-</body>
+  </body>
 </html>

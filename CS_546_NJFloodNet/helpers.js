@@ -34,7 +34,7 @@ export const verifyPassword = (password) => {
   // (?!.*\s) not at least one space
   // .+ characters
   let passwordRegex = /^(?=.*[0-9])(?=.*[^a-zA-Z\d\s])(?=.*[A-Z])(?!.*\s).+$/;
-  if (!passwordRegex.test(pass))
+  if (!passwordRegex.test(password))
     throw new Error(
       `Password must have a number, special character, and an uppercase.`
     );

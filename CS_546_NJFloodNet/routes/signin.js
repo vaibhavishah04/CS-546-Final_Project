@@ -19,30 +19,38 @@ router
   .post(
     (req, res, next) => {
       if (req.session.userInfo) {
+        console.error("Sign in attempt while already signed in.");
         return res
           .status(400)
-          .json({ error: "sign in attempt while signed in" });
+          .json({ error: "Sign in attempt while already signed in" });
       }
+      next();
     },
     async (req, res) => {
+      console.log("Received Sign In form data:", req.body); // Log incoming data
+
       let { username, password } = req.body;
-      // set up to list all errors with signing in
       let errors = [];
-      // verify username
+
+      // Validate username
       try {
         username = verifyUsername(username);
       } catch (e) {
-        errors.push(e);
+        console.error("Username validation error:", e.message || e);
+        errors.push(e.message || e);
       }
-      // verify password
+
+      // Validate password
       try {
         password = verifyPassword(password);
       } catch (e) {
-        errors.push(e);
+        console.error("Password validation error:", e.message || e);
+        errors.push(e.message || e);
       }
 
-      // if there are errors, render the page with the errors
+      // If there are validation errors
       if (errors.length > 0) {
+        console.error("Validation errors:", errors);
         return res.status(400).render("pages/signin", {
           errors,
         });
@@ -50,20 +58,25 @@ router
 
       let userInfo;
       try {
+        console.log("Validating user credentials...");
         userInfo = await usersData.validateUserCredentials(username, password);
+        console.log("User credentials validated:", userInfo);
       } catch (e) {
-        return res.status(400).render("", {
-          errors: [e],
+        console.error("Error validating user credentials:", e.message || e);
+        return res.status(400).render("pages/signin", {
+          errors: [e.message || e],
         });
       }
 
+      // Set session and redirect to dashboard
       req.session.userInfo = {
         username: userInfo.username,
         isAdmin: userInfo.isAdmin,
       };
-
+      
       return res.redirect("/");
     }
   );
+
 
 export default router;

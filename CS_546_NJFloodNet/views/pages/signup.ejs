@@ -116,7 +116,17 @@
         </div>
 
         <div class="signup-form-group">
-          <p>Password must contain at least 1 uppercase and lowercase letter, 1 number, and 1 special character</p>
+          <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+            <div class="error-messages">
+              <ul>
+                <% errors.forEach((error) => { %>
+                  <li><%= error %></li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } else { %>
+            <p>Password must contain at least 1 uppercase and lowercase letter, 1 number, and 1 special character</p>
+          <% } %>
         </div>
 
         <div class="signup-form-group">
