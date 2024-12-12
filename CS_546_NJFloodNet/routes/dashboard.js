@@ -16,7 +16,7 @@ router.route("/").get(
       return res.render("pages/dashboard", {sensors: sensors1});
     }
     catch(e){
-        res.status(500).send({error: 'No Result Found!'});
+        res.status(404).send({error: 'No Result Found!'});
     }
   }
 );

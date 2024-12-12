@@ -46,7 +46,7 @@
                 </div>
                 <div class="card-footer text-center">
                   <p class="mb-2">Last Seen: <%= sensor.measurements.length > 0 ? sensor.measurements[sensor.measurements.length - 1].timestamp : 'N/A' %></p>
-                  <!-- <button class="btn btn-primary btn-sm">Explore Data</button> -->
+                   <button class="btn btn-primary btn-sm">Explore Data</button>
                 </div>
               </div>
             </div>
@@ -56,6 +56,29 @@
         <% } %>
       </div>
     </div>
+
+  <!--  <div class="modal fade" id="exploreDataModal" tabindex="-1" aria-labelledby="exploreDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exploreDataModalLabel">Explore Data - <span id="modal-sensor-name"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">button</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <canvas id="chart-modal" class="chart"></canvas>
+            </div>
+            <div class="col-md-6">
+              <table class="">
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  -->
 
     <!-- JavaScript Block for rendering charts -->
     <script>
