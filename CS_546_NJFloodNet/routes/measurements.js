@@ -39,6 +39,7 @@ import {
 } from "../helpers.js";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
+import sensorVal from "../validation/sensor_val.js";
 // TODO: Data functions
 // import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
 // TODO: Make helper file?
@@ -102,6 +103,11 @@ router.route("/").post(async (req, res) => {
   }
   try {
     timestamp = verifyTimestamp(timestamp);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    sensorNumber = sensorVal.valid_sensor_number(sensorNumber);
   } catch (e) {
     errors.push(e);
   }

@@ -6,7 +6,6 @@ import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import sensorVal from "../validation/sensor_val.js";
 
-
 // Add a new sensor to the database
 const addSensor = async (
   sensorNumber,
@@ -108,16 +107,25 @@ const updateSensor = async (sensorId, updateData) => {
 
 // Delete a sensor from the database
 const deleteSensor = async (sensorId) => {
-    try {
-        const sensorCollection = await sensors();
-        const sensor = await getSensorByIdOrName(sensorId);
-        if (!sensor) throw new Error("Sensor not found.");
-        const deleted_sensor = await sensorCollection.deleteOne({ _id: sensor._id });
-        if (deleted_sensor.deletedCount === 0) throw new Error("Could not delete sensor.");
-        return { deleted: true, data: sensor };
-    } catch (e) {
-        throw new Error("Error deleting sensor.");
-    }
-}
+  try {
+    const sensorCollection = await sensors();
+    const sensor = await getSensorByIdOrName(sensorId);
+    if (!sensor) throw new Error("Sensor not found.");
+    const deleted_sensor = await sensorCollection.deleteOne({
+      _id: sensor._id,
+    });
+    if (deleted_sensor.deletedCount === 0)
+      throw new Error("Could not delete sensor.");
+    return { deleted: true, data: sensor };
+  } catch (e) {
+    throw new Error("Error deleting sensor.");
+  }
+};
 
-export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
+export default {
+  addSensor,
+  getSensorByIdOrName,
+  getAllSensors,
+  updateSensor,
+  deleteSensor,
+};
