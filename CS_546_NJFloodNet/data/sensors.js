@@ -5,6 +5,7 @@
 import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import sensorVal from "../validation/sensor_val.js";
+import { validMongoId, verifyMongoId } from "../helpers.js";
 
 // Add a new sensor to the database
 const addSensor = async (
@@ -88,18 +89,27 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
   }
 };
 
+export const getSensorByMongoId = async (id) => {
+  id = verifyMongoId(id, `id`);
+  const sensorCollection = await sensors();
+  const sensor = await sensorCollection.findOne(
+    ObjectId.createFromHexString(id)
+  );
+  return sensor;
+};
+
 // Update sensor details
 const updateSensor = async (sensorId, updateData) => {
   try {
     const sensorCollection = await sensors();
-    const sensor = await getSensorByIdOrName(sensorId);
+    const sensor = await getSensorByMongoId(sensorId);
     if (!sensor) throw new Error("Sensor not found.");
 
     const updatedSensor = await sensorCollection.updateOne(
       { _id: sensor._id },
       { $set: updateData }
     );
-    return await getSensorByIdOrName(sensorId);
+    return await getSensorByMongoId(sensorId);
   } catch (e) {
     throw new Error(`Error updating sensor details: ${e}`);
   }
