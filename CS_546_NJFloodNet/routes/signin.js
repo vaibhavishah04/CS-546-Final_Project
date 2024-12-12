@@ -62,7 +62,7 @@ router
         isAdmin: userInfo.isAdmin,
       };
 
-      return res.redirect("/dashboard");
+      return res.redirect("/");
     }
   );
 
