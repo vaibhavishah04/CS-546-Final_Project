@@ -77,7 +77,7 @@ const valid_measurements = (measurements) => {
   let valid_fields = false;
   if (Array.isArray(measurements)) {
     valid_data = measurements.every((measurement) => {
-      for (key in measurement)
+      for (let key in measurement)
         if (typeof measurement[key] === "string") {
           return valid_timestamp(measurement[key]);
         } else {
@@ -92,7 +92,7 @@ const valid_measurements = (measurements) => {
         }
     });
     valid_fields = measurements.every((measurement) => {
-      for (key in measurement.keys())
+      for (let key in measurement.keys())
         if (fields_to_check.has(key)) {
           return true;
         } else {
