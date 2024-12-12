@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 const valid_obj_id = (id) => {
   if (ObjectId.isValid(id)) {
-    if (String(ObjectId.createFromHexString(id)) === id) {
+    if (String(new ObjectId(id)) === id) {
       return true;
     } else {
       return false;

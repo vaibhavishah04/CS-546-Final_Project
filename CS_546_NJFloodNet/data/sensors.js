@@ -70,7 +70,7 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
       return sensor;
     } else if (sensorVal.valid_obj_id(identifier)) {
       const sensor = await sensorCollection.findOne(
-        { _id: ObjectId.createFromHexString(identifier) },
+        { _id: new ObjectId(identifier) },
         options
       );
       if (!sensor) throw new Error("Sensor not found.");
@@ -84,7 +84,7 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
       return sensor;
     } else throw new Error("Invalid identifier.");
   } catch (e) {
-    throw new Error("Error retrieving sensor details.");
+    throw new Error(`Error retrieving sensor details: ${e}`);
   }
 };
 
