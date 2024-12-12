@@ -90,7 +90,7 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
 };
 
 export const getSensorByMongoId = async (id) => {
-  id = verifyMongoId(id, `id`);
+  if (!ObjectId.isValid) throw new Error(`id not valid. id: ${id}`);
   const sensorCollection = await sensors();
   const sensor = await sensorCollection.findOne(
     ObjectId.createFromHexString(id)
