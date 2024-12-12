@@ -59,8 +59,6 @@ router.route("/").post(async (req, res) => {
     sensorNumber,
   } = req.body;
 
-  console.log(req.body);
-
   let timestamp = datestamp;
 
   // Do error checking
@@ -113,7 +111,6 @@ router.route("/").post(async (req, res) => {
   }
 
   if (errors.length > 0) {
-    console.log(errors);
     return res.status(400).json({ errors });
   }
 
@@ -132,15 +129,10 @@ router.route("/").post(async (req, res) => {
       rainIntensity,
     });
   } catch (e) {
-    console.log("addMeasurement failed");
-    console.log(e);
     return res.status(400).json({ error: `Adding measurement failed` });
   }
 
-  console.log(sensorNumber);
-  console.log(sensor);
-
-  return res.redirect(`/${sensorId}`);
+  return res.redirect(`/${sensor._id.toString()}`);
 });
 
 router.route("/:sensorId").get(async (req, res) => {
