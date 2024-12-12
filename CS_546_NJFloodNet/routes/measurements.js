@@ -29,10 +29,12 @@
 import { Router } from "express";
 const router = Router();
 import {
+  verifyDecodedDump,
   verifyInt,
   verifyMongoId,
   verifyNumber,
   verifyStr,
+  verifyTimestamp,
   verifyVoltage,
 } from "../helpers.js";
 import measurementsData from "../data/measurements.js";
@@ -45,7 +47,6 @@ import sensorData from "../data/sensors.js";
 router.route("/").post(async (req, res) => {
   // get data from req.body
   let {
-    sensorId,
     timestamp,
     errorCode,
     voltage,
@@ -54,26 +55,12 @@ router.route("/").post(async (req, res) => {
     rainAccMm,
     totalAccMm,
     rainIntensity,
+    sensorNumber,
   } = req.body;
 
   // Do error checking
   let errors = [];
 
-  try {
-    sensorId = verifyMongoId(sensorId, `sensorId`);
-  } catch (e) {
-    errors.push(e);
-  }
-  try {
-    timestamp = verifyStr(timestamp, `timestamp`);
-  } catch (e) {
-    errors.push(e);
-  }
-  try {
-    errorCode = verifyInt(errorCode, `errorCode`);
-  } catch (e) {
-    errors.push(e);
-  }
   try {
     voltage = verifyVoltage(voltage);
   } catch (e) {
@@ -81,6 +68,11 @@ router.route("/").post(async (req, res) => {
   }
   try {
     distanceMm = verifyNumber(distanceMm, `distanceMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    errorCode = verifyInt(errorCode, `errorCode`);
   } catch (e) {
     errors.push(e);
   }
@@ -104,6 +96,11 @@ router.route("/").post(async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
+  try {
+    timestamp = verifyTimestamp(timestamp);
+  } catch (e) {
+    errors.push(e);
+  }
 
   if (errors.length > 0) {
     return res.status(400).json({ errors });
@@ -112,7 +109,7 @@ router.route("/").post(async (req, res) => {
   // add data to the sensor
   // addMeasurement(sensorId, measurementData)
   try {
-    let sensor = measurementsData.addMeasurement(sensorId, {
+    let sensor = await measurementsData.addMeasurement(sensorNumber, {
       timestamp,
       errorCode,
       voltage,

@@ -71,3 +71,24 @@ export const verifyArray = (array, type) => {
     throw new Error(`${type} must be an array. It was ${typeof array} instead`);
   return array;
 };
+
+export const verifyTimestamp = (dateString) => {
+  dateString = verifyStr(dateString, `timestamp`);
+  let date = new Date(dateString);
+  let time = date.toTimeString().substring(0, 8);
+  let day = String(date.getDate());
+  if (day.length < 2) day = `0${day}`;
+  let month = String(date.getMonth() + 1);
+  if (month.length < 2) month = `0${month}`;
+  let year = date.getFullYear();
+  dateString = `${day}-${month}-${year}-${time}`;
+  return dateString;
+};
+
+export const verifyDecodedDump = (dump) => {
+  dump = verifyStr(dump, `dump`);
+  let jsonObj = JSON.parse(dump);
+  return dump;
+};
+
+// ONLY USERS CAN REPORT
