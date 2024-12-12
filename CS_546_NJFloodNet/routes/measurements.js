@@ -119,8 +119,9 @@ router.route("/").post(async (req, res) => {
 
   // add data to the sensor
   // addMeasurement(sensorId, measurementData)
+  let sensor;
   try {
-    let sensor = await measurementsData.addMeasurement(sensorNumber, {
+    sensor = await measurementsData.addMeasurement(sensorNumber, {
       timestamp,
       errorCode,
       voltage,
