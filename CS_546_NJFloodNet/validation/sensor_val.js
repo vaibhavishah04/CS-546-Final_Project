@@ -92,7 +92,7 @@ const valid_measurements = (measurements) => {
         }
     });
     valid_fields = measurements.every((measurement) => {
-      for (let key in measurement.keys())
+      for (let key in measurement)
         if (fields_to_check.has(key)) {
           return true;
         } else {
