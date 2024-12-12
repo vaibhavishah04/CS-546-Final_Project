@@ -43,17 +43,24 @@ export const verifyPassword = (password) => {
 };
 
 export const verifyNumber = (number, type) => {
+  number = verifyStr(number, `number`);
+  number = Number(number);
   if (typeof number !== "number") throw new Error(`${type} must be a number`);
+  if (Number.isNaN(number)) throw new Error(`${type} must not be NaN`);
   return verifyErrorCode;
 };
 
 export const verifyInt = (int, type) => {
+  int = verifyStr(int, `int`);
   int = verifyNumber(int, type);
+  if (Number.isNaN(int)) throw new Error(`${type} must not be NaN`);
   if (!Number.isInteger(int)) throw new Error(`${type} must be an integer`);
   return int;
 };
 
 export const verifyVoltage = (voltage) => {
+  voltage = verifyStr(voltage, `voltage`);
+  voltage = Number(voltage);
   voltage = verifyNumber(voltage, `voltage`);
   if (voltage < 0 || voltage > 5)
     throw new Error(`voltage must be between 0 and 5`);

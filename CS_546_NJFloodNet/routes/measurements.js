@@ -47,7 +47,7 @@ import sensorData from "../data/sensors.js";
 router.route("/").post(async (req, res) => {
   // get data from req.body
   let {
-    timestamp,
+    datestamp,
     errorCode,
     voltage,
     distanceMm,
@@ -59,6 +59,8 @@ router.route("/").post(async (req, res) => {
   } = req.body;
 
   console.log(req.body);
+
+  let timestamp = datestamp;
 
   // Do error checking
   let errors = [];
