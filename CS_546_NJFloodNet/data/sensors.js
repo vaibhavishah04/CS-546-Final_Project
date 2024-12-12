@@ -101,7 +101,7 @@ const updateSensor = async (sensorId, updateData) => {
     );
     return await getSensorByIdOrName(sensorId);
   } catch (e) {
-    throw new Error("Error updating sensor details.");
+    throw new Error(`Error updating sensor details: ${e}`);
   }
 };
 
