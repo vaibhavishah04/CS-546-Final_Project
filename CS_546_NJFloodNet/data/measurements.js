@@ -37,7 +37,10 @@ const addMeasurement = async (sensorId, measurementData) => {
 
   // add measurement to sensor
   tgt_sensor.measurements.push(measurementData);
-  let updated_sensor = await sensorData.updateSensor(tgt_sensor.id, tgt_sensor);
+  let updated_sensor = await sensorData.updateSensor(
+    tgt_sensor._id,
+    tgt_sensor
+  );
 
   return updated_sensor;
 };
