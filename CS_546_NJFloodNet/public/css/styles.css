@@ -492,3 +492,21 @@ button:active {
     padding: 0;
 }
 
+/* profile icon styles */
+.profile-link .profile-icon {
+    font-size: 2rem;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+
+.profile-link {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--color);
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+}
