@@ -36,6 +36,13 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 };
 
 // Middleware
+
+// Middleware to make user session data available in views
+const setUserInLocals = (req, res, next) => {
+  res.locals.user = req.session.userInfo || null;
+  next();
+};
+
 // TODO: maybe move this into another file?
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -51,11 +58,8 @@ app.use(
   })
 );
 
-//app.use((req, res, next) => {
-  // Replace null with actual user logic when ready
-  //res.locals.user = null; // Example: req.session.user
-  //next();
-//});
+// Set res.locals.user for all views
+app.use(setUserInLocals);
 
 // View Engine
 app.set("view engine", "ejs");

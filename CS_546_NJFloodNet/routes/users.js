@@ -47,4 +47,22 @@ router.route("/profile").get(
   }
 );
 
+// Route to handle logout
+router.route("/profile").post(async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error logging out:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      return res.redirect("/");
+    });
+  } catch (e) {
+    console.error("Error in logout route:", e.message || e);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
+
 export default router;
+

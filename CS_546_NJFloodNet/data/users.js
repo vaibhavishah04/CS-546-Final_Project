@@ -95,6 +95,9 @@ const validateUserCredentials = async (username, password) => {
   // User credentials are valid, return the user document
   return {
     username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
     isAdmin: user.isAdmin || false,
   };
 };

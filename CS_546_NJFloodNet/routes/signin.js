@@ -72,8 +72,10 @@ router
       req.session.userInfo = {
         username: userInfo.username,
         isAdmin: userInfo.isAdmin,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email
       };
-      
       return res.redirect("/");
     }
   );
