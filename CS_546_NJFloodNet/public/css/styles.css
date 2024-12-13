@@ -298,16 +298,12 @@ section h2 {
 /* Sign-in styles */
 #signin-container {
     background-color: #ffffff;
-    padding: 2rem;
     margin: auto;
     border-radius: 8px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     max-width: 500px;
     max-height: 550px;
-    width: 90%;
-    height: 90%;
     text-align: center;
-    border: 2px solid #164960;
 }
 
 .page-title {
@@ -396,7 +392,6 @@ button:active {
     max-height: 650px;
     width: 90%;
     text-align: center;
-    border: 2px solid #164960;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -499,7 +494,6 @@ button:active {
     vertical-align: middle;
 }
 
-
 .profile-link {
     font-size: 1.5rem;
     display: flex;
@@ -510,3 +504,62 @@ button:active {
 .profile-link:hover {
     text-decoration: underline;
 }
+
+/* Profile Page Styles */
+#profile-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    max-height: 450px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-title {
+    font-size: 1.8rem;
+    color: #164960;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.profile-info {
+    font-size: 1.2rem;
+    color: #061411;
+    margin: 0.5rem 0;
+    word-wrap: break-word;
+    color: #164960;
+}
+
+.profile-admin {
+    font-size: 1.4rem;
+    color: #3b93bd;
+    font-weight: bold;
+}
+
+.profile-logout-button {
+    width: 150px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #164960;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-logout-button:hover {
+    background-color: #122f3e;
+}
+
+.profile-logout-button:active {
+    background-color: #122f3e;
+}
+
+

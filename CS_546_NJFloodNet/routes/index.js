@@ -16,7 +16,7 @@ const constructorMethod = (app) => {
   app.use("/signup", signUpRoutes);
   app.use("/measurements", measurementsRoutes);
   app.use("/sensors", sensorsRoutes);
-  app.use("/user", usersRoutes);
+  app.use("/users", usersRoutes);
   app.use("/dashboard", dashboardRoutes);
   app.use("/reporting", reportingRoutes);
 
