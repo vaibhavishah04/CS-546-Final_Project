@@ -18,7 +18,6 @@ import sensorData from "./sensors.js";
 import sensorVal from "../validation/sensor_val.js";
 import { ObjectId } from "mongodb";
 
-
 const addMeasurement = async (sensorId, measurementData) => {
   // check if sensor exists
   let tgt_sensor = null;
@@ -38,7 +37,10 @@ const addMeasurement = async (sensorId, measurementData) => {
 
   // add measurement to sensor
   tgt_sensor.measurements.push(measurementData);
-  let updated_sensor = await sensorData.updateSensor(tgt_sensor.id, tgt_sensor);
+  let updated_sensor = await sensorData.updateSensor(
+    tgt_sensor._id,
+    tgt_sensor
+  );
 
   return updated_sensor;
 };
@@ -116,4 +118,9 @@ const deleteMeasurement = async (measurementId) => {
   return updated_sensor;
 };
 
-export default {addMeasurement, getMeasurements, updateMeasurement, deleteMeasurement};
+export default {
+  addMeasurement,
+  getMeasurements,
+  updateMeasurement,
+  deleteMeasurement,
+};

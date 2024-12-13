@@ -43,17 +43,23 @@ export const verifyPassword = (password) => {
 };
 
 export const verifyNumber = (number, type) => {
+  number = verifyStr(number, `number`);
+  number = Number(number);
   if (typeof number !== "number") throw new Error(`${type} must be a number`);
-  return verifyErrorCode;
+  if (Number.isNaN(number)) throw new Error(`${type} must not be NaN`);
+  return number;
 };
 
 export const verifyInt = (int, type) => {
+  int = verifyStr(int, `int`);
   int = verifyNumber(int, type);
+  if (Number.isNaN(int)) throw new Error(`${type} must not be NaN`);
   if (!Number.isInteger(int)) throw new Error(`${type} must be an integer`);
   return int;
 };
 
 export const verifyVoltage = (voltage) => {
+  voltage = verifyStr(voltage, `voltage`);
   voltage = verifyNumber(voltage, `voltage`);
   if (voltage < 0 || voltage > 5)
     throw new Error(`voltage must be between 0 and 5`);
@@ -70,4 +76,35 @@ export const verifyArray = (array, type) => {
   if (!Array.isArray(array))
     throw new Error(`${type} must be an array. It was ${typeof array} instead`);
   return array;
+};
+
+export const verifyTimestamp = (dateString) => {
+  dateString = verifyStr(dateString, `timestamp`);
+  let date = new Date(dateString);
+  let time = date.toTimeString().substring(0, 8);
+  let day = String(date.getDate());
+  if (day.length < 2) day = `0${day}`;
+  let month = String(date.getMonth() + 1);
+  if (month.length < 2) month = `0${month}`;
+  let year = date.getFullYear();
+  dateString = `${day}-${month}-${year}-${time}`;
+  return dateString;
+};
+
+export const verifyDecodedDump = (dump) => {
+  dump = verifyStr(dump, `dump`);
+  let jsonObj = JSON.parse(dump);
+  return dump;
+};
+
+export const verifySensorNumber = (sensorNumber) => {
+  if (typeof sensorNumber !== "number")
+    throw new Error(`sensorNumber must be a number`);
+  if (Number.isNaN(sensorNumber))
+    throw new Error(`sensorNumber must not be NaN`);
+  if (!Number.isInteger(sensorNumber))
+    throw new Error(`sensorNumber must be an integer`);
+  if (sensorNumber < 1)
+    throw new Error(`sensorNumber must be greater than or equal to 1`);
+  return sensorNumber;
 };

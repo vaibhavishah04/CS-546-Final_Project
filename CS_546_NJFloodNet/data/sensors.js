@@ -5,7 +5,7 @@
 import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import sensorVal from "../validation/sensor_val.js";
-
+import { verifyMongoId } from "../helpers.js";
 
 // Add a new sensor to the database
 const addSensor = async (
@@ -62,16 +62,16 @@ const getAllSensors = async () => {
 const getSensorByIdOrName = async (identifier, options = {}) => {
   const sensorCollection = await sensors();
   try {
-    if (sensorVal.valid_obj_id(identifier)) {
+    if (sensorVal.valid_sensor_number(identifier)) {
       const sensor = await sensorCollection.findOne(
-        { _id: ObjectId.createFromHexString(identifier) },
+        { sensorNumber: identifier },
         options
       );
       if (!sensor) throw new Error("Sensor not found.");
       return sensor;
-    } else if (sensorVal.valid_sensor_number(identifier)) {
+    } else if (sensorVal.valid_obj_id(identifier)) {
       const sensor = await sensorCollection.findOne(
-        { sensorNumber: identifier },
+        { _id: new ObjectId(identifier) },
         options
       );
       if (!sensor) throw new Error("Sensor not found.");
@@ -85,39 +85,55 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
       return sensor;
     } else throw new Error("Invalid identifier.");
   } catch (e) {
-    throw new Error("Error retrieving sensor details.");
+    throw new Error(`Error retrieving sensor details: ${e}`);
   }
+};
+
+export const getSensorByMongoId = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error(`id not valid. id: ${id}`);
+  const sensorCollection = await sensors();
+  const sensor = await sensorCollection.findOne(id);
+  return sensor;
 };
 
 // Update sensor details
 const updateSensor = async (sensorId, updateData) => {
   try {
     const sensorCollection = await sensors();
-    const sensor = await getSensorByIdOrName(sensorId);
+    const sensor = await getSensorByMongoId(sensorId);
     if (!sensor) throw new Error("Sensor not found.");
 
     const updatedSensor = await sensorCollection.updateOne(
       { _id: sensor._id },
       { $set: updateData }
     );
-    return await getSensorByIdOrName(sensorId);
+    return await getSensorByMongoId(sensorId);
   } catch (e) {
-    throw new Error("Error updating sensor details.");
+    throw new Error(`Error updating sensor details: ${e}`);
   }
 };
 
 // Delete a sensor from the database
 const deleteSensor = async (sensorId) => {
-    try {
-        const sensorCollection = await sensors();
-        const sensor = await getSensorByIdOrName(sensorId);
-        if (!sensor) throw new Error("Sensor not found.");
-        const deleted_sensor = await sensorCollection.deleteOne({ _id: sensor._id });
-        if (deleted_sensor.deletedCount === 0) throw new Error("Could not delete sensor.");
-        return { deleted: true, data: sensor };
-    } catch (e) {
-        throw new Error("Error deleting sensor.");
-    }
-}
+  try {
+    const sensorCollection = await sensors();
+    const sensor = await getSensorByIdOrName(sensorId);
+    if (!sensor) throw new Error("Sensor not found.");
+    const deleted_sensor = await sensorCollection.deleteOne({
+      _id: sensor._id,
+    });
+    if (deleted_sensor.deletedCount === 0)
+      throw new Error("Could not delete sensor.");
+    return { deleted: true, data: sensor };
+  } catch (e) {
+    throw new Error("Error deleting sensor.");
+  }
+};
 
-export default { addSensor, getSensorByIdOrName, getAllSensors, updateSensor, deleteSensor }
+export default {
+  addSensor,
+  getSensorByIdOrName,
+  getAllSensors,
+  updateSensor,
+  deleteSensor,
+};

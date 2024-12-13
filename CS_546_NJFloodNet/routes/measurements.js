@@ -32,21 +32,17 @@ import {
   verifyInt,
   verifyMongoId,
   verifyNumber,
-  verifyStr,
+  verifyTimestamp,
   verifyVoltage,
+  verifySensorNumber,
 } from "../helpers.js";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
-// TODO: Data functions
-// import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
-// TODO: Make helper file?
-// import { verifyStr } from "../helpers.js";
 
 router.route("/").post(async (req, res) => {
   // get data from req.body
   let {
-    sensorId,
-    timestamp,
+    datestamp,
     errorCode,
     voltage,
     distanceMm,
@@ -54,26 +50,14 @@ router.route("/").post(async (req, res) => {
     rainAccMm,
     totalAccMm,
     rainIntensity,
+    sensorNumber,
   } = req.body;
+
+  let timestamp = datestamp;
 
   // Do error checking
   let errors = [];
 
-  try {
-    sensorId = verifyMongoId(sensorId, `sensorId`);
-  } catch (e) {
-    errors.push(e);
-  }
-  try {
-    timestamp = verifyStr(timestamp, `timestamp`);
-  } catch (e) {
-    errors.push(e);
-  }
-  try {
-    errorCode = verifyInt(errorCode, `errorCode`);
-  } catch (e) {
-    errors.push(e);
-  }
   try {
     voltage = verifyVoltage(voltage);
   } catch (e) {
@@ -81,6 +65,11 @@ router.route("/").post(async (req, res) => {
   }
   try {
     distanceMm = verifyNumber(distanceMm, `distanceMm`);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    errorCode = verifyInt(errorCode, `errorCode`);
   } catch (e) {
     errors.push(e);
   }
@@ -104,6 +93,16 @@ router.route("/").post(async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
+  try {
+    timestamp = verifyTimestamp(timestamp);
+  } catch (e) {
+    errors.push(e);
+  }
+  try {
+    sensorNumber = verifySensorNumber(sensorNumber);
+  } catch (e) {
+    errors.push(e);
+  }
 
   if (errors.length > 0) {
     return res.status(400).json({ errors });
@@ -111,8 +110,9 @@ router.route("/").post(async (req, res) => {
 
   // add data to the sensor
   // addMeasurement(sensorId, measurementData)
+  let sensor;
   try {
-    let sensor = measurementsData.addMeasurement(sensorId, {
+    sensor = await measurementsData.addMeasurement(sensorNumber, {
       timestamp,
       errorCode,
       voltage,
@@ -126,7 +126,7 @@ router.route("/").post(async (req, res) => {
     return res.status(400).json({ error: `Adding measurement failed` });
   }
 
-  return res.redirect(`/${sensorId}`);
+  return res.redirect(`/${sensor._id.toString()}`);
 });
 
 router.route("/:sensorId").get(async (req, res) => {
