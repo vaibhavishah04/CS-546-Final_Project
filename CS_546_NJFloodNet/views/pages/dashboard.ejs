@@ -45,7 +45,7 @@
                 </div>
                 <div class="card-footer text-center">
                   <p class="mb-2">Last Seen: <%= sensor.measurements.length > 0 ? sensor.measurements[sensor.measurements.length - 1].timestamp : 'N/A' %></p>
-                   <button class="btn btn-primary btn-sm">Explore Data</button>
+                   <a href="/sensors/<%= sensor._id %>" class="btn btn-primary btn-sm">Explore Data</a>
                 </div>
               </div>
             </div>

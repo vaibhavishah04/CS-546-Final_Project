@@ -120,26 +120,24 @@ router
     // return res.redirect(`/sensor/${sensor._id}`);
   });
 
-router
-  .route("/:id")
-  .get(async (req, res) => {
+  router.route("/:id").get(async (req, res) => {
     let _id = req.params.id;
 
     try {
       _id = validation.verifyMongoId_str(_id, `_id`);
     } catch (e) {
-      return res.status(400).json({ error: e });
+      return res.status(400).json({ error: e.message });
     }
 
     let sensor;
     try {
-      sensor = sensorData.getSensorByIdOrName(_id);
+      sensor = await sensorData.getSensorByIdOrName(_id);
     } catch (e) {
-      return res.status(404).json({ error: e });
+      return res.status(404).json({ error: "Sensor not found" });
     }
 
-    // TODO: Add sensor ejs file
-    return res.render("pages/sensor", { sensor });
+    // Pass the single sensor to the EJS file
+    return res.render("pages/sensors", { sensor });
   })
   .patch(async (req, res) => {
     // updateSensor = async (sensorId, updateData)

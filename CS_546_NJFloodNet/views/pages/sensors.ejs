@@ -12,21 +12,104 @@
       href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css"
       rel="stylesheet"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>NJ FloodNet</title>
+    <title>Sensor Details</title>
   </head>
 
   <body>
+    <!-- Include header -->
     <div><%- include('../partials/header'); %></div>
 
-    <% sensors.forEach((e) => { %>
-    <div>
-      <p>Sensor <%- e.sensorNumber %></p>
-      <p>Location: <%- e.location %></p>
-      <p>Status: <%- e.status %></p>
-    </div>
-    <% }) %>
+    <header>
+      <div class="logo"></div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="/">Map</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/reporting">Reporting</a></li>
+          <li><a href="/about">About FloodNet</a></li>
+        </ul>
+      </nav>
+    </header>
 
+    <div class="container my-4">
+      <h1 class="text-center mb-4">Sensor Details</h1>
+
+      <!-- Display Sensor Information -->
+      <% if (sensor) { %>
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h3>Sensor <%= sensor.sensorNumber %>: <%= sensor.sensorName %></h3>
+            <p><strong>Location:</strong> <%= sensor.location %></p>
+            <p><strong>Status:</strong> <%= sensor.status %></p>
+            <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
+            <p><strong>Notes:</strong> <%= sensor.notes.length > 0 ? sensor.notes.join(', ') : "No notes available" %></p>
+          </div>
+          <div class="card-body text-center">
+            <img
+              src="<%= sensor.image.startsWith('./') ? sensor.image.replace('./', '/public/') : sensor.image %>"
+              alt="Sensor Image"
+              style="max-width: 100%; height: auto; border-radius: 8px;"
+            />
+          </div>
+        </div>
+
+        <!-- Display Sensor Measurements -->
+        <div class="card">
+          <div class="card-header text-center">
+            <h3>Measurement Data</h3>
+          </div>
+          <div class="card-body">
+            <% if (sensor.measurements && sensor.measurements.length > 0) { %>
+              <canvas id="chart-<%= sensor._id %>" class="chart"></canvas>
+            <% } else { %>
+              <p class="text-center">No measurement data available for this sensor.</p>
+            <% } %>
+          </div>
+        </div>
+      <% } else { %>
+        <p class="text-center">Sensor not found.</p>
+      <% } %>
+    </div>
+
+    <!-- Include footer -->
     <div><%- include('../partials/footer'); %></div>
+
+    <!-- JavaScript for rendering chart -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
+          const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
+
+          // Extract timestamps and flood depths (or other relevant data)
+          const timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
+          const floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
+
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: timestamps,
+              datasets: [
+                {
+                  label: "Flood Depth (mm)",
+                  data: floodDepths,
+                  borderColor: "#3b93bd",
+                  backgroundColor: "rgba(0, 123, 255, 0.2)",
+                },
+              ],
+            },
+            options: { responsive: true },
+          });
+        <% } %>
+      });
+    </script>
   </body>
 </html>
+
+

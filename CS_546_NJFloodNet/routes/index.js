@@ -5,7 +5,6 @@ import signInRoutes from "./signin.js";
 import dashboardRoutes from "./dashboard.js";
 import signUpRoutes from "./signup.js";
 import reportingRoutes from "./reporting.js";
-import sensorRoutes from "./sensor.js";
 import sensorData from "../data/sensors.js"; // Import your sensor data functions
 
 const constructorMethod = (app) => {
@@ -32,7 +31,6 @@ const constructorMethod = (app) => {
   app.use("/signin", signInRoutes);
   app.use("/signup", signUpRoutes);
   app.use("/measurements", measurementsRoutes);
-  app.use("/sensor", sensorRoutes);
   app.use("/sensors", sensorsRoutes);
   app.use("/users", usersRoutes);
   app.use("/dashboard", dashboardRoutes);
