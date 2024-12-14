@@ -56,7 +56,7 @@ router.route("/:id").get(async (req, res) => {
   }
 
   // TODO: Add sensor ejs file
-  return res.render("pages/sensor", { sensor });
+  return res.render("pages/sensors", { sensor });
 });
 
 export default router;
