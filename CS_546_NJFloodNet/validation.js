@@ -1,14 +1,14 @@
 /**
  * Verifies that a given string is a non-empty string, and trims it
  * @param {string} s - a string to be verified
- * @param {string} type - the variable to be tested
+ * @param {string} varName - the name of the variable being tested
  * @returns {string} s, trimmed
  */
-const verifyStr = (s, type) => {
+const verifyStr = (s, varName) => {
   if (typeof s !== "string")
-    throw new Error(`${type} must be a string: it was instead ${typeof s}`);
+    throw new Error(`${varName} must be a string: it was instead ${typeof s}`);
   s = s.trim();
-  if (s.length === 0) throw new Error(`${type} must be non-empty`);
+  if (s.length === 0) throw new Error(`${varName} must be non-empty`);
   return s;
 };
 
@@ -58,43 +58,81 @@ const verifyPassword = (password) => {
   return password;
 };
 
-export const verifyNumber = (number, type) => {
+/**
+ * Validates an input to a number and checks that it is finite and not NaN
+ * @param {string} number - string to be checked
+ * @param {string} varName - the name of the variable being tested
+ * @returns {number} the given input, as a number
+ */
+const verifyNumber_str = (number, varName) => {
   number = verifyStr(number, `number`);
   number = Number(number);
-  if (typeof number !== "number") throw new Error(`${type} must be a number`);
-  if (Number.isNaN(number)) throw new Error(`${type} must not be NaN`);
+  if (typeof number !== "number")
+    throw new Error(`${varName} must be a number`);
+  if (Number.isNaN(number)) throw new Error(`${varName} must not be NaN`);
+  if (!Number.isFinite(number)) throw new Error(`${varName} must be finite`);
   return number;
 };
 
-export const verifyInt = (int, type) => {
+/**
+ * Validates an input to a number and checks that it is an integer, finite, and not NaN
+ * @param {string} int - string to be checked
+ * @param {string} varName - the name of the variable being tested
+ * @returns {number} the given input, as a number
+ */
+const verifyInt_str = (int, varName) => {
   int = verifyStr(int, `int`);
-  int = verifyNumber(int, type);
-  if (Number.isNaN(int)) throw new Error(`${type} must not be NaN`);
-  if (!Number.isInteger(int)) throw new Error(`${type} must be an integer`);
+  int = verifyNumber_str(int, varName);
+  if (!Number.isInteger(int)) throw new Error(`${varName} must be an integer`);
   return int;
 };
 
-export const verifyVoltage = (voltage) => {
+/**
+ * Validates a string to be a voltage: a number between 0 and 5
+ * @param {string} voltage - voltage to be checked
+ * @returns {number} the given input, as a number
+ */
+const verifyVoltage_str = (voltage) => {
   voltage = verifyStr(voltage, `voltage`);
-  voltage = verifyNumber(voltage, `voltage`);
+  voltage = verifyNumber_str(voltage, `voltage`);
   if (voltage < 0 || voltage > 5)
     throw new Error(`voltage must be between 0 and 5`);
   return voltage;
 };
 
-export const verifyMongoId = (mongoId, type) => {
-  mongoId = verifyStr(mongoId, type);
-  if (!ObjectId.isValid(mongoId)) throw new Error(`${type} must be a mongo id`);
+/**
+ * Validates the string to be a mongoId
+ * @param {string} mongoId - the string to be checked
+ * @param {string} varName - the name of the variable being tested
+ * @returns {string} the given string, trimmed
+ */
+const verifyMongoId_str = (mongoId, varName) => {
+  mongoId = verifyStr(mongoId, varName);
+  if (!ObjectId.isValid(mongoId))
+    throw new Error(`${varName} must be a mongo id`);
   return mongoId;
 };
 
-export const verifyArray = (array, type) => {
+/**
+ * Validates given object to be an array
+ * @param {object} array - an array to be checked
+ * @param {string} varName - the name of the variable being tested
+ * @returns {object} the given array
+ */
+const verifyArray = (array, varName) => {
   if (!Array.isArray(array))
-    throw new Error(`${type} must be an array. It was ${typeof array} instead`);
+    throw new Error(
+      `${varName} must be an array. It was ${typeof array} instead`
+    );
   return array;
 };
 
-export const verifyTimestamp = (dateString) => {
+/**
+ * Validates and correctly formats a time stamp
+ * @param {string} dateString - A string representation of a date, given by the google script
+ * @returns {string} The string as it is used in the DB: DD-MM-YYYY-HH:MM:SS
+ */
+const verifyTimestamp = (dateString) => {
   dateString = verifyStr(dateString, `timestamp`);
   let date = new Date(dateString);
   let time = date.toTimeString().substring(0, 8);
@@ -107,13 +145,19 @@ export const verifyTimestamp = (dateString) => {
   return dateString;
 };
 
-export const verifyDecodedDump = (dump) => {
+// TODO: finish this?
+const verifyDecodedDump = (dump) => {
   dump = verifyStr(dump, `dump`);
   let jsonObj = JSON.parse(dump);
   return dump;
 };
 
-export const verifySensorNumber = (sensorNumber) => {
+/**
+ * Validates a sensor number to be a positive integer
+ * @param {number} sensorNumber - The sensor number, as given by the google script
+ * @returns {number} The given sensor number
+ */
+const verifySensorNumber = (sensorNumber) => {
   if (typeof sensorNumber !== "number")
     throw new Error(`sensorNumber must be a number`);
   if (Number.isNaN(sensorNumber))
@@ -125,4 +169,15 @@ export const verifySensorNumber = (sensorNumber) => {
   return sensorNumber;
 };
 
-export default { verifyStr, verifyUsername, verifyPassword };
+export default {
+  verifyStr,
+  verifyUsername,
+  verifyPassword,
+  verifyNumber_str,
+  verifyInt_str,
+  verifyVoltage_str,
+  verifyMongoId_str,
+  verifyArray,
+  verifyTimestamp,
+  verifySensorNumber,
+};

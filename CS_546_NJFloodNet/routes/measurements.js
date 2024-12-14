@@ -28,16 +28,9 @@
 
 import { Router } from "express";
 const router = Router();
-import {
-  verifyInt,
-  verifyMongoId,
-  verifyNumber,
-  verifyTimestamp,
-  verifyVoltage,
-  verifySensorNumber,
-} from "../helpers.js";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
+import validation from "../helpers.js";
 
 router.route("/").post(async (req, res) => {
   // get data from req.body
@@ -59,47 +52,47 @@ router.route("/").post(async (req, res) => {
   let errors = [];
 
   try {
-    voltage = verifyVoltage(voltage);
+    voltage = validation.verifyVoltage_str(voltage);
   } catch (e) {
     errors.push(e);
   }
   try {
-    distanceMm = verifyNumber(distanceMm, `distanceMm`);
+    distanceMm = validation.verifyNumber_str(distanceMm, `distanceMm`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    errorCode = verifyInt(errorCode, `errorCode`);
+    errorCode = validation.verifyInt_str(errorCode, `errorCode`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    eventAccMm = verifyNumber(eventAccMm, `eventAccMm`);
+    eventAccMm = validation.verifyNumber_str(eventAccMm, `eventAccMm`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    rainAccMm = verifyNumber(rainAccMm, `rainAccMm`);
+    rainAccMm = validation.verifyNumber_str(rainAccMm, `rainAccMm`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    totalAccMm = verifyNumber(totalAccMm, `totalAccMm`);
+    totalAccMm = validation.verifyNumber_str(totalAccMm, `totalAccMm`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    rainIntensity = verifyNumber(rainIntensity, `rainIntensity`);
+    rainIntensity = validation.verifyNumber_str(rainIntensity, `rainIntensity`);
   } catch (e) {
     errors.push(e);
   }
   try {
-    timestamp = verifyTimestamp(timestamp);
+    timestamp = validation.verifyTimestamp(timestamp);
   } catch (e) {
     errors.push(e);
   }
   try {
-    sensorNumber = verifySensorNumber(sensorNumber);
+    sensorNumber = validation.verifySensorNumber(sensorNumber);
   } catch (e) {
     errors.push(e);
   }
@@ -133,7 +126,7 @@ router.route("/:sensorId").get(async (req, res) => {
   let sensorId = req.params.sensorId;
 
   try {
-    sensorId = verifyMongoId(sensorId, `sensorId`);
+    sensorId = validation.verifyMongoId_str(sensorId, `sensorId`);
   } catch (e) {
     return res.status(400).json({ error: e });
   }

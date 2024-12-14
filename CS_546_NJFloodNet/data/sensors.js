@@ -5,7 +5,6 @@
 import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import sensorVal from "../validation/sensor_val.js";
-import { verifyMongoId } from "../helpers.js";
 
 // Add a new sensor to the database
 const addSensor = async (

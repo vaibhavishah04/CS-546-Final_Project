@@ -35,12 +35,6 @@
 import { Router } from "express";
 const router = Router();
 import sensorData from "../data/sensors.js";
-import {
-  verifyInt,
-  verifyArray,
-  verifyMongoId,
-  verifyNumber,
-} from "../helpers.js";
 import validation from "../helpers.js";
 
 router
@@ -67,7 +61,7 @@ router
     // verify data
     let errors = [];
     try {
-      sensorNumber = verifyInt(sensorNumber, `sensorNumber`);
+      sensorNumber = validation.verifyInt_str(sensorNumber, `sensorNumber`);
     } catch (e) {
       errors.push(e);
     }
@@ -77,7 +71,7 @@ router
       errors.push(e);
     }
     try {
-      addedBy = verifyMongoId(addedBy, `addedBy`);
+      addedBy = validation.verifyMongoId_str(addedBy, `addedBy`);
     } catch (e) {
       errors.push(e);
     }
@@ -132,7 +126,7 @@ router
     let _id = req.params.id;
 
     try {
-      _id = verifyMongoId(_id, `_id`);
+      _id = validation.verifyMongoId_str(_id, `_id`);
     } catch (e) {
       return res.status(400).json({ error: e });
     }
@@ -163,13 +157,13 @@ router
 
     let errors = [];
     try {
-      sensorId = verifyMongoId(sensorId, `sensorId`);
+      sensorId = validation.verifyMongoId_str(sensorId, `sensorId`);
     } catch (e) {
       errors.push(e);
     }
     if (sensorNumber) {
       try {
-        sensorNumber = verifyInt(sensorNumber, `sensorNumber`);
+        sensorNumber = validation.verifyInt_str(sensorNumber, `sensorNumber`);
       } catch (e) {
         errors.push(e);
       }
@@ -183,7 +177,7 @@ router
     }
     if (addedBy) {
       try {
-        addedBy = verifyMongoId(addedBy, `addedBy`);
+        addedBy = validation.verifyMongoId_str(addedBy, `addedBy`);
       } catch (e) {
         errors.push(e);
       }
@@ -212,7 +206,7 @@ router
     }
     if (measurements) {
       try {
-        measurements = verifyArray(measurements, `measurements`);
+        measurements = validation.verifyArray(measurements, `measurements`);
       } catch (e) {
         errors.push(e);
       }
@@ -253,7 +247,7 @@ router
     let { sensorId } = req.body;
 
     try {
-      sensorId = verifyMongoId(sensorId, `sensorId`);
+      sensorId = validation.verifyMongoId_str(sensorId, `sensorId`);
     } catch (e) {
       return res.status(400).json({ error: e });
     }
