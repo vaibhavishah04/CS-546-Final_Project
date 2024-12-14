@@ -60,4 +60,31 @@ router
     // DELETE ENDPOINT
   });
 
+
+
+  router.route("/sensors/:id/download").get( async (req, res) => {
+    let _id = req.params.id;
+
+    try {
+      _id = validation.verifyMongoId_str(_id, `_id`);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+
+    let sensor;
+    try {
+      sensor = await sensorData.getSensorByIdOrName(_id);
+      const sensorDetails = JSON.stringify(sensor);
+      const filename = `sensor_${sensor.sensorNumber}.json`;
+      res.setHeader("Content-Type", "application/json");
+      res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+  
+      res.send(sensorDetails);
+    } catch (e) {
+      return res.status(404).json({ error: "Sensor not found" });
+    }
+      
+  });
+  
+
 export default router;
