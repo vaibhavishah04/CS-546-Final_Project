@@ -1,37 +1,11 @@
-/**
- * measurements.js (Routes)
- *
- * Tasks:
- * 1. Define routes for measurement-related actions.
- * 2. Connect endpoints to functions in data/measurements.js.
- *
- * Endpoints:
- * - POST /measurements: Add a new measurement.
- * - GET /measurements/:sensorId: Retrieve measurements for a sensor.
- */
-/**
- * Define API endpoints for measurement-related actions.
- * Connect these routes to the functions in `data/measurements.js`.
- */
-
-// Add a new measurement to a sensor
-// function addMeasurementRoute(req, res) {}
-
-// Retrieve all measurements for a sensor
-// function getMeasurementsRoute(req, res) {}
-
-// Update an existing measurement
-// function updateMeasurementRoute(req, res) {}
-
-// Delete a measurement
-// function deleteMeasurementRoute(req, res) {}
-
 import { Router } from "express";
-const router = Router();
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
 import validation from "../helpers.js";
+const router = Router();
 
+// POST /measurements: adds the measurement in req.body to the database
+// This acts as an API for the Google Script, so no pages are returned, just json
 router.route("/").post(async (req, res) => {
   // get data from req.body
   let {
@@ -46,11 +20,11 @@ router.route("/").post(async (req, res) => {
     sensorNumber,
   } = req.body;
 
+  // Changing the google script is significantly harder than just renaming it here, so it gets renamed here
   let timestamp = datestamp;
 
   // Do error checking
   let errors = [];
-
   try {
     voltage = validation.verifyVoltage_str(voltage);
   } catch (e) {
@@ -97,6 +71,7 @@ router.route("/").post(async (req, res) => {
     errors.push(e);
   }
 
+  // If errors exist, return the list of errors
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
@@ -116,13 +91,14 @@ router.route("/").post(async (req, res) => {
       rainIntensity,
     });
   } catch (e) {
+    // using errors and array here to match the format of the previous fail state
     return res
       .status(400)
-      .json({ error: `Adding measurement failed. Error: ${e}` });
+      .json({ errors: [`Adding measurement failed. Error: ${e}`] });
   }
 
   // Return a json here since this is an API for the google scripts
-  return res.status(200).json({ sensor });
+  return res.json({ sensor });
 });
 
 router.route("/:sensorId").get(async (req, res) => {
