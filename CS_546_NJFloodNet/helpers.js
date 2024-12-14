@@ -1,4 +1,10 @@
-export const verifyStr = (s, type) => {
+/**
+ * Verifies that a given string is a non-empty string, and trims it
+ * @param {string} s - a string to be verified
+ * @param {string} type - the variable to be tested
+ * @returns {string} s, trimmed
+ */
+const verifyStr = (s, type) => {
   if (typeof s !== "string")
     throw new Error(`${type} must be a string: it was instead ${typeof s}`);
   s = s.trim();
@@ -6,7 +12,12 @@ export const verifyStr = (s, type) => {
   return s;
 };
 
-export const verifyUsername = (username) => {
+/**
+ * Verifies that a given username fits the username parameters
+ * @param {string} username - username of a user as a string
+ * @returns {string} the given username, trimmed
+ */
+const verifyUsername = (username) => {
   const usernameMinLen = 5;
   const usernameLaxLen = 10;
 
@@ -22,7 +33,12 @@ export const verifyUsername = (username) => {
   return username.toLowerCase();
 };
 
-export const verifyPassword = (password) => {
+/**
+ * Verifies that a given username fits the username parameters
+ * @param {string} password - password to be checked
+ * @returns {string} the given password, trimmed
+ */
+const verifyPassword = (password) => {
   const passwordMinLen = 8;
 
   password = verifyStr(password, `password`);
@@ -108,3 +124,5 @@ export const verifySensorNumber = (sensorNumber) => {
     throw new Error(`sensorNumber must be greater than or equal to 1`);
   return sensorNumber;
 };
+
+export default { verifyStr, verifyUsername, verifyPassword };

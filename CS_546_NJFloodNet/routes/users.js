@@ -30,7 +30,6 @@ const router = Router();
 // TODO: Data functions
 // import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
 // TODO: Make helper file?
-// import { verifyStr } from "../helpers.js";
 
 router.route("/profile").get(
   (req, res, next) => {
@@ -63,6 +62,4 @@ router.route("/profile").post(async (req, res) => {
   }
 });
 
-
 export default router;
-

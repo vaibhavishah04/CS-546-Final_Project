@@ -37,15 +37,11 @@ const router = Router();
 import sensorData from "../data/sensors.js";
 import {
   verifyInt,
-  verifyStr,
   verifyArray,
   verifyMongoId,
   verifyNumber,
 } from "../helpers.js";
-// TODO: Data functions
-// import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
-// TODO: Make helper file?
-// import { verifyStr } from "../helpers.js";
+import validation from "../helpers.js";
 
 router
   .route("/")
@@ -76,7 +72,7 @@ router
       errors.push(e);
     }
     try {
-      sensorName = verifyStr(sensorName, `sensorName`);
+      sensorName = validation.verifyStr(sensorName, `sensorName`);
     } catch (e) {
       errors.push(e);
     }
@@ -87,22 +83,22 @@ router
     }
     // TODO: better coords verification
     try {
-      coords = verifyStr(coords, `coords`);
+      coords = validation.verifyStr(coords, `coords`);
     } catch (e) {
       errors.push(e);
     }
     try {
-      location = verifyStr(location, `location`);
+      location = validation.verifyStr(location, `location`);
     } catch (e) {
       errors.push(e);
     }
     try {
-      status = verifyStr(status, `status`);
+      status = validation.verifyStr(status, `status`);
     } catch (e) {
       errors.push(e);
     }
     try {
-      notes = verifyStr(notes, `notes`);
+      notes = validation.verifyStr(notes, `notes`);
     } catch (e) {
       errors.push(e);
     }
@@ -180,7 +176,7 @@ router
     }
     if (sensorName) {
       try {
-        sensorName = verifyStr(sensorName, `sensorName`);
+        sensorName = validation.verifyStr(sensorName, `sensorName`);
       } catch (e) {
         errors.push(e);
       }
@@ -195,21 +191,21 @@ router
     // TODO: better coords verification
     if (coords) {
       try {
-        coords = verifyStr(coords, `coords`);
+        coords = validation.verifyStr(coords, `coords`);
       } catch (e) {
         errors.push(e);
       }
     }
     if (location) {
       try {
-        location = verifyStr(location, `location`);
+        location = validation.verifyStr(location, `location`);
       } catch (e) {
         errors.push(e);
       }
     }
     if (status) {
       try {
-        status = verifyStr(status, `status`);
+        status = validation.verifyStr(status, `status`);
       } catch (e) {
         errors.push(e);
       }
@@ -223,7 +219,7 @@ router
     }
     if (notes) {
       try {
-        notes = verifyStr(notes, `notes`);
+        notes = validation.verifyStr(notes, `notes`);
       } catch (e) {
         errors.push(e);
       }
