@@ -1,17 +1,3 @@
-import { ObjectId } from "mongodb";
-
-const valid_obj_id = (id) => {
-  if (ObjectId.isValid(id)) {
-    if (String(new ObjectId(id)) === id) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-};
-
 const valid_string = (s) => {
   if (typeof s === "string" && s.trim().length > 0) {
     return true;
@@ -139,7 +125,6 @@ const valid_impath = (imgpath) => {
 };
 
 const toExport = {
-  valid_obj_id,
   valid_string,
   valid_coords,
   valid_status,

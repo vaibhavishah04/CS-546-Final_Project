@@ -21,7 +21,7 @@ const addSensor = async (
   sensorNumber = validation.verifySensorNumber(sensorNumber);
   if (!sensorVal.valid_string(sensorName))
     throw new Error("Invalid sensor name.");
-  if (!sensorVal.valid_obj_id(addedBy)) throw new Error("Invalid addedBy ID.");
+  addedBy = validation.verifyMongoId_str(addedBy);
   if (!sensorVal.valid_coordinates(coords))
     throw new Error("Invalid coordinates.");
   if (!sensorVal.valid_string(location)) throw new Error("Invalid location.");
@@ -64,18 +64,22 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
     let sensorNumber = validation.verifySensorNumber(identifier);
     // if this continues, it's a valid sensor number
     const sensor = await sensorCollection.findOne({ sensorNumber }, options);
-    if (!sensor) throw new Error("Sensor not found.");
+    if (sensor) return sensor;
   } catch (e) {
     // Intentional No Op
   }
-  if (sensorVal.valid_obj_id(identifier)) {
+  try {
+    let objectId_str = validation.verifyMongoId_str(identifier);
+    // if this continues, it's a valid object ID
     const sensor = await sensorCollection.findOne(
-      { _id: new ObjectId(identifier) },
+      { _id: ObjectId.createFromHexString(objectId_str) },
       options
     );
-    if (!sensor) throw new Error("Sensor not found.");
-    return sensor;
-  } else if (sensorVal.valid_string(identifier)) {
+    if (sensor) return sensor;
+  } catch (e) {
+    // Intentional No Op
+  }
+  if (sensorVal.valid_string(identifier)) {
     const sensor = await sensorCollection.findOne(
       { sensorName: identifier },
       options
