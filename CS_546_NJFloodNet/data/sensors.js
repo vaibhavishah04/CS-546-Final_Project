@@ -5,6 +5,7 @@
 import { sensors } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import sensorVal from "../validation/sensor_val.js";
+import validation from "../validation.js";
 
 // Add a new sensor to the database
 const addSensor = async (
@@ -95,6 +96,17 @@ export const getSensorByMongoId = async (id) => {
   return sensor;
 };
 
+export const getSensorByMongoIdStr = async (id) => {
+  id = validation.verifyStr(id, `id`);
+  if (!ObjectId.isValid(id)) throw new Error(`id not valid. id: ${id}`);
+  const sensorCollection = await sensors();
+  const sensor = await sensorCollection.findOne({
+    _id: ObjectId.createFromHexString(id),
+  });
+  if (!sensor) throw new Error(`sensor with id ${id} not found`);
+  return sensor;
+};
+
 // Update sensor details
 const updateSensor = async (sensorId, updateData) => {
   try {
@@ -135,4 +147,6 @@ export default {
   getAllSensors,
   updateSensor,
   deleteSensor,
+  getSensorByMongoId,
+  getSensorByMongoIdStr,
 };

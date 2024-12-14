@@ -6,6 +6,7 @@ import dashboardRoutes from "./dashboard.js";
 import signUpRoutes from "./signup.js";
 import reportingRoutes from "./reporting.js";
 import sensorData from "../data/sensors.js"; // Import your sensor data functions
+import sensorRoutes from "./sensor.js";
 
 const constructorMethod = (app) => {
   app.get("/", async (req, res) => {
@@ -35,7 +36,7 @@ const constructorMethod = (app) => {
   app.use("/users", usersRoutes);
   app.use("/dashboard", dashboardRoutes);
   app.use("/reporting", reportingRoutes);
-
+  app.use("/sensor", sensorRoutes);
 
   app.use("*", (req, res) => {
     // TODO: Decide if we want to make a 404 page, my (Thys) vote is yes
