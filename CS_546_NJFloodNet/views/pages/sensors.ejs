@@ -60,6 +60,28 @@
           </div>
         </div>
 
+
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h3>Options</h3>
+          </div>
+          <div class="card-body text-center">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="startDate" class="form-label">Start Date:</label>
+                <input type="date" id="startDate" class="form-control" />
+              </div>
+              <div class="col-md-6">
+                <label for="endDate" class="form-label">End Date:</label>
+                <input type="date" id="endDate" class="form-control" />
+              </div>
+            </div>
+            <button id="filterBtn" class="btn btn-primary">Filter Data</button>
+            <button id="download_data" class="btn btn-success ms-3">Download Data</button>
+          </div>
+        </div>
+
+
         <!-- Display Sensor Measurements -->
         <div class="card">
           <div class="card-header text-center">
@@ -84,6 +106,10 @@
     <!-- JavaScript for rendering chart -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+
+        const filterBtn = document.getElementById("filterBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
           const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
 
@@ -91,7 +117,7 @@
           const timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
           const floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
 
-          new Chart(ctx, {
+         const chart = new Chart(ctx, {
             type: "line",
             data: {
               labels: timestamps,
@@ -105,6 +131,42 @@
               ],
             },
             options: { responsive: true },
+          });
+
+            filterBtn.addEventListener("click", () => {    // Added for chart filter
+            const startDate = new Date(document.getElementById("startDate").value);
+            const endDate = new Date(document.getElementById("endDate").value);
+
+            if (!isNaN(startDate) && !isNaN(endDate)) {
+              const filteredData = measurements.filter(m => {
+                const date = new Date(m.timestamp);
+                return date >= startDate && date <= endDate;
+              });
+
+              const filteredTimestamps = filteredData.map(m => m.timestamp.toString());
+              const filteredFloodDepths = filteredData.map(m => m.distanceMm);
+
+              chart.data.labels = filteredTimestamps;  // Added for chart updation after applying the filter
+              chart.data.datasets[0].data = filteredFloodDepths;
+              chart.update();
+            } else {
+              alert("Please select valid start and end dates.");
+            }
+          });
+
+          downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS 
+            let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
+            measurements.forEach(m => {
+              csvContent += `${m.timestamp},${m.distanceMm}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "sensor_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
           });
         <% } %>
       });
