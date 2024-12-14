@@ -41,12 +41,16 @@ import sensorValidation from "../validation/sensor_val.js";
 router.route("/:id").get(async (req, res) => {
   let _id = req.params.id;
 
+  console.log("hit1");
+
   try {
     _id = validation.verifyMongoId_str(_id, `_id`);
   } catch (e) {
     // TODO: route this to a error page?
     return res.status(400).json({ error: e });
   }
+
+  console.log("hit2");
 
   let sensor;
   try {

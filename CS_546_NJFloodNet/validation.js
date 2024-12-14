@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 /**
  * Verifies that a given string is a non-empty string, and trims it
  * @param {string} s - a string to be verified
