@@ -147,13 +147,6 @@ const verifyTimestamp = (dateString) => {
   return dateString;
 };
 
-// TODO: finish this?
-const verifyDecodedDump = (dump) => {
-  dump = verifyStr(dump, `dump`);
-  let jsonObj = JSON.parse(dump);
-  return dump;
-};
-
 /**
  * Validates a sensor number to be a positive integer
  * @param {number} sensorNumber - The sensor number, as given by the google script
