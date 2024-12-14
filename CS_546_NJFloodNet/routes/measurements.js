@@ -1,7 +1,7 @@
 import { Router } from "express";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
-import validation from "../helpers.js";
+import validation from "../validation.js";
 const router = Router();
 
 // POST /measurements: adds the measurement in req.body to the database

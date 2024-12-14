@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import usersData from "../data/users.js";
-import validation from "../helpers.js";
+import validation from "../validation.js";
 
 router
   .route("/")
@@ -27,7 +27,7 @@ router
       next();
     },
     async (req, res) => {
-      console.log("Received Sign In form data:", req.body); // Log incoming data
+      //console.log("Received Sign In form data:", req.body); // Log incoming data
 
       let { username, password } = req.body;
       let errors = [];

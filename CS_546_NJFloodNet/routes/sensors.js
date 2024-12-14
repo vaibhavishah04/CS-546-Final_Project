@@ -35,7 +35,7 @@
 import { Router } from "express";
 const router = Router();
 import sensorData from "../data/sensors.js";
-import validation from "../helpers.js";
+import validation from "../validation.js";
 
 router
   .route("/")
