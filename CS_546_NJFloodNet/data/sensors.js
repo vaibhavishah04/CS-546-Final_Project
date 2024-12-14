@@ -18,8 +18,7 @@ const addSensor = async (
 ) => {
   if (typeof sensorData !== "object" || Array.isArray(sensorData))
     throw new Error("Invalid sensor data.");
-  if (!sensorVal.valid_sensor_number(sensorNumber))
-    throw new Error("Invalid sensor number.");
+  sensorNumber = validation.verifySensorNumber(sensorNumber);
   if (!sensorVal.valid_string(sensorName))
     throw new Error("Invalid sensor name.");
   if (!sensorVal.valid_obj_id(addedBy)) throw new Error("Invalid addedBy ID.");
@@ -62,31 +61,28 @@ const getAllSensors = async () => {
 const getSensorByIdOrName = async (identifier, options = {}) => {
   const sensorCollection = await sensors();
   try {
-    if (sensorVal.valid_sensor_number(identifier)) {
-      const sensor = await sensorCollection.findOne(
-        { sensorNumber: identifier },
-        options
-      );
-      if (!sensor) throw new Error("Sensor not found.");
-      return sensor;
-    } else if (sensorVal.valid_obj_id(identifier)) {
-      const sensor = await sensorCollection.findOne(
-        { _id: new ObjectId(identifier) },
-        options
-      );
-      if (!sensor) throw new Error("Sensor not found.");
-      return sensor;
-    } else if (sensorVal.valid_string(identifier)) {
-      const sensor = await sensorCollection.findOne(
-        { sensorName: identifier },
-        options
-      );
-      if (!sensor) throw new Error("Sensor not found.");
-      return sensor;
-    } else throw new Error("Invalid identifier.");
+    let sensorNumber = validation.verifySensorNumber(identifier);
+    // if this continues, it's a valid sensor number
+    const sensor = await sensorCollection.findOne({ sensorNumber }, options);
+    if (!sensor) throw new Error("Sensor not found.");
   } catch (e) {
-    throw new Error(`Error retrieving sensor details: ${e}`);
+    // Intentional No Op
   }
+  if (sensorVal.valid_obj_id(identifier)) {
+    const sensor = await sensorCollection.findOne(
+      { _id: new ObjectId(identifier) },
+      options
+    );
+    if (!sensor) throw new Error("Sensor not found.");
+    return sensor;
+  } else if (sensorVal.valid_string(identifier)) {
+    const sensor = await sensorCollection.findOne(
+      { sensorName: identifier },
+      options
+    );
+    if (!sensor) throw new Error("Sensor not found.");
+    return sensor;
+  } else throw new Error("Invalid identifier.");
 };
 
 export const getSensorByMongoId = async (id) => {

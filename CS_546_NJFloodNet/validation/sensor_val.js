@@ -12,14 +12,6 @@ const valid_obj_id = (id) => {
   }
 };
 
-const valid_sensor_number = (sensor_number) => {
-  if (typeof sensor_number === "number" && sensor_number >= 1) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 const valid_string = (s) => {
   if (typeof s === "string" && s.trim().length > 0) {
     return true;
@@ -148,7 +140,6 @@ const valid_impath = (imgpath) => {
 
 const toExport = {
   valid_obj_id,
-  valid_sensor_number,
   valid_string,
   valid_coords,
   valid_status,
