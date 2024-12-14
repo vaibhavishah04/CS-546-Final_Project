@@ -1,3 +1,5 @@
+import validation from "../validation.js";
+
 const valid_string = (s) => {
   if (typeof s === "string" && s.trim().length > 0) {
     return true;
@@ -7,8 +9,8 @@ const valid_string = (s) => {
 };
 
 const valid_username = (username) => {
+  username = validation.verifyStr(username, `username`);
   return (
-    valid_string(username) &&
     username.length <= 15 &&
     username.length >= 5 &&
     /^[a-zA-Z0-9_]+$/.test(username)

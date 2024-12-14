@@ -164,6 +164,22 @@ const verifySensorNumber = (sensorNumber) => {
   return sensorNumber;
 };
 
+/**
+ * Validates a report as a string with under 500 characters
+ * @param {string} reportText - The report to be validated
+ * @returns {number} The report, trimmed
+ */
+const verifyReportText = (reportText) => {
+  const maxReportTextLength = 500;
+
+  reportText = verifyStr(report, `report`);
+  if (reportText.length > maxReportTextLength)
+    throw new Error(
+      `Reports must be less than ${maxReportTextLength} characters, this was ${reportText.length}`
+    );
+  return reportText;
+};
+
 export default {
   verifyStr,
   verifyUsername,
@@ -175,4 +191,5 @@ export default {
   verifyArray,
   verifyTimestamp,
   verifySensorNumber,
+  verifyReportText,
 };

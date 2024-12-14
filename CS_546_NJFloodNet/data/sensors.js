@@ -19,12 +19,11 @@ const addSensor = async (
   if (typeof sensorData !== "object" || Array.isArray(sensorData))
     throw new Error("Invalid sensor data.");
   sensorNumber = validation.verifySensorNumber(sensorNumber);
-  if (!sensorVal.valid_string(sensorName))
-    throw new Error("Invalid sensor name.");
+  sensorName = validation.verifyStr(sensorName, `sensorName`);
   addedBy = validation.verifyMongoId_str(addedBy);
   if (!sensorVal.valid_coordinates(coords))
     throw new Error("Invalid coordinates.");
-  if (!sensorVal.valid_string(location)) throw new Error("Invalid location.");
+  location = validation.verifyStr(location, `location`);
   if (!sensorVal.valid_impath(image)) throw new Error("Invalid image path.");
 
   const sensorCollection = await sensors();
@@ -79,14 +78,16 @@ const getSensorByIdOrName = async (identifier, options = {}) => {
   } catch (e) {
     // Intentional No Op
   }
-  if (sensorVal.valid_string(identifier)) {
-    const sensor = await sensorCollection.findOne(
-      { sensorName: identifier },
-      options
-    );
-    if (!sensor) throw new Error("Sensor not found.");
-    return sensor;
-  } else throw new Error("Invalid identifier.");
+  try {
+    let sensorName = validation.verifyStr(identifier);
+    // if this continues, it's a valid string
+    const sensor = await sensorCollection.findOne({ sensorName }, options);
+    if (sensor) return sensor;
+  } catch (e) {
+    // Intentional No Op
+  }
+  // If we haven't returned by now, we can't find it.
+  throw new Error(`sensor not found`);
 };
 
 export const getSensorByMongoId = async (id) => {
