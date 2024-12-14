@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import usersData from "../data/users.js";
-import { verifyPassword, verifyStr, verifyUsername } from "../helpers.js";
+import validation from "../helpers.js";
 
 router
   .route("/")
@@ -20,7 +20,9 @@ router
     (req, res, next) => {
       if (req.session.userInfo) {
         console.error("User is already signed in.");
-        return res.status(400).json({ error: "Sign-up attempt while signed in" });
+        return res
+          .status(400)
+          .json({ error: "Sign-up attempt while signed in" });
       }
       next();
     },
@@ -42,43 +44,43 @@ router
 
       // Validation steps with logging
       try {
-        username = verifyUsername(username);
+        username = validation.verifyUsername(username);
       } catch (e) {
         console.error("Username validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        email = verifyStr(email, `email`);
+        email = validation.verifyStr(email, `email`);
       } catch (e) {
         console.error("Email validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        city = verifyStr(city, `city`);
+        city = validation.verifyStr(city, `city`);
       } catch (e) {
         console.error("City validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        state = verifyStr(state, `state`);
+        state = validation.verifyStr(state, `state`);
       } catch (e) {
         console.error("State validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        firstName = verifyStr(firstName, `firstName`);
+        firstName = validation.verifyStr(firstName, `firstName`);
       } catch (e) {
         console.error("First name validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        lastName = verifyStr(lastName, `lastName`);
+        lastName = validation.verifyStr(lastName, `lastName`);
       } catch (e) {
         console.error("Last name validation error:", e.message || e);
         errors.push(e.message || e);
       }
       try {
-        password = verifyPassword(password);
+        password = validation.verifyPassword(password);
       } catch (e) {
         console.error("Password validation error:", e.message || e);
         console.trace(); // Add this to log the stack trace
@@ -123,7 +125,7 @@ router
         isAdmin: userInfo.isAdmin,
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
-        email: userInfo.email
+        email: userInfo.email,
       };
 
       return res.redirect("/signin");

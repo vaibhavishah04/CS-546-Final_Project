@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import usersData from "../data/users.js";
-import { verifyPassword, verifyUsername } from "../helpers.js";
+import validation from "../helpers.js";
 
 router
   .route("/")
@@ -34,7 +34,7 @@ router
 
       // Validate username
       try {
-        username = verifyUsername(username);
+        username = validation.verifyUsername(username);
       } catch (e) {
         console.error("Username validation error:", e.message || e);
         errors.push(e.message || e);
@@ -42,7 +42,7 @@ router
 
       // Validate password
       try {
-        password = verifyPassword(password);
+        password = validation.verifyPassword(password);
       } catch (e) {
         console.error("Password validation error:", e.message || e);
         errors.push(e.message || e);
@@ -74,11 +74,10 @@ router
         isAdmin: userInfo.isAdmin,
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
-        email: userInfo.email
+        email: userInfo.email,
       };
       return res.redirect("/");
     }
   );
-
 
 export default router;
