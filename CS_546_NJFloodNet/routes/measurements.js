@@ -116,10 +116,13 @@ router.route("/").post(async (req, res) => {
       rainIntensity,
     });
   } catch (e) {
-    return res.status(400).json({ error: `Adding measurement failed` });
+    return res
+      .status(400)
+      .json({ error: `Adding measurement failed. Error: ${e}` });
   }
 
-  return res.redirect(`/${sensor._id.toString()}`);
+  // Return a json here since this is an API for the google scripts
+  return res.status(200).json({ sensor });
 });
 
 router.route("/:sensorId").get(async (req, res) => {
