@@ -20,9 +20,8 @@
       <nav class="navigation">
         <ul>
           <li><a href="/dashboard">Dashboard</a></li>
-          <li><a href="/about">About FloodNet</a></li>
           <li><a href="/reporting">Reporting</a></li>
-          <li><a href="/contact">Contact Us</a></li>
+          <li><a href="/about">About FloodNet</a></li>
         </ul>
       </nav>
     </header>
@@ -31,6 +30,11 @@
     <main>
       <div id="map"></div>
     </main>
+
+    <script id="sensors-data" type="application/json">
+      <%- JSON.stringify(sensors) %>
+    </script>
+
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js"></script>
     <script src="/public/js/map.js"></script>
 
