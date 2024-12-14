@@ -43,60 +43,65 @@
 
       <!-- Display Sensor Information -->
       <% if (sensor) { %>
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h3>Sensor <%= sensor.sensorNumber %>: <%= sensor.sensorName %></h3>
-            <p><strong>Location:</strong> <%= sensor.location %></p>
-            <p><strong>Status:</strong> <%= sensor.status %></p>
-            <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
-            <p><strong>Notes:</strong> <%= sensor.notes.length > 0 ? sensor.notes.join(', ') : "No notes available" %></p>
-          </div>
-          <div class="card-body text-center">
-            <img
-              src="<%= sensor.image.startsWith('./') ? sensor.image.replace('./', '/public/') : sensor.image %>"
-              alt="Sensor Image"
-              style="max-width: 100%; height: auto; border-radius: 8px;"
-            />
-          </div>
+      <div class="card mb-4">
+        <div class="card-header text-center">
+          <h3>Sensor <%= sensor.sensorNumber %>: <%= sensor.sensorName %></h3>
+          <p><strong>Location:</strong> <%= sensor.location %></p>
+          <p><strong>Status:</strong> <%= sensor.status %></p>
+          <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
+          <p>
+            <strong>Notes:</strong> <%= sensor.notes.length > 0 ?
+            sensor.notes.join(', ') : "No notes available" %>
+          </p>
         </div>
+        <div class="card-body text-center">
+          <img
+            src="<%= sensor.image.startsWith('./') ? sensor.image.replace('./', '/public/') : sensor.image %>"
+            alt="Sensor Image"
+            style="max-width: 100%; height: auto; border-radius: 8px"
+          />
+        </div>
+      </div>
 
-
-        <div class="card mb-4">
-          <div class="card-header text-center">
-            <h3>Options</h3>
-          </div>
-          <div class="card-body text-center">
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label for="startDate" class="form-label">Start Date:</label>
-                <input type="date" id="startDate" class="form-control" />
-              </div>
-              <div class="col-md-6">
-                <label for="endDate" class="form-label">End Date:</label>
-                <input type="date" id="endDate" class="form-control" />
-              </div>
+      <div class="card mb-4">
+        <div class="card-header text-center">
+          <h3>Options</h3>
+        </div>
+        <div class="card-body text-center">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="startDate" class="form-label">Start Date:</label>
+              <input type="date" id="startDate" class="form-control" />
             </div>
-            <button id="filterBtn" class="btn btn-primary">Filter Data</button>
-            <button id="download_data" class="btn btn-success ms-3">Download Data</button>
+            <div class="col-md-6">
+              <label for="endDate" class="form-label">End Date:</label>
+              <input type="date" id="endDate" class="form-control" />
+            </div>
           </div>
+          <button id="filterBtn" class="btn btn-primary">Filter Data</button>
+          <button id="downloadBtn" class="btn btn-success ms-3">
+            Download Data
+          </button>
         </div>
+      </div>
 
-
-        <!-- Display Sensor Measurements -->
-        <div class="card">
-          <div class="card-header text-center">
-            <h3>Measurement Data</h3>
-          </div>
-          <div class="card-body">
-            <% if (sensor.measurements && sensor.measurements.length > 0) { %>
-              <canvas id="chart-<%= sensor._id %>" class="chart"></canvas>
-            <% } else { %>
-              <p class="text-center">No measurement data available for this sensor.</p>
-            <% } %>
-          </div>
+      <!-- Display Sensor Measurements -->
+      <div class="card">
+        <div class="card-header text-center">
+          <h3>Measurement Data</h3>
         </div>
+        <div class="card-body">
+          <% if (sensor.measurements && sensor.measurements.length > 0) { %>
+          <canvas id="chart-<%= sensor._id %>" class="chart"></canvas>
+          <% } else { %>
+          <p class="text-center">
+            No measurement data available for this sensor.
+          </p>
+          <% } %>
+        </div>
+      </div>
       <% } else { %>
-        <p class="text-center">Sensor not found.</p>
+      <p class="text-center">Sensor not found.</p>
       <% } %>
     </div>
 
@@ -154,7 +159,7 @@
             }
           });
 
-          downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS 
+          downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS
             let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
             measurements.forEach(m => {
               csvContent += `${m.timestamp},${m.distanceMm}\n`;
@@ -173,5 +178,3 @@
     </script>
   </body>
 </html>
-
-
