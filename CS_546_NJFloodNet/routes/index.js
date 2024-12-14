@@ -5,6 +5,7 @@ import signInRoutes from "./signin.js";
 import dashboardRoutes from "./dashboard.js";
 import signUpRoutes from "./signup.js";
 import reportingRoutes from "./reporting.js";
+import aboutRoutes from "./about.js";
 import sensorData from "../data/sensors.js"; // Import your sensor data functions
 
 const constructorMethod = (app) => {
@@ -35,10 +36,11 @@ const constructorMethod = (app) => {
   app.use("/users", usersRoutes);
   app.use("/dashboard", dashboardRoutes);
   app.use("/reporting", reportingRoutes);
+  app.use("/about", aboutRoutes);
 
   app.use("*", (req, res) => {
     // TODO: Decide if we want to make a 404 page, my (Thys) vote is yes
-    return res.status(404).json({ error: "Not found" });
+    return res.render("pages/error");
   });
 };
 
