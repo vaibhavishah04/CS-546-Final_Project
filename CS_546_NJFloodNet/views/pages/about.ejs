@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
+    <title>About Page - NJFloodNet</title>
+  </head>
+  <body>
+    <div><%- include('../partials/header'); %></div>
+
+    <header>
+      <div class="logo"></div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="/">Map</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/reporting">Reporting</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="about-container">
+      <h1>About NJFloodNet</h1>
+      <p>
+        NJFloodNet is a comprehensive web application designed to monitor and manage flood data using IoT technology. This platform 
+        integrates data from flood sensors, offering real-time insights into water levels, rainfall intensity, and flood severity. 
+        NJFloodNet helps users visualize data through an interactive map, monitor sensor statuses, and analyze flood patterns, 
+        empowering them to take proactive measures during flood events.
+      </p>
+      <h2>Core Features</h2>
+      <ul>
+        <li>Interactive map for sensor locations and real-time data.</li>
+        <li>Flood severity analysis using advanced algorithms.</li>
+        <li>Account creation and secure login for personalized access.</li>
+        <li>Photo reporting and commenting on sensor data.</li>
+        <li>Email alerts for registered users during flood events.</li>
+      </ul>
+      <h2>Additional Enhancements</h2>
+      <ul>
+        <li>Secondary language support (Español).</li>
+        <li>Flood damage cost estimation and frequency analysis.</li>
+        <li>Dashboard view for quick sensor overview.</li>
+        <li>Administrative controls for managing user accounts and sensors.</li>
+      </ul>
+      <p>
+        Developed as part of the CS-546 Final Project, NJFloodNet represents a step forward in leveraging technology to combat the 
+        challenges posed by flooding. Our vision is to continually evolve this platform to meet the needs of users and improve flood 
+        preparedness and response.
+      </p>
+    </main>
+
+    <div><%- include('../partials/footer'); %></div>
+  </body>
+</html>
