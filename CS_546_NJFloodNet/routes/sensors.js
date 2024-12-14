@@ -51,7 +51,7 @@ router
     // if there are no sensors, return error
     if (!sensors) return res.status(500).json({ error: e });
 
-    return res.render("pages/sensors", { sensors });
+    return res.render("pages/sensors", { sensor: sensors });
   })
   .post(async (req, res) => {
     // get data
@@ -120,7 +120,9 @@ router
     // return res.redirect(`/sensor/${sensor._id}`);
   });
 
-  router.route("/:id").get(async (req, res) => {
+router
+  .route("/:id")
+  .get(async (req, res) => {
     let _id = req.params.id;
 
     try {
