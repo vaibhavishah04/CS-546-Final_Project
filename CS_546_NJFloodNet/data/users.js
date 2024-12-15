@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { users } from "../config/mongoCollections.js";
 import userVal from "../validation/user_val.js";
 import { ObjectId } from "mongodb";
+import validation from "../validation.js";
 
 /**
  * Manage user-related database operations.
@@ -28,30 +29,28 @@ const createUser = async (
   isAdmin,
   emailSubscription = false // Add email subscription field
 ) => {
-  try {
-    let usernameOk = userVal.valid_username(username);
-    let firstNameOk = userVal.valid_string(firstName);
-    let lastNameOk = userVal.valid_string(lastName);
-    let emailOk = userVal.valid_email(email);
-    let cityOk = userVal.valid_string(city);
-    let stateOk = userVal.valid_state(state);
-    let passwordOk = userVal.valid_password(password);
-    let isAdminOk = typeof isAdmin === "boolean";
-    let emailSubscriptionOk = typeof emailSubscription === "boolean";
-    let paramCheck =
-      usernameOk &&
-      firstNameOk &&
-      lastNameOk &&
-      emailOk &&
-      cityOk &&
-      stateOk &&
-      passwordOk &&
-      isAdminOk &&
-      emailSubscriptionOk;
-    if (!paramCheck) throw new Error("Invalid parameters");
-  } catch (e) {
-    throw new Error("Invalid input: " + e.message);
-  }
+  let usernameOk = userVal.valid_username(username);
+  // TODO: make a verifyFirstName function
+  firstName = validation.verifyStr(firstName, `firstName`);
+  // TODO: make a verifyLastName function
+  lastName = validation.verifyStr(lastName, `lastName`);
+  let emailOk = userVal.valid_email(email);
+  city = validation.verifyStr(city, `city`);
+  let stateOk = userVal.valid_state(state);
+  let passwordOk = userVal.valid_password(password);
+  let isAdminOk = typeof isAdmin === "boolean";
+  let emailSubscriptionOk = typeof emailSubscription === "boolean";
+  let paramCheck =
+    usernameOk &&
+    firstNameOk &&
+    lastNameOk &&
+    emailOk &&
+    cityOk &&
+    stateOk &&
+    passwordOk &&
+    isAdminOk &&
+    emailSubscriptionOk;
+  if (!paramCheck) throw new Error("Invalid parameters");
 
   try {
     const userData = await users();

@@ -1,3 +1,5 @@
+import validation from "../validation.js";
+
 const valid_string = (s) => {
   if (typeof s === "string" && s.trim().length > 0) {
     return true;
@@ -103,7 +105,15 @@ const valid_notes = (notes) => {
             if (field === "timestamp") {
               return valid_timestamp(note[field]);
             } else {
-              return valid_string(note[field]);
+              try {
+                note[field] = validation.verifyStr(
+                  note[field],
+                  `note[${field}]`
+                );
+                return true;
+              } catch (e) {
+                return false;
+              }
             }
           } else {
             return false;

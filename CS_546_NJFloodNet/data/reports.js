@@ -2,6 +2,7 @@ import userData from "./users.js";
 import sensorVal from "../validation/sensor_val.js";
 import userVal from "../validation/user_val.js";
 import { reports } from "../config/mongoCollections.js";
+import validation from "../validation.js";
 
 /**
  * reports.js
@@ -25,53 +26,42 @@ const addReport = async (
   reportText,
   reportImage
 ) => {
-  try {
-    // Validate the input data
-    const userIdOk = userData.getUserById(user_id);
-    if (userIdOk === null) throw new Error("Invalid user_id");
+  // Validate the input data
+  const userIdOk = userData.getUserById(user_id);
+  if (userIdOk === null) throw new Error("Invalid user_id");
 
-    const usernameOk = userVal.valid_username(username);
-    if (!usernameOk) throw new Error("Invalid username");
+  const usernameOk = userVal.valid_username(username);
+  if (!usernameOk) throw new Error("Invalid username");
 
-    const timestampOk = sensorVal.valid_timestamp(timestamp);
-    if (!timestampOk) throw new Error("Invalid timestamp");
+  const timestampOk = sensorVal.valid_timestamp(timestamp);
+  if (!timestampOk) throw new Error("Invalid timestamp");
 
-    const locationOk = sensorVal.valid_string(location);
-    if (!locationOk) throw new Error("Invalid location");
+  location = validation.verifyStr(location, `location`);
+  reportText = validation.verifyReportText(reportText);
 
-    const reportTextOk =
-      sensorVal.valid_string(reportText) && reportText.length <= 500;
-    if (!reportTextOk)
-      throw new Error(
-        "Invalid report text. Must be a string with maximum length of 500 characters."
-      );
+  // If an image is provided, validate and save it. Skip if no image is provided.
 
-    // If an image is provided, validate and save it. Skip if no image is provided.
+  let imageUrl = null;
 
-    let imageUrl = null;
-
-    if (reportImage) {
-      // 1. Validate the image file type and size
-      // 2. Upload the image to a storage service (e.g., AWS S3, Google Cloud Storage, etc.)
-      // 3. Save the URL of the uploaded image in the report data
-      // TODO: Implement image validation and upload logic here
-    }
-
-    const reportData = await reports();
-    const newReport = {
-      user_id: new ObjectId(user_id),
-      username: username,
-      timestamp: new Date(timestamp),
-      location: location,
-      reportText: reportText,
-      reportImage: imageUrl,
-    };
-    const insertInfo = await reportData.insertOne(newReport);
-    const insertedReport = await reportData.findOne(insertInfo.insertedId);
-    return insertedReport;
-  } catch (e) {
-    throw new Error(e);
+  if (reportImage) {
+    // 1. Validate the image file type and size
+    // 2. Upload the image to a storage service (e.g., AWS S3, Google Cloud Storage, etc.)
+    // 3. Save the URL of the uploaded image in the report data
+    // TODO: Implement image validation and upload logic here
   }
+
+  const reportData = await reports();
+  const newReport = {
+    user_id: new ObjectId(user_id),
+    username: username,
+    timestamp: new Date(timestamp),
+    location: location,
+    reportText: reportText,
+    reportImage: imageUrl,
+  };
+  const insertInfo = await reportData.insertOne(newReport);
+  const insertedReport = await reportData.findOne(insertInfo.insertedId);
+  return insertedReport;
 };
 
 // Retrieve all reports with optional filters
