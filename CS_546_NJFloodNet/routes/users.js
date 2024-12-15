@@ -24,7 +24,7 @@
 
 // Delete a user account
 // function deleteUserAccount(req, res) {}
-
+import userData from "../data/users.js";
 import { Router } from "express";
 const router = Router();
 // TODO: Data functions
@@ -45,6 +45,25 @@ router.route("/profile").get(
     return res.render("pages/profile", { userInfo });
   }
 );
+
+router.route("/profile/subscription").post(async (req, res) => {
+  try {
+    const emailSubscription = req.body.emailSubscription === "on"; // Checkbox returns "on" if checked
+    const username = req.session.userInfo.username;
+
+    // Update user in the database
+    const updatedUser = await userData.updateUser(username, { emailSubscription });
+
+    // Update session
+    req.session.userInfo.emailSubscription = emailSubscription;
+
+    return res.render("pages/profile", { userInfo: req.session.userInfo });
+  } catch (e) {
+    console.error("Error updating profile:", e.message || e);
+    return res.status(500).send("Internal Server Error");
+  }
+});
+
 
 // Route to handle logout
 router.route("/profile").post(async (req, res) => {

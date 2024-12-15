@@ -19,6 +19,24 @@
       <% if (userInfo.isAdmin) { %>
         <p class="profile-admin">Admin Account</p>
       <% } %>
+
+      <!-- Form for email subscription -->
+      <form action="/users/profile/subscription" method="POST">
+        <div class="subscription-section">
+          <label for="email-subscription">
+            <input 
+              type="checkbox" 
+              id="email-subscription" 
+              name="emailSubscription"
+              <%= userInfo.emailSubscription ? "checked" : "" %>
+            />
+            Subscribe to email updates
+          </label>
+        </div>
+        <button type="submit" class="profile-update-button">Update Profile</button>
+      </form>
+
+      <!-- Logout button -->
       <form action="/users/profile" method="POST">
         <button type="submit" class="profile-logout-button">Log Out</button>
       </form>
@@ -27,5 +45,3 @@
     <footer><%- include('../partials/footer'); %></footer>
   </body>
 </html>
-
-
