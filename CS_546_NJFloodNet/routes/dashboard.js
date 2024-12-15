@@ -8,14 +8,12 @@ router.route("/").get(
     next();
   },
   async (req, res) => {
-    try{
-
+    try {
       const sensors1 = await sensordata.getAllSensors();
       //const measurements = await measurementdata.getMeasurements();
-      return res.render("pages/dashboard", {sensors: sensors1});
-    }
-    catch(e){
-        res.status(404).send({error: 'No Result Found!'});
+      return res.render("pages/dashboard", { sensors: sensors1 });
+    } catch (e) {
+      return res.status(404).render("pages/error");
     }
   }
 );

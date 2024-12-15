@@ -135,7 +135,7 @@ router
     try {
       sensor = await sensorData.getSensorByIdOrName(_id);
     } catch (e) {
-      return res.status(404).json({ error: "Sensor not found" });
+      return res.status(404).render("pages/error");
     }
 
     // Pass the single sensor to the EJS file
