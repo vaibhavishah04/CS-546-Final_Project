@@ -12,39 +12,49 @@
     <header><%- include('../partials/header'); %></header>
 
     <main id="signin-container">
-    <h1 class="page-title">Sign In to Your Account</h1>
+      <h1 class="page-title">Sign In to Your Account</h1>
 
-    <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+      <% if (typeof errors !== "undefined" && errors.length > 0) { %>
       <div class="error-messages">
         <ul>
           <% errors.forEach((error) => { %>
-            <li><%= error %></li>
+          <li><%= error %></li>
           <% }) %>
         </ul>
       </div>
-    <% } %>
+      <% } %>
 
-    <form id="log_in_form" method="POST" action="/signin">
-      <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
-      </div>
+      <form id="log_in_form" method="POST" action="/signin">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="<%= (typeof formData !== 'undefined' && formData.username) ? formData.username : '' %>"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-      </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="<%= (typeof formData !== 'undefined' && formData.password) ? formData.password : '' %>"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <button type="submit" id="submit_button">Sign In</button>
-      </div>
+        <div class="form-group">
+          <button type="submit" id="submit_button">Sign In</button>
+        </div>
 
-      <div class="form-group">
-        <a href="/signup">Create an Account</a>
-      </div>
-    </form>
-
-  </main>
-
+        <div class="form-group">
+          <a href="/signup">Create an Account</a>
+        </div>
+      </form>
+    </main>
   </body>
 </html>
