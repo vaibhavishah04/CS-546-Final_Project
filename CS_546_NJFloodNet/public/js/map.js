@@ -57,14 +57,14 @@ function renderMapMarkers(map, sensorData) {
       ? `../public${sensor.image.slice(1)}` // Replace "./" with "../public/"
       : sensor.image;
 
-    const popup = new mapboxgl.Popup().setHTML(`
-      <div style="text-align: center;">
-        <h3>${sensor.sensorName}</h3>
-        <p>Status: ${sensor.status}</p>
-        <img src="${sensor.image}" alt="${sensor.sensorName}" style="width: 100%; height: auto; max-width: 150px; border-radius: 8px; margin: 10px 0;">
-        <a href="/sensors/${sensor._id}" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; color: white; background-color: #007bff; border-radius: 4px;">View Details</a>
-      </div>
-    `);
+      const popup = new mapboxgl.Popup().setHTML(`
+        <div style="text-align: center;">
+          <h3>${sensor.sensorName}</h3>
+          <p>Status: ${sensor.status}</p>
+          <img src="${sensor.image}" alt="${sensor.sensorName}" style="width: 100%; height: auto; max-width: 150px; border-radius: 8px; margin: 10px 0;">
+          <a href="/sensors/${sensor._id}" class="btn btn-primary" style="text-decoration: none; padding: 5px 10px; color: white; background-color: #007bff; border-radius: 4px; margin-top: 10px; display: inline-block;">View Details</a>
+        </div>
+      `);
 
     new mapboxgl.Marker()
       .setLngLat([longitude, latitude])

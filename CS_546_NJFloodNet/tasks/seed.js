@@ -1,28 +1,21 @@
-/**
- * seed.js
- * 
- * Tasks:
- * 1. Populate the database with sample data for testing and development.
- * 2. Add sample users, sensors, and measurements.
- * 
- * Functions:
- * - seedDatabase(): Seed all collections with sample data.
- * - addSampleUsers(): Add sample users.
- * - addSampleSensors(): Add sample sensors.
- * - addSampleMeasurements(): Add sample measurements.
- */
-/**
- * Seed the database with initial data for users, sensors, and measurements.
- */
+import { users } from "../config/mongoCollections.js";
 
-// Seed all collections
-function seedDatabase() {}
+const addEmailSubscriptionField = async () => {
+  try {
+    const userData = await users();
 
-// Add sample users to the database
-function seedUsers() {}
+    // Update all user documents, adding the 'emailSubscription' field if it doesn't exist
+    const result = await userData.updateMany(
+      { emailSubscription: { $exists: false } }, // Match users without the field
+      { $set: { emailSubscription: false } } // Add field with default value
+    );
 
-// Add sample sensors to the database
-function seedSensors() {}
+    console.log(
+      `Updated ${result.matchedCount} users. Modified ${result.modifiedCount} users.`
+    );
+  } catch (e) {
+    console.error("Error adding emailSubscription field:", e.message || e);
+  }
+};
 
-// Add sample measurements to the database
-function seedMeasurements() {}
+addEmailSubscriptionField();

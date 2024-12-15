@@ -75,6 +75,7 @@ router
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
+        emailSubscription: userInfo.emailSubscription || false, // Include emailSubscription
       };
       return res.redirect("/");
     }

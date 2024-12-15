@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { users } from "../config/mongoCollections.js";
 import userVal from "../validation/user_val.js";
+import { ObjectId } from "mongodb";
 import validation from "../validation.js";
 
 /**
@@ -25,7 +26,8 @@ const createUser = async (
   city,
   state,
   password,
-  isAdmin
+  isAdmin,
+  emailSubscription = false // Add email subscription field
 ) => {
   let usernameOk = userVal.valid_username(username);
   // TODO: make a verifyFirstName function
@@ -37,6 +39,7 @@ const createUser = async (
   let stateOk = userVal.valid_state(state);
   let passwordOk = userVal.valid_password(password);
   let isAdminOk = typeof isAdmin === "boolean";
+  let emailSubscriptionOk = typeof emailSubscription === "boolean";
   let paramCheck =
     usernameOk &&
     firstNameOk &&
@@ -45,10 +48,10 @@ const createUser = async (
     cityOk &&
     stateOk &&
     passwordOk &&
-    isAdminOk;
+    isAdminOk &&
+    emailSubscriptionOk;
   if (!paramCheck) throw new Error("Invalid parameters");
 
-  // Check if the user already exists
   try {
     const userData = await users();
     const existingUser = await userData.findOne({ username });
@@ -56,7 +59,6 @@ const createUser = async (
       throw new Error("User already exists");
     }
 
-    // Create a new user document
     const newUser = {
       username,
       firstName,
@@ -66,6 +68,7 @@ const createUser = async (
       state,
       password: hashPassword(password),
       isAdmin,
+      emailSubscription, // Include email subscription
     };
     await userData.insertOne(newUser);
     return newUser;
@@ -73,6 +76,7 @@ const createUser = async (
     throw new Error("Error creating user: " + e.message);
   }
 };
+
 
 // Validate user login credentials
 const validateUserCredentials = async (username, password) => {
@@ -98,6 +102,7 @@ const validateUserCredentials = async (username, password) => {
     lastName: user.lastName,
     email: user.email,
     isAdmin: user.isAdmin || false,
+    emailSubscription: user.emailSubscription || false, // Include emailSubscription
   };
 };
 
@@ -125,22 +130,22 @@ const getUserById = async (username) => {
 
 // Update user information
 const updateUser = async (username, updateData) => {
-  // Fetch the user document from the database
   const userData = await users();
-  let user = await userData.findOne({ _id: new ObjectId(username) });
-  const uid = user._id.toString();
 
-  // Check if the user exists
+  // Determine whether to query by username or _id
+  const query = ObjectId.isValid(username) // Check if `username` is a valid ObjectId
+    ? { _id: new ObjectId(username) } // If valid ObjectId, query by _id
+    : { username }; // Otherwise, query by username
+
+  // Fetch the user document from the database
+  const user = await userData.findOne(query);
   if (!user) throw new Error("User not found");
 
   // Update the user data with the provided information
-  for (const key in updateData) {
-    user[key] = updateData[key];
-  }
+  await userData.updateOne(query, { $set: updateData });
 
-  // Save the updated user document to the database
-  userData.updateOne({ _id: uid }, { $set: user });
-  return user;
+  // Return the updated user document
+  return { ...user, ...updateData }; // Merge updated data into original user object
 };
 
 // Delete a user
