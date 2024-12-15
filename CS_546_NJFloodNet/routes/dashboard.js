@@ -1,6 +1,6 @@
 import { Router } from "express";
-import sensordata from "../data/sensors.js";
-import measurementdata from "../data/measurements.js";
+import sensorData from "../data/sensors.js";
+// import measurementdata from "../data/measurements.js";
 const router = Router();
 
 router.route("/").get(
@@ -9,10 +9,11 @@ router.route("/").get(
   },
   async (req, res) => {
     try {
-      const sensors1 = await sensordata.getAllSensors();
+      const sensors = await sensorData.getAllSensors();
       //const measurements = await measurementdata.getMeasurements();
-      return res.render("pages/dashboard", { sensors: sensors1 });
+      return res.render("pages/dashboard", { sensors });
     } catch (e) {
+      // TODO: this shouldnt be a 404 error
       return res.status(404).render("pages/error");
     }
   }
