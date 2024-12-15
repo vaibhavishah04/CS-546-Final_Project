@@ -117,7 +117,7 @@
 
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
           const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
-
+          window['sensor']= <%- JSON.stringify(sensor) %>;
           // Extract timestamps and flood depths (or other relevant data)
           const timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
           const floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
@@ -143,7 +143,7 @@
             const endDate = new Date(document.getElementById("endDate").value);
 
             if (!isNaN(startDate) && !isNaN(endDate)) {
-              const filteredData = measurements.filter(m => {
+              const filteredData = window.sensor.measurements.filter(m => {
                 const date = new Date(m.timestamp);
                 return date >= startDate && date <= endDate;
               });
@@ -161,7 +161,7 @@
 
           downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS
             let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
-            measurements.forEach(m => {
+            window.sensor.measurements.forEach(m => {
               csvContent += `${m.timestamp},${m.distanceMm}\n`;
             });
 
