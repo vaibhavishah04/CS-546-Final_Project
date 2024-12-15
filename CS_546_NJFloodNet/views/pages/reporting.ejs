@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/wicg-inert@3/inert.min.js"></script>
 
     <title>Reporting - NJ FloodNet</title>
   </head>
@@ -14,9 +16,7 @@
     <div><%- include('../partials/header'); %></div>
 
     <header>
-
-      <div class="logo">
-      </div>
+      <div class="logo"></div>
       <nav class="navigation">
         <ul>
           <li><a href="/">Map</a></li>
@@ -24,52 +24,154 @@
           <li><a href="/about">About FloodNet</a></li>
         </ul>
       </nav>
-        <!--<h1>NJ Flood Net</h1>
-        <p>Tracking and mitigating flood risks in New Jersey</p> -->
     </header>
-    <body>
-        <form id ="reporting_form" method="POST" action="/reporting">
 
-            <label for="sensorList">Sensor Name:</label>
-            <select id ="sensorId" name = "sensorId" class="select">
-                <option value =""></option>
-            </select>
-            <label for="errorCode">Error Code:</label>
-            <input type="text" id="errorCode" name="errorCode" class="inputs">
-            <br>
+    <div>
+      <h2>Tracking flooding across the state</h2>
+    </div>
 
-            <label for="voltage">voltage:</label>
-            <input type="text" id="voltage" name="voltage" class="inputs">
-            <br>
+    <div class="btn-container">
+      <a href="#" class="btn" data-toggle="modal" data-target="#reportModal">+ Add A Flood Watch Report</a>
+    </div>
 
-            <label for="distanceMm">distanceMm:</label>
-            <input type="text" id="distanceMm" name="distanceMm" class="inputs">
-            <br>
-            <label for="rainAccMm">rainAccMm:</label>
-            <input type="rainAccMm" id="rainAccMm" name="rainAccMm" class="inputs">
-            <br>
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportModalLabel">Add Flood Report</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="reportForm" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="reportText">Description</label>
+                <textarea class="form-control" id="reportText" name="reportText" placeholder="Enter description" rows="2" required></textarea>
+              </div>
 
-            <label for="eventAccMm">eventAccMm:</label>
-            <input type="text" id="eventAccMm" name="eventAccMm" class="inputs">
-            <br>
+              <div class="form-group">
+                <label for="reportLocation">Location</label>
+                <input type="text" class="form-control" id="reportLocation" name="reportLocation" placeholder="Enter location" required>
+              </div>
 
-            <label for="totalAccmm">totalAccmm:</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" class="inputs">
-            <br>
+              <div class="form-group">
+                <label for="reportFile">Upload Image (Optional)</label>
+                <input type="file" class="form-control-file" id="reportFile" name="reportFile" accept="image/*">
+              </div>
 
-            <label for="rainIntencity">Rain Intencity:</label>
-            <input type="text" id="rainIntencity" name="rainIntencity" class="inputs">
-            <br>
+              <div class="form-group">
+                <label for="altText">Alt Text for Image (Optional)</label>
+                <input type="text" class="form-control" id="altText" placeholder="Provide an alt text for the image" />
+              </div>
 
-            <label for="decodedDump">Decoded Dump:</label>
-            <input type="text" id="decodedDump" name="decodedDump" class="inputs">
-            <br>
+              <div id="error-message" class="text-danger mt-3" style="display: none;"></div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" form="reportForm" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <button type="submit" id="submitButton" name="submitButton">Sign up</button>
-
-        </form>
-    </body>
     <div><%- include('../partials/footer'); %></div>
 
-</body>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      const reportModal = document.getElementById("reportModal");
+      const reportForm = document.getElementById("reportForm");
+      const errorMsg = document.getElementById("error-message");
+
+      function setInertState(isInert) {
+        document.querySelectorAll('body > *:not(.modal)').forEach((element) => {
+          element.inert = isInert;
+        });
+      }
+
+      $(reportModal).on("shown.bs.modal", function () {
+        document.getElementById("reportText").focus();
+        setInertState(true);
+      });
+
+      $(reportModal).on("hidden.bs.modal", function () {
+        setInertState(false);
+        document.querySelector('.btn[data-target="#reportModal"]').focus();
+      });
+
+      function validateFile(file) {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const maxSize = 5 * 1024 * 1024; 
+
+        if (!allowedTypes.includes(file.type)) {
+          return "Only JPG, PNG, and GIF images are allowed.";
+        }
+
+        if (file.size > maxSize) {
+          return "The file size exceeds the 5MB limit.";
+        }
+
+        return null; 
+      }
+
+      reportForm.addEventListener("submit", async (e) => {
+        e.preventDefault();  
+        errorMsg.style.display = "none";  
+        errorMsg.innerText = "";
+
+        const reportText = document.getElementById("reportText").value;
+        const reportLocation = document.getElementById("reportLocation").value;
+        const altText = document.getElementById("altText").value;
+        const reportFile = document.getElementById("reportFile").files[0];
+
+        if (!reportText || !reportLocation) {
+          errorMsg.innerText = "Description and Location are required.";
+          errorMsg.style.display = "block";
+          return;
+        }
+
+        if (reportFile && !altText) {
+          errorMsg.innerText = "Alt text is required if an image is uploaded.";
+          errorMsg.style.display = "block";
+          return;
+        }
+
+        if (reportFile) {
+          const fileError = validateFile(reportFile);
+          if (fileError) {
+            errorMsg.innerText = fileError;
+            errorMsg.style.display = "block";
+            return;
+          }
+        }
+
+        const formData = new FormData(reportForm);
+        console.log("Submitting form data...");
+
+        try {
+          const response = await fetch("/reporting/add", {
+            method: "POST",
+            body: formData,
+          });
+          console.log("Submitting form data after ");
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert("Report submitted successfully!");
+            $(reportModal).modal("hide");
+            reportForm.reset(); 
+          } else {
+            errorMsg.innerText = result.error || "Submission failed.";
+            errorMsg.style.display = "block";
+          }
+        } catch (error) {
+          errorMsg.innerText = "An unexpected error occurred.";
+          errorMsg.style.display = "block";
+        }
+      });
+    </script>
+  </body>
 </html>

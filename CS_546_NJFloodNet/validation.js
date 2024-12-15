@@ -180,6 +180,39 @@ const verifyReportText = (reportText) => {
   return reportText;
 };
 
+const imageValidation = (body , file )=>{
+  if (!body.reportText || !body.location) {
+    throw "Description and Location can't be empty." ;
+  }
+
+  if (reportFile && !["image/jpeg", "image/png", "image/gif"].includes(reportFile.mimetype)) {
+    throw "Invalid file type. Only images are allowed.";
+  }
+  if (!file) {
+    return true;
+  }
+
+  const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
+
+  if (!allowedMimes.includes(file.mimetype)) {
+    throw new Error('Invalid file type. Only JPEG, PNG, and GIF files are allowed.');
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    throw new Error('File is too large. Max size is 5MB.');
+  }
+
+  const fileExt = path.extname(file.originalname).toLowerCase();
+  if (!allowedMimes.some((mime) => mime.endsWith(fileExt))) {
+    throw new Error('Invalid file extension. Allowed extensions are .jpg, .jpeg, .png, .gif.');
+  }
+
+  return true;
+
+
+};
+
 export default {
   verifyStr,
   verifyUsername,
@@ -192,4 +225,5 @@ export default {
   verifyTimestamp,
   verifySensorNumber,
   verifyReportText,
+  imageValidation,
 };
