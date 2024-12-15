@@ -39,8 +39,7 @@ const constructorMethod = (app) => {
   app.use("/about", aboutRoutes);
 
   app.use("*", (req, res) => {
-    // TODO: Decide if we want to make a 404 page, my (Thys) vote is yes
-    return res.render("pages/error");
+    return res.status(404).render("pages/error");
   });
 };
 

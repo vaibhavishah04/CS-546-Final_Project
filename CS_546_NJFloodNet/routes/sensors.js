@@ -100,7 +100,7 @@ router
     let sensor;
     // TODO: add images to sensors?
     try {
-      sensor = await addSensor(
+      sensor = await sensorData.addSensor(
         sensorNumber,
         sensorName,
         addedBy,
