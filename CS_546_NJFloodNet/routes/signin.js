@@ -19,52 +19,27 @@ router
   .post(
     (req, res, next) => {
       if (req.session.userInfo) {
-        console.error("Sign in attempt while already signed in.");
-        return res
-          .status(400)
-          .json({ error: "Sign in attempt while already signed in" });
+        // If a user tries to sign in while signed in, redirect them to their profile
+        return res.redirect("/users/profile");
       }
       next();
     },
     async (req, res) => {
-      //console.log("Received Sign In form data:", req.body); // Log incoming data
-
       let { username, password } = req.body;
-      let errors = [];
 
-      // Validate username
-      try {
-        username = validation.verifyUsername(username);
-      } catch (e) {
-        console.error("Username validation error:", e.message || e);
-        errors.push(e.message || e);
-      }
-
-      // Validate password
-      try {
-        password = validation.verifyPassword(password);
-      } catch (e) {
-        console.error("Password validation error:", e.message || e);
-        errors.push(e.message || e);
-      }
-
-      // If there are validation errors
-      if (errors.length > 0) {
-        console.error("Validation errors:", errors);
-        return res.status(400).render("pages/signin", {
-          errors,
-        });
-      }
-
+      // Validate user. If anything fails, simply rerender the page with a 400 error and error messages
       let userInfo;
       try {
-        console.log("Validating user credentials...");
+        username = validation.verifyUsername(username);
+        password = validation.verifyPassword(password);
         userInfo = await usersData.validateUserCredentials(username, password);
-        console.log("User credentials validated:", userInfo);
       } catch (e) {
-        console.error("Error validating user credentials:", e.message || e);
         return res.status(400).render("pages/signin", {
-          errors: [e.message || e],
+          errors: ["Username and password do not match"],
+          formData: {
+            username,
+            password,
+          },
         });
       }
 
