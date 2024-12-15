@@ -266,4 +266,30 @@ router
     return res.json({ sensorData: deleted.data });
   });
 
+  router.route("/:id/notes").post(async (req, res) => {
+    let sensorId = req.params.id;
+    let { note } = req.body;
+  
+    // Validate inputs
+    try {
+      sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
+      note = validation.verifyStr(note, "note");
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+  
+    try {
+      const updatedSensor = await sensorData.addNoteToSensor(sensorId, note);
+  
+      if (!updatedSensor) {
+        return res.status(500).json({ error: "Failed to add note to sensor" });
+      }
+  
+      return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+    } catch (e) {
+      console.error("Error adding note:", e);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  });  
+
 export default router;

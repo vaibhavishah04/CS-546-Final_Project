@@ -50,7 +50,16 @@
           <p><strong>Status:</strong> <%= sensor.status %></p>
           <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
           <p>
-            <strong>Notes:</strong> <%= sensor.notes.length > 0 ? sensor.notes.join(', ') : "No notes available" %>
+            <strong>Notes:</strong>
+            <% if (sensor.notes && sensor.notes.length > 0) { %>
+              <ul>
+                <% sensor.notes.forEach(note => { %>
+                  <li><%= note %></li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              No notes available.
+            <% } %>
           </p>
         </div>
       </div>
@@ -93,6 +102,28 @@
       <p class="text-center">Sensor not found.</p>
       <% } %>
     </div>
+
+    <div class="card mb-4">
+      <div class="card-header text-center">
+        <h3>Add Notes</h3>
+      </div>
+      <div class="card-body text-center">
+        <form id="addNoteForm" method="POST" action="/sensors/<%= sensor._id %>/notes">
+          <div class="mb-3">
+            <label for="note" class="form-label">New Note:</label>
+            <textarea
+              id="note"
+              name="note"
+              rows="3"
+              class="form-control"
+              placeholder="Enter your note here..."
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add Note</button>
+        </form>
+      </div>
+    </div>    
 
     <!-- Include footer -->
     <div><%- include('../partials/footer'); %></div>
