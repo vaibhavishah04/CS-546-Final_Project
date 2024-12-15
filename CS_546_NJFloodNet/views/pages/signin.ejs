@@ -14,15 +14,23 @@
     <main id="signin-container">
     <h1 class="page-title">Sign In to Your Account</h1>
 
-    <% if (typeof errors !== "undefined" && errors.length > 0) { %>
-      <div class="error-messages">
-        <ul>
-          <% errors.forEach((error) => { %>
-            <li><%= error %></li>
-          <% }) %>
-        </ul>
-      </div>
-    <% } %>
+      <!-- Display warning message -->
+      <% if (typeof warning !== "undefined" && warning) { %>
+        <div class="alert alert-warning" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+          <%= warning %>
+        </div>
+      <% } %>
+
+      <!-- Display validation errors -->
+      <% if (typeof errors !== "undefined" && errors.length > 0) { %>
+        <div class="error-messages">
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
 
     <form id="log_in_form" method="POST" action="/signin">
       <div class="form-group">

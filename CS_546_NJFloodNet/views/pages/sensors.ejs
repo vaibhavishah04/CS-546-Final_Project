@@ -45,7 +45,7 @@
       <% if (sensor) { %>
       <div class="card mb-4">
         <div class="card-header text-center">
-          <h3>Sensor <%= sensor.sensorNumber %>: <%= sensor.sensorName %></h3>
+          <h3>Sensor <%= sensor.sensorNumber %></h3>
           <p><strong>Location:</strong> <%= sensor.location %></p>
           <p><strong>Status:</strong> <%= sensor.status %></p>
           <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
@@ -54,7 +54,10 @@
             <% if (sensor.notes && sensor.notes.length > 0) { %>
               <ul>
                 <% sensor.notes.forEach(note => { %>
-                  <li><%= note %></li>
+                  <li>
+                    <strong><%= note.author %>:</strong> <%= note.text %> 
+                    <small>(<%= new Date(note.timestamp).toLocaleString() %>)</small>
+                  </li>
                 <% }) %>
               </ul>
             <% } else { %>
@@ -109,18 +112,20 @@
       </div>
       <div class="card-body text-center">
         <form id="addNoteForm" method="POST" action="/sensors/<%= sensor._id %>/notes">
-          <div class="mb-3">
-            <label for="note" class="form-label">New Note:</label>
+          <div class="form-group" style="width: 100%;">
+            <label for="note" class="form-label"><strong>New Note:</strong></label>
             <textarea
               id="note"
               name="note"
-              rows="3"
-              class="form-control"
+              rows="5"
+              style="width: 100%; box-sizing: border-box; resize: vertical;"
               placeholder="Enter your note here..."
               required
             ></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Add Note</button>
+          <div class="form-group" style="width: 100%;">
+            <button type="submit" class="btn btn-primary w-100 mt-3">Add Note</button>
+          </div>
         </form>
       </div>
     </div>    
