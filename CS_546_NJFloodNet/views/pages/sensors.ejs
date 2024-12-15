@@ -79,7 +79,7 @@
             </div>
           </div>
           <button id="filterBtn" class="btn btn-primary">Filter Data</button>
-          <button id="downloadBtn" class="btn btn-success ms-3">
+          <button id="download_btn" class="btn btn-success ms-3">
             Download Data
           </button>
         </div>
@@ -113,7 +113,7 @@
       document.addEventListener("DOMContentLoaded", function () {
 
         const filterBtn = document.getElementById("filterBtn");
-        const downloadBtn = document.getElementById("downloadBtn");
+        const download_btn = document.getElementById("download_btn");
 
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
           const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
@@ -141,13 +141,22 @@
             filterBtn.addEventListener("click", () => {    // Added for chart filter
             const startDate = new Date(document.getElementById("startDate").value);
             const endDate = new Date(document.getElementById("endDate").value);
+            if(startDate > endDate)
+            {
+              alert("start date should be less than the end date.");
+            }
+
+            if(startDate > Date.now())
+            {
+              alert("Start date can't be future date.")
+            }
 
             if (!isNaN(startDate) && !isNaN(endDate)) {
               const filteredData = window.sensor.measurements.filter(m => {
                 const date = new Date(m.timestamp);
                 return date >= startDate && date <= endDate;
               });
-
+              window['filteredData'] = filteredData;
               const filteredTimestamps = filteredData.map(m => m.timestamp.toString());
               const filteredFloodDepths = filteredData.map(m => m.distanceMm);
 
@@ -159,16 +168,17 @@
             }
           });
 
-          downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS
+          download_btn.addEventListener("click", () => {   // Added to download the data in to the CVS
             let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
-            window.sensor.measurements.forEach(m => {
+            const filteredData = window.filteredData || window.sensor.measurements;
+            filteredData.forEach(m => {
               csvContent += `${m.timestamp},${m.distanceMm}\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "sensor_data.csv");
+            link.setAttribute("download", "SensorData.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
