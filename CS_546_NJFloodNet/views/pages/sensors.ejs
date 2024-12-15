@@ -104,18 +104,10 @@
         const downloadBtn = document.getElementById("downloadBtn");
 
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
-<<<<<<< Updated upstream
-          const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
-
-          // Extract timestamps and flood depths (or other relevant data)
-          const timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
-          const floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
-=======
         const sensorData = <%- JSON.stringify(sensor.measurements) %>;
         const timestamps = sensorData.map((m) => m.timestamp.toString());
         const floodDepths = sensorData.map((m) => m.distanceMm);
         const rainAccumulation = sensorData.map((m) => m.rainAccMm || 0);
->>>>>>> Stashed changes
 
         // Distance Chart
         const ctxDistance = document.getElementById("distanceChart").getContext("2d");
@@ -139,29 +131,6 @@
           options: { responsive: true },
         });
 
-<<<<<<< Updated upstream
-            if (!isNaN(startDate) && !isNaN(endDate)) {
-              const filteredData = measurements.filter(m => {
-                const date = new Date(m.timestamp);
-                return date >= startDate && date <= endDate;
-              });
-
-              const filteredTimestamps = filteredData.map(m => m.timestamp.toString());
-              const filteredFloodDepths = filteredData.map(m => m.distanceMm);
-
-              chart.data.labels = filteredTimestamps;  // Added for chart updation after applying the filter
-              chart.data.datasets[0].data = filteredFloodDepths;
-              chart.update();
-            } else {
-              alert("Please select valid start and end dates.");
-            }
-          });
-
-          downloadBtn.addEventListener("click", () => {   // Added to download the data in to the CVS
-            let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
-            measurements.forEach(m => {
-              csvContent += `${m.timestamp},${m.distanceMm}\n`;
-=======
         // Filtering Logic
         filterBtn.addEventListener("click", () => {
           const startDate = new Date(document.getElementById("startDate").value);
@@ -171,7 +140,6 @@
             const filteredData = sensorData.filter((m) => {
               const date = new Date(m.timestamp);
               return date >= startDate && date <= endDate;
->>>>>>> Stashed changes
             });
 
             const filteredTimestamps = filteredData.map((m) => m.timestamp.toString());
