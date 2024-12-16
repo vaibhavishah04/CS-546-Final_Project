@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import path from 'path';
+import path from "path";
 
 /**
  * Verifies that a given string is a non-empty string, and trims it
@@ -181,27 +181,24 @@ const verifyReportText = (reportText) => {
   return reportText;
 };
 
-const imageValidation = ( reportImage )=>{
-
-  if (reportImage && !["image/jpeg", "image/png", "image/gif"].includes(reportImage.mimetype)) {
-    throw "Invalid file type. Only images are allowed.";
-  }
+const imageValidation = (reportImage) => {
   if (!reportImage) {
-    return true;
+    throw new Error(`reportImage must exist`);
   }
 
-  const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
-
+  const allowedMimes = ["image/jpeg", "image/png", "image/gif"];
   if (!allowedMimes.includes(reportImage.mimetype)) {
-    throw new Error('Invalid file type. Only JPEG, PNG, and GIF files are allowed.');
+    throw new Error(
+      "Invalid file type. Only JPEG, PNG, and GIF files are allowed."
+    );
   }
 
   const maxSize = 5 * 1024 * 1024; // 5MB
   if (reportImage.size > maxSize) {
-    throw new Error('File is too large. Max size is 5MB.');
+    throw new Error("File is too large. Max size is 5MB.");
   }
 
-  return true;
+  return reportImage;
 };
 
 export default {

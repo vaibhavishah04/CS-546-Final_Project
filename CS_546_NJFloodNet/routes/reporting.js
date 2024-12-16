@@ -35,15 +35,34 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   alt_text = xss(alt_text);
   reportImage = xss(reportImage);
 
+  errors = [];
   try {
-    if (!reportText || !reportLocation) {
-      return res
-        .status(400)
-        .json({ error: "Description and Location are required." });
-    }
+    reportLocation = validation.verifyStr(reportLocation, `reportLocation`);
+  } catch (e) {
+    errors.push(e.message);
+  }
+  try {
+    reportText = validation.verifyStr(reportText, `reportText`);
+  } catch (e) {
+    errors.push(e.message);
+  }
+  try {
+    alt_text = validation.verifyStr(alt_text, `alt_text`);
+  } catch (e) {
+    errors.push(e.message);
+  }
+  try {
+    reportImage = validation.imageValidation(reportImage);
+  } catch (e) {
+    errors.push(e.message);
+  }
 
-    validation.imageValidation(reportImage);
+  if (errors.length > 0) {
+    // TODO: make this actually go back to the page and re-render the inputs
+    return res.json({ errors });
+  }
 
+  try {
     const addReportingData = await reportFunctions.addReport(
       req.session.userInfo.id,
       reportLocation,
@@ -58,8 +77,6 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
       report: addReportingData,
     });
   } catch (e) {
-    console.error("Error in /reporting/add:", e);
-
     res
       .status(500)
       .json({ error: "Internal Server Error", details: e.message });
