@@ -22,7 +22,7 @@ const verifyStr = (s, varName) => {
  */
 const verifyUsername = (username) => {
   const usernameMinLen = 5;
-  const usernameLaxLen = 10;
+  const usernameLaxLen = 15;
 
   username = verifyStr(username, `username`);
   // simple regex that checks for no spaces
