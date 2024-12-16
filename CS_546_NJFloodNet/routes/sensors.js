@@ -33,9 +33,10 @@
 // function deleteSensorRoute(req, res) {}
 
 import { Router } from "express";
-const router = Router();
 import sensorData from "../data/sensors.js";
 import validation from "../validation.js";
+import xss from "xss";
+const router = Router();
 
 const ensureLoggedIn = (req, res, next) => {
   if (!req.session || !req.session.userInfo) {
@@ -66,6 +67,15 @@ router
     // get data
     let { sensorNumber, sensorName, addedBy, coords, location, status, notes } =
       req.body;
+
+    // xss
+    sensorNumber = xss(sensorNumber);
+    sensorName = xss(sensorName);
+    addedBy = xss(addedBy);
+    coords = xss(coords);
+    location = xss(location);
+    status = xss(status);
+    notes = xss(notes);
 
     // verify data
     let errors = [];
@@ -132,7 +142,7 @@ router
 router
   .route("/:id")
   .get(async (req, res) => {
-    let _id = req.params.id;
+    let _id = xss(req.params.id);
 
     try {
       _id = validation.verifyMongoId_str(_id, `_id`);
@@ -163,6 +173,17 @@ router
       measurements,
       notes,
     } = updateData;
+
+    sensorId = xss(sensorId);
+    updateData = xss(updateData);
+    sensorNumber = xss(sensorNumber);
+    sensorName = xss(sensorName);
+    addedBy = xss(addedBy);
+    coords = xss(coords);
+    location = xss(location);
+    status = xss(status);
+    measurements = xss(measurements);
+    notes = xss(notes);
 
     let errors = [];
     try {
@@ -255,6 +276,10 @@ router
     // deleteSensor = async (sensorId)
     let { sensorId } = req.body;
 
+    // xss
+    sensorId = xss(sensorId);
+
+    // error checking
     try {
       sensorId = validation.verifyMongoId_str(sensorId, `sensorId`);
     } catch (e) {
@@ -275,20 +300,26 @@ router
     return res.json({ sensorData: deleted.data });
   });
 
-  router.route("/:id/notes").post(async (req, res) => {
-    let sensorId = req.params.id;
-    let { note } = req.body;
-  
+router.route("/:id/notes").post(
+  async (req, res, next) => {
     // Ensure the user is logged in
     if (!req.session || !req.session.userInfo) {
       // Store a warning message in the session
       req.session.warning = "You must log in to add a note.";
       return res.redirect("/signin"); // Redirect to the sign-in page
     }
-  
+  },
+  async (req, res) => {
+    let sensorId = req.params.id;
+    let { note } = req.body;
+
+    // xss
+    sensorId = xss(sensorId);
+    note = xss(note);
+
     // Get the username of the logged-in user
     const username = req.session.userInfo.username;
-  
+
     // Validate inputs
     try {
       sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
@@ -297,20 +328,25 @@ router
     } catch (e) {
       return res.status(400).json({ error: e.message });
     }
-  
+
     // Add the note to the sensor
     try {
-      const updatedSensor = await sensorData.addNoteToSensor(sensorId, note, username);
-  
+      const updatedSensor = await sensorData.addNoteToSensor(
+        sensorId,
+        note,
+        username
+      );
+
       if (!updatedSensor) {
         return res.status(500).json({ error: "Failed to add note to sensor" });
       }
-  
+
       return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
     } catch (e) {
       console.error("Error adding note:", e.message || e);
       return res.status(500).json({ error: "Internal Server Error" });
     }
-  });
+  }
+);
 
 export default router;

@@ -1,7 +1,8 @@
 import { Router } from "express";
-const router = Router();
 import usersData from "../data/users.js";
 import validation from "../validation.js";
+import xss from "xss";
+const router = Router();
 
 router
   .route("/")
@@ -39,6 +40,15 @@ router
         password,
         passwordConf,
       } = req.body;
+
+      username = xss(username);
+      email = xss(email);
+      city = xss(city);
+      state = xss(state);
+      firstName = xss(firstName);
+      lastName = xss(lastName);
+      password = xss(password);
+      passwordConf = xss(passwordConf);
 
       let errors = [];
 

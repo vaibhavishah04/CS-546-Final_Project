@@ -51,8 +51,12 @@ router.route("/profile/subscription").post(async (req, res) => {
     const emailSubscription = req.body.emailSubscription === "on"; // Checkbox returns "on" if checked
     const username = req.session.userInfo.username;
 
+    username = xss(username);
+
     // Update user in the database
-    const updatedUser = await userData.updateUser(username, { emailSubscription });
+    const updatedUser = await userData.updateUser(username, {
+      emailSubscription,
+    });
 
     // Update session
     req.session.userInfo.emailSubscription = emailSubscription;
@@ -63,7 +67,6 @@ router.route("/profile/subscription").post(async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 });
-
 
 // Route to handle logout
 router.route("/profile").post(async (req, res) => {

@@ -2,6 +2,7 @@ import { Router } from "express";
 import measurementsData from "../data/measurements.js";
 import sensorData from "../data/sensors.js";
 import validation from "../validation.js";
+import xss from "xss";
 const router = Router();
 
 // POST /measurements: adds the measurement in req.body to the database
@@ -19,6 +20,17 @@ router.route("/").post(async (req, res) => {
     rainIntensity,
     sensorNumber,
   } = req.body;
+
+  // xss cleaning
+  datestamp = xss(datestamp);
+  errorCode = xss(errorCode);
+  voltage = xss(voltage);
+  distanceMm = xss(distanceMm);
+  eventAccMm = xss(eventAccMm);
+  rainAccMm = xss(rainAccMm);
+  totalAccMm = xss(totalAccMm);
+  rainIntensity = xss(rainIntensity);
+  sensorNumber = xss(sensorNumber);
 
   // Changing the google script is significantly harder than just renaming it here, so it gets renamed here
   let timestamp = datestamp;

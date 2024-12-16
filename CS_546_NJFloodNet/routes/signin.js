@@ -1,7 +1,8 @@
 import { Router } from "express";
-const router = Router();
 import usersData from "../data/users.js";
 import validation from "../validation.js";
+import xss from "xss";
+const router = Router();
 
 router
   .route("/")
@@ -15,7 +16,10 @@ router
     async (req, res) => {
       const warningMessage = req.session.warning || null; // Retrieve warning
       req.session.warning = null; // Clear warning after use
-      return res.render("pages/signin", { errors: [], warning: warningMessage });
+      return res.render("pages/signin", {
+        errors: [],
+        warning: warningMessage,
+      });
     }
   )
   .post(
@@ -28,6 +32,10 @@ router
     },
     async (req, res) => {
       let { username, password } = req.body;
+
+      // xss
+      username = xss(username);
+      password = xss(password);
 
       // Validate user. If anything fails, simply rerender the page with a 400 error and error messages
       let userInfo;
@@ -47,7 +55,7 @@ router
 
       // Set session and redirect to dashboard
       req.session.userInfo = {
-        id:userInfo.userid,
+        id: userInfo.userid,
         username: userInfo.username,
         isAdmin: userInfo.isAdmin,
         firstName: userInfo.firstName,
