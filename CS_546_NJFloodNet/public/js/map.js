@@ -22,7 +22,7 @@ const map = new mapboxgl.Map({
 
 // Helper function to convert degrees format to numeric latitude and longitude
 function parseCoords(coords) {
-  console.log("Parsing coordinates:", coords); // Debugging
+  //console.log("Parsing coordinates:", coords); // Debugging
   const [lat, latDir, lon, lonDir] = coords.replace(/[°]/g, '').split(/[\s,]+/);
   return {
     latitude: latDir === 'S' ? -parseFloat(lat) : parseFloat(lat),
@@ -38,7 +38,7 @@ function fetchSensorData() {
       throw new Error("Sensor data element not found in the HTML.");
     }
     const sensors = JSON.parse(sensorDataElement.textContent);
-    console.log("Fetched sensor data from HTML:", sensors); // Debugging
+    //console.log("Fetched sensor data from HTML:", sensors); // Debugging
     return sensors;
   } catch (error) {
     console.error("Error fetching sensor data:", error);
@@ -50,7 +50,7 @@ function fetchSensorData() {
 function renderMapMarkers(map, sensorData) {
   sensorData.forEach((sensor) => {
     const { latitude, longitude } = parseCoords(sensor.coords);
-    console.log("Rendering marker for:", { latitude, longitude, sensor });
+    //console.log("Rendering marker for:", { latitude, longitude, sensor });
 
       // Prepend "../public" to the image path if it's relative
       const imageUrl = sensor.image.startsWith("./")

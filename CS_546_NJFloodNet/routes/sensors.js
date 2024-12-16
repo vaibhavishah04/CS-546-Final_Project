@@ -339,7 +339,13 @@ router.route("/:id/notes").post(
         return res.status(500).json({ error: "Failed to add note to sensor" });
       }
 
-      return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+      //return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+      return res.json({
+      success: true,
+      author: username,
+      note,
+      timestamp: new Date(),
+    });
     } catch (e) {
       console.error("Error adding note:", e.message || e);
       return res.status(500).json({ error: "Internal Server Error" });

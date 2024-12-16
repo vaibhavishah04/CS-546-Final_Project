@@ -215,5 +215,61 @@
         <% } %>
       });
     </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const addNoteForm = document.getElementById("addNoteForm");
+        const notesList = document.querySelector(".card-header ul") || createNotesList();
+    
+        addNoteForm.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Prevent the default form submission
+    
+          const noteText = document.getElementById("note").value.trim();
+          const sensorId = "<%= sensor._id %>"; // Sensor ID passed dynamically
+    
+          if (!noteText) {
+            alert("Please enter a note.");
+            return;
+          }
+    
+          try {
+            const response = await fetch(`/sensors/${sensorId}/notes`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ note: noteText }),
+            });
+    
+            const result = await response.json();
+    
+            if (response.ok) {
+              // Add the new note dynamically to the list
+              const newNote = document.createElement("li");
+              newNote.innerHTML = `
+                <strong>${result.author}:</strong> ${result.note}
+                <small>(${new Date(result.timestamp).toLocaleString()})</small>
+              `;
+              notesList.appendChild(newNote);
+    
+              document.getElementById("note").value = ""; // Clear the input field
+              alert("Note added successfully!");
+            } else {
+              alert(`Error: ${result.error}`);
+            }
+          } catch (err) {
+            console.error("Error submitting note:", err);
+            alert("An error occurred while adding the note. Please try again.");
+          }
+        });
+    
+        // Helper function to create a notes list if it doesn't already exist
+        function createNotesList() {
+          const notesSection = document.querySelector(".card-header");
+          const notesList = document.createElement("ul");
+          notesSection.appendChild(notesList);
+          return notesList;
+        }
+      });
+    </script>
   </body>
 </html>
