@@ -76,30 +76,39 @@
                   name="reportText"
                   placeholder="Enter description"
                   rows="2"
+                  value="<%= _locals.reportText ? reportText : "" %>"
                   required
                 ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="reportLocation">Location</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="reportLocation"
-                  name="reportLocation"
-                  placeholder="Enter location"
-                  required
-                />
+                <input type="text" class="form-control" id="reportLocation"
+                name="reportLocation" placeholder="Enter location" value="<%=
+                _locals.reportLocation ? reportLocation : "" %>" required />
               </div>
 
               <div class="form-group">
                 <label for="reportImage">Upload Image (Optional)</label>
-                <input type="file" class="form-control-file" id="reportImage" name="reportImage" accept="image/*">
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="reportImage"
+                  name="reportImage"
+                  accept="image/*"
+                />
               </div>
 
               <div class="form-group">
                 <label for="altText">Alt Text for Image (Optional)</label>
-                <input type="text" class="form-control" name= "alt_text" id="altText" placeholder="Provide an alt text for the image" />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="alt_text"
+                  id="altText"
+                  placeholder="Provide an alt text for the image"
+                  value="<%= _locals.alt_text ? alt_text : "" %>"
+                />
               </div>
 
               <div
@@ -224,7 +233,10 @@
       });
     </script>
 
-  <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
-
+    <div
+      id="error-message"
+      class="alert alert-danger mt-3"
+      style="display: none"
+    ></div>
   </body>
 </html>

@@ -9,16 +9,13 @@ import aboutRoutes from "./about.js";
 import sensorData from "../data/sensors.js"; // Import your sensor data functions
 
 const constructorMethod = (app) => {
-
-//User can not access reporting page withput sing in 
+  //User can not access reporting page withput sing in
   const isAuthenticated = (req, res, next) => {
     if (!req.session || !req.session.user) {
-      return res.redirect("/signin"); 
+      return res.redirect("/signin");
     }
-    next(); 
+    next();
   };
-
-
 
   app.get("/", async (req, res) => {
     try {
@@ -50,7 +47,6 @@ const constructorMethod = (app) => {
 
   app.use(isAuthenticated);
   app.use("/reporting", reportingRoutes);
-
 
   app.use("*", (req, res) => {
     return res.status(404).render("pages/error");
