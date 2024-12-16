@@ -26,8 +26,8 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/add", upload.single("reportImage"), async (req, res) => {
-  const { reportLocation, reportText, alt_text } = req.body;
-  const reportImage = req.file;
+  let { reportLocation, reportText, alt_text } = req.body;
+  let reportImage = req.file;
 
   // xss
   reportLocation = xss(reportLocation);
