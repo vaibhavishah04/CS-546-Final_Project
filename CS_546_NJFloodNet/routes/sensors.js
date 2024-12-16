@@ -61,7 +61,10 @@ router
     // if there are no sensors, return error
     if (!sensors) return res.status(500).json({ error: e });
 
-    return res.render("pages/sensors", { sensor: sensors });
+    return res.render("pages/sensors", {
+      user: req.session.userInfo,
+      sensor: sensors,
+    });
   })
   .post(async (req, res) => {
     // get data
@@ -300,14 +303,13 @@ router
     return res.json({ sensorData: deleted.data });
   });
 
-router.route("/:id/notes").post(
-  async (req, res) => {
-    // Ensure the user is logged in
-    if (!req.session || !req.session.userInfo) {
-      // Store a warning message in the session
-      req.session.warning = "You must log in to add a note.";
-      return res.redirect("/signin"); // Redirect to the sign-in page
-    } else { 
+router.route("/:id/notes").post(async (req, res) => {
+  // Ensure the user is logged in
+  if (!req.session || !req.session.userInfo) {
+    // Store a warning message in the session
+    req.session.warning = "You must log in to add a note.";
+    return res.redirect("/signin"); // Redirect to the sign-in page
+  } else {
     let sensorId = req.params.id;
     let { note } = req.body;
 
@@ -341,11 +343,11 @@ router.route("/:id/notes").post(
 
       //return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
       return res.json({
-      success: true,
-      author: username,
-      note,
-      timestamp: new Date(),
-    });
+        success: true,
+        author: username,
+        note,
+        timestamp: new Date(),
+      });
     } catch (e) {
       console.error("Error adding note:", e.message || e);
       return res.status(500).json({ error: "Internal Server Error" });

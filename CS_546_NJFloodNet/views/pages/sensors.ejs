@@ -198,6 +198,11 @@
 
         // Download Logic
         downloadBtn.addEventListener("click", () => {
+
+          const user = <%- JSON.stringify(user) %>
+
+          if(user){
+
           let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm),Rain Accumulation (mm)\n";
           sensorData.forEach((m) => {
             csvContent += `${m.timestamp},${m.distanceMm},${m.rainAccMm || 0}\n`;
@@ -211,6 +216,10 @@
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+        }
+        else{
+          alert("Please sign in to download the data.");
+        }
         });
         <% } %>
       });
@@ -258,7 +267,7 @@
             }
           } catch (err) {
             console.error("Error submitting note:", err);
-            alert("An error occurred while adding the note. Please try again.");
+            alert("An error occurred while adding the note. Please check if you are signed in or try again.");
           }
         });
     

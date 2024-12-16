@@ -35,7 +35,7 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   alt_text = xss(alt_text);
   reportImage = xss(reportImage);
 
-  errors = [];
+  let errors = [];
   try {
     reportLocation = validation.verifyStr(reportLocation, `reportLocation`);
   } catch (e) {
@@ -49,16 +49,16 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   try {
     alt_text = validation.verifyStr(alt_text, `alt_text`);
   } catch (e) {
-    errors.push(e.message);
+    return; // TODO: figure out how to tell if the image is submitted
+    if (reportImage.trim()) errors.push(e.message);
   }
   try {
     reportImage = validation.imageValidation(reportImage);
   } catch (e) {
-    errors.push(e.message);
+    if (reportImage.trim()) errors.push(e.message);
   }
 
   if (errors.length > 0) {
-    // TODO: make this actually go back to the page and re-render the inputs
     return res.status(400).render("pages/reporting", {
       formData: { reportLocation, reportText, alt_text },
       errors,
