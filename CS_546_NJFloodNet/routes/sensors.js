@@ -37,6 +37,15 @@ const router = Router();
 import sensorData from "../data/sensors.js";
 import validation from "../validation.js";
 
+const ensureLoggedIn = (req, res, next) => {
+  if (!req.session || !req.session.userInfo) {
+    // Set a warning message in the session
+    req.session.warning = "You must log in to perform this action.";
+    return res.redirect("/signin");
+  }
+  next();
+};
+
 router
   .route("/")
   .get(async (req, res) => {
@@ -264,6 +273,44 @@ router
 
     // TODO: decide what to return here
     return res.json({ sensorData: deleted.data });
+  });
+
+  router.route("/:id/notes").post(async (req, res) => {
+    let sensorId = req.params.id;
+    let { note } = req.body;
+  
+    // Ensure the user is logged in
+    if (!req.session || !req.session.userInfo) {
+      // Store a warning message in the session
+      req.session.warning = "You must log in to add a note.";
+      return res.redirect("/signin"); // Redirect to the sign-in page
+    }
+  
+    // Get the username of the logged-in user
+    const username = req.session.userInfo.username;
+  
+    // Validate inputs
+    try {
+      sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
+      note = validation.verifyStr(note, "note");
+      if (!username) throw new Error("Username is required to add a note.");
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+  
+    // Add the note to the sensor
+    try {
+      const updatedSensor = await sensorData.addNoteToSensor(sensorId, note, username);
+  
+      if (!updatedSensor) {
+        return res.status(500).json({ error: "Failed to add note to sensor" });
+      }
+  
+      return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+    } catch (e) {
+      console.error("Error adding note:", e.message || e);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
   });
 
 export default router;

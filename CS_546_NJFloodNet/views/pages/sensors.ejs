@@ -45,21 +45,25 @@
       <% if (sensor) { %>
       <div class="card mb-4">
         <div class="card-header text-center">
-          <h3>Sensor <%= sensor.sensorNumber %>: <%= sensor.sensorName %></h3>
+          <h3>Sensor <%= sensor.sensorNumber %></h3>
           <p><strong>Location:</strong> <%= sensor.location %></p>
           <p><strong>Status:</strong> <%= sensor.status %></p>
           <p><strong>Coordinates:</strong> <%= sensor.coords %></p>
           <p>
-            <strong>Notes:</strong> <%= sensor.notes.length > 0 ?
-            sensor.notes.join(', ') : "No notes available" %>
+            <strong>Notes:</strong>
+            <% if (sensor.notes && sensor.notes.length > 0) { %>
+              <ul>
+                <% sensor.notes.forEach(note => { %>
+                  <li>
+                    <strong><%= note.author %>:</strong> <%= note.text %> 
+                    <small>(<%= new Date(note.timestamp).toLocaleString() %>)</small>
+                  </li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              No notes available.
+            <% } %>
           </p>
-        </div>
-        <div class="card-body text-center">
-          <img
-            src="<%= sensor.image.startsWith('./') ? sensor.image.replace('./', '/public/') : sensor.image %>"
-            alt="Sensor Image"
-            style="max-width: 100%; height: auto; border-radius: 8px"
-          />
         </div>
       </div>
 
@@ -79,9 +83,8 @@
             </div>
           </div>
           <button id="filterBtn" class="btn btn-primary">Filter Data</button>
-          <button id="download_btn" class="btn btn-success ms-3">
-            Download Data
-          </button>
+          <button id="downloadBtn" class="btn btn-success ms-3">Download Data</button>
+
         </div>
       </div>
 
@@ -92,11 +95,10 @@
         </div>
         <div class="card-body">
           <% if (sensor.measurements && sensor.measurements.length > 0) { %>
-          <canvas id="chart-<%= sensor._id %>" class="chart"></canvas>
+          <canvas id="distanceChart" class="chart"></canvas>
+          <canvas id="rainChart" class="chart mt-4"></canvas>
           <% } else { %>
-          <p class="text-center">
-            No measurement data available for this sensor.
-          </p>
+          <p class="text-center">No measurement data available for this sensor.</p>
           <% } %>
         </div>
       </div>
@@ -105,84 +107,111 @@
       <% } %>
     </div>
 
+    <div class="card mb-4">
+      <div class="card-header text-center">
+        <h3>Add Notes</h3>
+      </div>
+      <div class="card-body text-center">
+        <form id="addNoteForm" method="POST" action="/sensors/<%= sensor._id %>/notes">
+          <div class="form-group" style="width: 100%;">
+            <label for="note" class="form-label"><strong>New Note:</strong></label>
+            <textarea
+              id="note"
+              name="note"
+              rows="5"
+              style="width: 100%; box-sizing: border-box; resize: vertical;"
+              placeholder="Enter your note here..."
+              required
+            ></textarea>
+          </div>
+          <div class="form-group" style="width: 100%;">
+            <button type="submit" class="btn btn-primary w-100 mt-3">Add Note</button>
+          </div>
+        </form>
+      </div>
+    </div>    
+
     <!-- Include footer -->
     <div><%- include('../partials/footer'); %></div>
 
-    <!-- JavaScript for rendering chart -->
+    <!-- JavaScript for rendering charts -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-
         const filterBtn = document.getElementById("filterBtn");
         const download_btn = document.getElementById("download_btn");
 
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
-          const ctx = document.getElementById("chart-<%= sensor._id %>").getContext("2d");
-          window['sensor']= <%- JSON.stringify(sensor) %>;
-          // Extract timestamps and flood depths (or other relevant data)
-          const timestamps = <%- JSON.stringify(sensor.measurements.map(m => m.timestamp.toString())) %>;
-          const floodDepths = <%- JSON.stringify(sensor.measurements.map(m => m.distanceMm)) %>;
+        const sensorData = <%- JSON.stringify(sensor.measurements) %>;
+        const timestamps = sensorData.map((m) => m.timestamp.toString());
+        const floodDepths = sensorData.map((m) => m.distanceMm);
+        const rainAccumulation = sensorData.map((m) => m.rainAccMm || 0);
 
-         const chart = new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: timestamps,
-              datasets: [
-                {
-                  label: "Flood Depth (mm)",
-                  data: floodDepths,
-                  borderColor: "#3b93bd",
-                  backgroundColor: "rgba(0, 123, 255, 0.2)",
-                },
-              ],
-            },
-            options: { responsive: true },
-          });
+        // Distance Chart
+        const ctxDistance = document.getElementById("distanceChart").getContext("2d");
+        const distanceChart = new Chart(ctxDistance, {
+          type: "line",
+          data: {
+            labels: timestamps,
+            datasets: [{ label: "Flood Depth (mm)", data: floodDepths, borderColor: "#3b93bd", backgroundColor: "rgba(0, 123, 255, 0.2)", fill: true }],
+          },
+          options: { responsive: true },
+        });
 
-            filterBtn.addEventListener("click", () => {    // Added for chart filter
-            const startDate = new Date(document.getElementById("startDate").value);
-            const endDate = new Date(document.getElementById("endDate").value);
-            if(startDate > endDate)
-            {
-              alert("start date should be less than the end date.");
-            }
+        // Rain Accumulation Chart
+        const ctxRain = document.getElementById("rainChart").getContext("2d");
+        const rainChart = new Chart(ctxRain, {
+          type: "line",
+          data: {
+            labels: timestamps,
+            datasets: [{ label: "Rain Accumulation (mm)", data: rainAccumulation, borderColor: "green", backgroundColor: "rgba(0, 255, 0, 0.2)", fill: true }],
+          },
+          options: { responsive: true },
+        });
 
-            if(startDate > Date.now())
-            {
-              alert("Start date can't be future date.")
-            }
+        // Filtering Logic
+        filterBtn.addEventListener("click", () => {
+          const startDate = new Date(document.getElementById("startDate").value);
+          const endDate = new Date(document.getElementById("endDate").value);
 
-            if (!isNaN(startDate) && !isNaN(endDate)) {
-              const filteredData = window.sensor.measurements.filter(m => {
-                const date = new Date(m.timestamp);
-                return date >= startDate && date <= endDate;
-              });
-              window['filteredData'] = filteredData;
-              const filteredTimestamps = filteredData.map(m => m.timestamp.toString());
-              const filteredFloodDepths = filteredData.map(m => m.distanceMm);
-
-              chart.data.labels = filteredTimestamps;  // Added for chart updation after applying the filter
-              chart.data.datasets[0].data = filteredFloodDepths;
-              chart.update();
-            } else {
-              alert("Please select valid start and end dates.");
-            }
-          });
-
-          download_btn.addEventListener("click", () => {   // Added to download the data in to the CVS
-            let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm)\n";
-            const filteredData = window.filteredData || window.sensor.measurements;
-            filteredData.forEach(m => {
-              csvContent += `${m.timestamp},${m.distanceMm}\n`;
+          if (!isNaN(startDate) && !isNaN(endDate)) {
+            const filteredData = sensorData.filter((m) => {
+              const date = new Date(m.timestamp);
+              return date >= startDate && date <= endDate;
             });
 
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "SensorData.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const filteredTimestamps = filteredData.map((m) => m.timestamp.toString());
+            const filteredFloodDepths = filteredData.map((m) => m.distanceMm);
+            const filteredRain = filteredData.map((m) => m.rainAccMm || 0);
+
+            // Update both charts
+            distanceChart.data.labels = filteredTimestamps;
+            distanceChart.data.datasets[0].data = filteredFloodDepths;
+            distanceChart.update();
+
+            rainChart.data.labels = filteredTimestamps;
+            rainChart.data.datasets[0].data = filteredRain;
+            rainChart.update();
+          } else {
+            alert("Please select valid start and end dates.");
+          }
+        });
+
+        // Download Logic
+        downloadBtn.addEventListener("click", () => {
+          let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm),Rain Accumulation (mm)\n";
+          sensorData.forEach((m) => {
+            csvContent += `${m.timestamp},${m.distanceMm},${m.rainAccMm || 0}\n`;
+
           });
+
+          const encodedUri = encodeURI(csvContent);
+          const link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          link.setAttribute("download", "sensor_data.csv");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
         <% } %>
       });
     </script>

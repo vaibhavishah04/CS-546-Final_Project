@@ -13,7 +13,9 @@ router
       next();
     },
     async (req, res) => {
-      return res.render("pages/signin");
+      const warningMessage = req.session.warning || null; // Retrieve warning
+      req.session.warning = null; // Clear warning after use
+      return res.render("pages/signin", { errors: [], warning: warningMessage });
     }
   )
   .post(

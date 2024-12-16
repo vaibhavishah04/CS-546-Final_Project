@@ -142,6 +142,41 @@ const deleteSensor = async (sensorId) => {
   }
 };
 
+// Append a note to a sensor's notes array
+const addNoteToSensor = async (sensorId, note, username) => {
+  if (!ObjectId.isValid(sensorId)) throw new Error("Invalid sensor ID.");
+  note = validation.verifyStr(note, "note");
+  username = validation.verifyStr(username, "username");
+
+  const sensorCollection = await sensors();
+  const objectId = new ObjectId(sensorId);
+
+  const sensor = await getSensorByMongoId(objectId);
+  if (!sensor) throw new Error("Sensor not found.");
+
+  try {
+    const noteObject = {
+      text: note,
+      author: username,
+      timestamp: new Date().toISOString(),
+    };
+
+    const updateResult = await sensorCollection.updateOne(
+      { _id: objectId },
+      { $push: { notes: noteObject } }
+    );
+
+    if (updateResult.modifiedCount === 0) {
+      throw new Error("Failed to add note to sensor.");
+    }
+
+    return await getSensorByMongoId(objectId);
+  } catch (e) {
+    throw new Error(`Error adding note to sensor: ${e.message}`);
+  }
+};
+
+
 export default {
   addSensor,
   getSensorByIdOrName,
@@ -150,4 +185,5 @@ export default {
   deleteSensor,
   getSensorByMongoId,
   getSensorByMongoIdStr,
+  addNoteToSensor,
 };
