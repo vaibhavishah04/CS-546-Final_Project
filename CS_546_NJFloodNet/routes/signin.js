@@ -45,6 +45,7 @@ router
 
       // Set session and redirect to dashboard
       req.session.userInfo = {
+        id:userInfo.userid,
         username: userInfo.username,
         isAdmin: userInfo.isAdmin,
         firstName: userInfo.firstName,

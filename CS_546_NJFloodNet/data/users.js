@@ -31,11 +31,11 @@ const createUser = async (
 ) => {
   let usernameOk = userVal.valid_username(username);
   // TODO: make a verifyFirstName function
-  firstName = validation.verifyStr(firstName, `firstName`);
+  let firstNameOk = validation.verifyStr(firstName, `firstName`);
   // TODO: make a verifyLastName function
-  lastName = validation.verifyStr(lastName, `lastName`);
+  let lastNameOk = validation.verifyStr(lastName, `lastName`);
   let emailOk = userVal.valid_email(email);
-  city = validation.verifyStr(city, `city`);
+  let cityOk = validation.verifyStr(city, `city`);
   let stateOk = userVal.valid_state(state);
   let passwordOk = userVal.valid_password(password);
   let isAdminOk = typeof isAdmin === "boolean";
@@ -97,6 +97,7 @@ const validateUserCredentials = async (username, password) => {
 
   // User credentials are valid, return the user document
   return {
+    userid:user._id,
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -118,10 +119,10 @@ const isAdmin = async (username) => {
 };
 
 // Retrieve a user by their ID
-const getUserById = async (username) => {
+const getUserById = async (id) => {
   // Fetch the user document from the database
   const userData = await users();
-  const user = await userData.findOne({ _id: new ObjectId(username) });
+  const user = await userData.findOne({ _id: new ObjectId(id) });
   if (!user) throw new Error("User not found");
 
   // Return the user document

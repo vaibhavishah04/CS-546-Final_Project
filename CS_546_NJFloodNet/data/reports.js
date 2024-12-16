@@ -3,6 +3,7 @@ import sensorVal from "../validation/sensor_val.js";
 import userVal from "../validation/user_val.js";
 import { reports } from "../config/mongoCollections.js";
 import validation from "../validation.js";
+import { ObjectId } from "mongodb";
 
 /**
  * reports.js
@@ -20,44 +21,46 @@ import validation from "../validation.js";
 // Add a new report, including optional image uploads
 const addReport = async (
   user_id,
-  username,
-  timestamp,
   location,
   reportText,
-  reportImage
+  reportImage,
+  alt_text
 ) => {
   // Validate the input data
-  const userIdOk = userData.getUserById(user_id);
+  const userIdOk = await userData.getUserById(user_id);
   if (userIdOk === null) throw new Error("Invalid user_id");
-
-  const usernameOk = userVal.valid_username(username);
-  if (!usernameOk) throw new Error("Invalid username");
-
-  const timestampOk = sensorVal.valid_timestamp(timestamp);
-  if (!timestampOk) throw new Error("Invalid timestamp");
 
   location = validation.verifyStr(location, `location`);
   reportText = validation.verifyReportText(reportText);
+  alt_text =validation.verifyStr(alt_text,'alt_text');
 
   // If an image is provided, validate and save it. Skip if no image is provided.
 
-  let imageUrl = null;
-
   if (reportImage) {
-    // 1. Validate the image file type and size
-    // 2. Upload the image to a storage service (e.g., AWS S3, Google Cloud Storage, etc.)
-    // 3. Save the URL of the uploaded image in the report data
-    // TODO: Implement image validation and upload logic here
+    
+    if (reportImage) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+      const maxSize = 5 * 1024 * 1024; 
+    
+      if (!allowedTypes.includes(reportImage.mimetype)) {
+        throw new Error("Invalid image type. Only JPG, PNG, and GIF allowed.");
+      }
+    
+      if (reportImage.size > maxSize) {
+        throw new Error("Image exceeds 5MB size limit.");
+      }
+        
   }
+}
 
   const reportData = await reports();
   const newReport = {
-    user_id: new ObjectId(user_id),
-    username: username,
-    timestamp: new Date(timestamp),
+    user_id: user_id,
+    timestamp: new Date(),
     location: location,
     reportText: reportText,
-    reportImage: imageUrl,
+    reportImage: reportImage.path,
+    alt_text: alt_text
   };
   const insertInfo = await reportData.insertOne(newReport);
   const insertedReport = await reportData.findOne(insertInfo.insertedId);
@@ -71,7 +74,7 @@ const getAllReports = async (options = {}) => {
     const allReports = await reportData.find(options).toArray();
     return allReports;
   } catch (e) {
-    throw new Error(e);
+    throw new Error(`Unable to retrieve data.'${e}`);
   }
 };
 
