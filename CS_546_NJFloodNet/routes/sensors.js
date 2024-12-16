@@ -61,7 +61,7 @@ router
     // if there are no sensors, return error
     if (!sensors) return res.status(500).json({ error: e });
 
-    return res.render("pages/sensors", { sensor: sensors });
+    return res.render("pages/sensors", {user:req.session.userInfo, sensor: sensors });
   })
   .post(async (req, res) => {
     // get data
