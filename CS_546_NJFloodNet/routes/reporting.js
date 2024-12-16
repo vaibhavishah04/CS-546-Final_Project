@@ -58,7 +58,6 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   }
 
   if (errors.length > 0) {
-    // TODO: make this actually go back to the page and re-render the inputs
     return res.status(400).render("pages/reporting", {
       formData: { reportLocation, reportText, alt_text },
       errors,
