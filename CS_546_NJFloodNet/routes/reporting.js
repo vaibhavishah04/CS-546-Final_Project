@@ -2,7 +2,7 @@ import { Router } from "express";
 import validation from "../validation.js";
 import multer from "multer";
 import path from "path"; 
-import  addReport  from "../data/reports.js";
+import  reportFunctions  from "../data/reports.js";
 const router = Router();
 
 const storage = multer.diskStorage({
@@ -24,18 +24,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post('/reporting/add', upload.single("reportImage"), async (req, res) => {
-  const { _id, user_id, timestamp, location, reportext } = req.body;
+router.post('/add', upload.single("reportImage"), async (req, res) => {
+  const {reportLocation, reportText,alt_text } = req.body;
   const reportImage = req.file; 
 
   try {
-    if (!reportext || !location) {
+    if (!reportText || !reportLocation) {
       return res.status(400).json({ error: "Description and Location are required." });
     }
 
-    validation.imageValidation(req.body, reportImage);
+    validation.imageValidation(reportImage);
 
-    const addReportingData = await addReport(_id, user_id, timestamp, location, reportext, reportImage);
+    const addReportingData = await reportFunctions.addReport(req.session.userInfo.id,  reportLocation, reportText, reportImage, alt_text);
 
     res.status(200).json({ 
       success: true,
@@ -43,7 +43,7 @@ router.post('/reporting/add', upload.single("reportImage"), async (req, res) => 
       report: addReportingData
     });
   } catch (e) {
-    console.error("Error in /reporting/add:", error);
+    console.error("Error in /reporting/add:", e);
 
     res.status(500).json({ error: "Internal Server Error", details: e.message });
   }

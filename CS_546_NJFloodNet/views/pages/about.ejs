@@ -1,15 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
-   <!-- <title>About Page - NJFloodNet</title>-->
-   <title><%= __('page_title') %></title>
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <!-- <title>About Page - NJFloodNet</title>-->
+    <title><%= __('page_title') %></title>
   </head>
   <body>
     <div><%- include('../partials/header'); %></div>
@@ -23,19 +27,18 @@
           <li><a href="/reporting"><%= __('header_reporting') %></a></li>
         </ul>
       </nav>
-<br>
+      <br />
       <div>
-    <% if (currentlanguage === 'en') { %>
-      <a href="?lang=es">
-        <button><%= __('translate_button') %> Spanish</button>
-      </a>
-    <% } else { %>
-      <a href="?lang=en">
-        <button><%= __('translate_button') %> English</button>
-      </a>
-    <% } %>
-  </div>
-
+        <% if (currentlanguage === 'en') { %>
+        <a href="?lang=es">
+          <button><%= __('translate_button') %> Spanish</button>
+        </a>
+        <% } else { %>
+        <a href="?lang=en">
+          <button><%= __('translate_button') %> English</button>
+        </a>
+        <% } %>
+      </div>
     </header>
 
     <main class="about-container">
@@ -63,16 +66,40 @@
       <p><%= __('project_vision') %></p>
 
       <h2><%= __('project_gallery_title') %></h2>
-    <div class="image-gallery">
-      <img src="/public/images/sensor12/overbrook_park.jpeg" alt="<%= __('gallery_image_alt_1') %>">
-      <img src="/public/images/sensor13/brookside_park.jpeg" alt="<%= __('gallery_image_alt_2') %>">
-      <img src="/public/images/sensor14/kmart.jpeg" alt="<%= __('gallery_image_alt_3') %>">
-      <img src="/public/images/sensor15/richard_nugent_park.jpeg" alt="<%= __('gallery_image_alt_4') %>">
-      <img src="/public/images/sensor16/hoboken_terminal.jpeg" alt="<%= __('gallery_image_alt_5') %>">
-      <img src="/public/images/sensor17/davidson_lab.jpeg" alt="<%= __('gallery_image_alt_6') %>">
-      <img src="/public/images/sensor18/hillsdale_public_works.jpeg" alt="<%= __('gallery_image_alt_7') %>">
-      <img src="/public/images/sensor19/Finnegan.jpeg" alt="<%= __('gallery_image_alt_8') %>">
-    </div>
+      <div class="image-gallery">
+        <img
+          src="/public/images/sensor12/overbrook_park.jpeg"
+          alt="<%= __('gallery_image_alt_1') %>"
+        />
+        <img
+          src="/public/images/sensor13/brookside_park.jpeg"
+          alt="<%= __('gallery_image_alt_2') %>"
+        />
+        <img
+          src="/public/images/sensor14/kmart.jpeg"
+          alt="<%= __('gallery_image_alt_3') %>"
+        />
+        <img
+          src="/public/images/sensor15/richard_nugent_park.jpeg"
+          alt="<%= __('gallery_image_alt_4') %>"
+        />
+        <img
+          src="/public/images/sensor16/hoboken_terminal.jpeg"
+          alt="<%= __('gallery_image_alt_5') %>"
+        />
+        <img
+          src="/public/images/sensor17/davidson_lab.jpeg"
+          alt="<%= __('gallery_image_alt_6') %>"
+        />
+        <img
+          src="/public/images/sensor18/hillsdale_public_works.jpeg"
+          alt="<%= __('gallery_image_alt_7') %>"
+        />
+        <img
+          src="/public/images/sensor19/Finnegan.jpeg"
+          alt="<%= __('gallery_image_alt_8') %>"
+        />
+      </div>
       <!--<h1>About NJFloodNet</h1> 
       <p>
         NJFloodNet is a comprehensive web application designed to monitor and manage flood data using IoT technology. This platform 

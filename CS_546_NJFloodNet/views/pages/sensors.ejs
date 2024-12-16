@@ -84,6 +84,7 @@
           </div>
           <button id="filterBtn" class="btn btn-primary">Filter Data</button>
           <button id="downloadBtn" class="btn btn-success ms-3">Download Data</button>
+
         </div>
       </div>
 
@@ -137,7 +138,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const filterBtn = document.getElementById("filterBtn");
-        const downloadBtn = document.getElementById("downloadBtn");
+        const download_btn = document.getElementById("download_btn");
 
         <% if (sensor && sensor.measurements && sensor.measurements.length > 0) { %>
         const sensorData = <%- JSON.stringify(sensor.measurements) %>;
@@ -200,6 +201,7 @@
           let csvContent = "data:text/csv;charset=utf-8,Timestamp,Flood Depth (mm),Rain Accumulation (mm)\n";
           sensorData.forEach((m) => {
             csvContent += `${m.timestamp},${m.distanceMm},${m.rainAccMm || 0}\n`;
+
           });
 
           const encodedUri = encodeURI(csvContent);

@@ -18,75 +18,102 @@
         <div class="signup-form-row">
           <div class="signup-form-group">
             <label class="signup-label" for="username">Username:</label>
-            <input class="signup-input" type="text" id="username" name="username" required />
+            <input
+              class="signup-input"
+              type="text"
+              id="username"
+              name="username"
+              value="<%= (typeof formData !== 'undefined' && formData.username) ? formData.username : '' %>"
+              required
+            />
           </div>
 
           <div class="signup-form-group">
             <label class="signup-label" for="email">Email:</label>
-            <input class="signup-input" type="email" id="email" name="email" required />
+            <input
+              class="signup-input"
+              type="email"
+              id="email"
+              name="email"
+              value="<%= (typeof formData !== 'undefined' && formData.email) ? formData.email : '' %>"
+              required
+            />
           </div>
         </div>
 
         <div class="signup-form-row">
           <div class="signup-form-group">
             <label class="signup-label" for="city">City:</label>
-            <input class="signup-input" type="text" id="city" name="city" required />
+            <input
+              class="signup-input"
+              type="text"
+              id="city"
+              name="city"
+              value="<%= (typeof formData !== 'undefined' && formData.city) ? formData.city : '' %>"
+              required
+            />
           </div>
 
           <div class="signup-form-group">
             <label class="signup-label" for="state">State:</label>
-            <select class="signup-input" id="state" name="state" required>
-              <option value="" disabled selected>Select your state</option>
-              <option value="AL">Alabama - AL</option>
-              <option value="AK">Alaska - AK</option>
-              <option value="AZ">Arizona - AZ</option>
-              <option value="AR">Arkansas - AR</option>
-              <option value="CA">California - CA</option>
-              <option value="CO">Colorado - CO</option>
-              <option value="CT">Connecticut - CT</option>
-              <option value="DE">Delaware - DE</option>
-              <option value="FL">Florida - FL</option>
-              <option value="GA">Georgia - GA</option>
-              <option value="HI">Hawaii - HI</option>
-              <option value="ID">Idaho - ID</option>
-              <option value="IL">Illinois - IL</option>
-              <option value="IN">Indiana - IN</option>
-              <option value="IA">Iowa - IA</option>
-              <option value="KS">Kansas - KS</option>
-              <option value="KY">Kentucky - KY</option>
-              <option value="LA">Louisiana - LA</option>
-              <option value="ME">Maine - ME</option>
-              <option value="MD">Maryland - MD</option>
-              <option value="MA">Massachusetts - MA</option>
-              <option value="MI">Michigan - MI</option>
-              <option value="MN">Minnesota - MN</option>
-              <option value="MS">Mississippi - MS</option>
-              <option value="MO">Missouri - MO</option>
-              <option value="MT">Montana - MT</option>
-              <option value="NE">Nebraska - NE</option>
-              <option value="NV">Nevada - NV</option>
-              <option value="NH">New Hampshire - NH</option>
-              <option value="NJ">New Jersey - NJ</option>
-              <option value="NM">New Mexico - NM</option>
-              <option value="NY">New York - NY</option>
-              <option value="NC">North Carolina - NC</option>
-              <option value="ND">North Dakota - ND</option>
-              <option value="OH">Ohio - OH</option>
-              <option value="OK">Oklahoma - OK</option>
-              <option value="OR">Oregon - OR</option>
-              <option value="PA">Pennsylvania - PA</option>
-              <option value="RI">Rhode Island - RI</option>
-              <option value="SC">South Carolina - SC</option>
-              <option value="SD">South Dakota - SD</option>
-              <option value="TN">Tennessee - TN</option>
-              <option value="TX">Texas - TX</option>
-              <option value="UT">Utah - UT</option>
-              <option value="VT">Vermont - VT</option>
-              <option value="VA">Virginia - VA</option>
-              <option value="WA">Washington - WA</option>
-              <option value="WV">West Virginia - WV</option>
-              <option value="WI">Wisconsin - WI</option>
-              <option value="WY">Wyoming - WY</option>
+            <select
+              class="signup-input"
+              id="state"
+              name="state"
+              value="<%= (typeof formData !== 'undefined' && formData.state) ? formData.state : '' %>"
+              required
+            >
+              <option value="" disabled <%= (locals.formData && formData.state) ? '' : 'selected' %>>Select your state</option>
+              <option value="AL" <%= (locals.formData && formData?.state === "AL") ? 'selected' : '' %>>Alabama - AL</option>
+              <option value="AK" <%= (locals.formData && formData?.state === "AK") ? 'selected' : '' %>>Alaska - AK</option>
+              <option value="AZ" <%= (locals.formData && formData?.state === "AZ") ? 'selected' : '' %>>Arizona - AZ</option>
+              <option value="AR" <%= (locals.formData && formData?.state === "AR") ? 'selected' : '' %>>Arkansas - AR</option>
+              <option value="CA" <%= (locals.formData && formData?.state === "CA") ? 'selected' : '' %>>California - CA</option>
+              <option value="CO" <%= (locals.formData && formData?.state === "CO") ? 'selected' : '' %>>Colorado - CO</option>
+              <option value="CT" <%= (locals.formData && formData?.state === "CT") ? 'selected' : '' %>>Connecticut - CT</option>
+              <option value="DE" <%= (locals.formData && formData?.state === "DE") ? 'selected' : '' %>>Delaware - DE</option>
+              <option value="FL" <%= (locals.formData && formData?.state === "FL") ? 'selected' : '' %>>Florida - FL</option>
+              <option value="GA" <%= (locals.formData && formData?.state === "GA") ? 'selected' : '' %>>Georgia - GA</option>
+              <option value="HI" <%= (locals.formData && formData?.state === "HI") ? 'selected' : '' %>>Hawaii - HI</option>
+              <option value="ID" <%= (locals.formData && formData?.state === "ID") ? 'selected' : '' %>>Idaho - ID</option>
+              <option value="IL" <%= (locals.formData && formData?.state === "IL") ? 'selected' : '' %>>Illinois - IL</option>
+              <option value="IN" <%= (locals.formData && formData?.state === "IN") ? 'selected' : '' %>>Indiana - IN</option>
+              <option value="IA" <%= (locals.formData && formData?.state === "IA") ? 'selected' : '' %>>Iowa - IA</option>
+              <option value="KS" <%= (locals.formData && formData?.state === "KS") ? 'selected' : '' %>>Kansas - KS</option>
+              <option value="KY" <%= (locals.formData && formData?.state === "KY") ? 'selected' : '' %>>Kentucky - KY</option>
+              <option value="LA" <%= (locals.formData && formData?.state === "LA") ? 'selected' : '' %>>Louisiana - LA</option>
+              <option value="ME" <%= (locals.formData && formData?.state === "ME") ? 'selected' : '' %>>Maine - ME</option>
+              <option value="MD" <%= (locals.formData && formData?.state === "MD") ? 'selected' : '' %>>Maryland - MD</option>
+              <option value="MA" <%= (locals.formData && formData?.state === "MA") ? 'selected' : '' %>>Massachusetts - MA</option>
+              <option value="MI" <%= (locals.formData && formData?.state === "MI") ? 'selected' : '' %>>Michigan - MI</option>
+              <option value="MN" <%= (locals.formData && formData?.state === "MN") ? 'selected' : '' %>>Minnesota - MN</option>
+              <option value="MS" <%= (locals.formData && formData?.state === "MS") ? 'selected' : '' %>>Mississippi - MS</option>
+              <option value="MO" <%= (locals.formData && formData?.state === "MO") ? 'selected' : '' %>>Missouri - MO</option>
+              <option value="MT" <%= (locals.formData && formData?.state === "MT") ? 'selected' : '' %>>Montana - MT</option>
+              <option value="NE" <%= (locals.formData && formData?.state === "NE") ? 'selected' : '' %>>Nebraska - NE</option>
+              <option value="NV" <%= (locals.formData && formData?.state === "NV") ? 'selected' : '' %>>Nevada - NV</option>
+              <option value="NH" <%= (locals.formData && formData?.state === "NH") ? 'selected' : '' %>>New Hampshire - NH</option>
+              <option value="NJ" <%= (locals.formData && formData?.state === "NJ") ? 'selected' : '' %>>New Jersey - NJ</option>
+              <option value="NM" <%= (locals.formData && formData?.state === "NM") ? 'selected' : '' %>>New Mexico - NM</option>
+              <option value="NY" <%= (locals.formData && formData?.state === "NY") ? 'selected' : '' %>>New York - NY</option>
+              <option value="NC" <%= (locals.formData && formData?.state === "NC") ? 'selected' : '' %>>North Carolina - NC</option>
+              <option value="ND" <%= (locals.formData && formData?.state === "ND") ? 'selected' : '' %>>North Dakota - ND</option>
+              <option value="OH" <%= (locals.formData && formData?.state === "OH") ? 'selected' : '' %>>Ohio - OH</option>
+              <option value="OK" <%= (locals.formData && formData?.state === "OK") ? 'selected' : '' %>>Oklahoma - OK</option>
+              <option value="OR" <%= (locals.formData && formData?.state === "OR") ? 'selected' : '' %>>Oregon - OR</option>
+              <option value="PA" <%= (locals.formData && formData?.state === "PA") ? 'selected' : '' %>>Pennsylvania - PA</option>
+              <option value="RI" <%= (locals.formData && formData?.state === "RI") ? 'selected' : '' %>>Rhode Island - RI</option>
+              <option value="SC" <%= (locals.formData && formData?.state === "SC") ? 'selected' : '' %>>South Carolina - SC</option>
+              <option value="SD" <%= (locals.formData && formData?.state === "SD") ? 'selected' : '' %>>South Dakota - SD</option>
+              <option value="TN" <%= (locals.formData && formData?.state === "TN") ? 'selected' : '' %>>Tennessee - TN</option>
+              <option value="TX" <%= (locals.formData && formData?.state === "TX") ? 'selected' : '' %>>Texas - TX</option>
+              <option value="UT" <%= (locals.formData && formData?.state === "UT") ? 'selected' : '' %>>Utah - UT</option>
+              <option value="VT" <%= (locals.formData && formData?.state === "VT") ? 'selected' : '' %>>Vermont - VT</option>
+              <option value="VA" <%= (locals.formData && formData?.state === "VA") ? 'selected' : '' %>>Virginia - VA</option>
+              <option value="WA" <%= (locals.formData && formData?.state === "WA") ? 'selected' : '' %>>Washington - WA</option>
+              <option value="WV" <%= (locals.formData && formData?.state === "WV") ? 'selected' : '' %>>West Virginia - WV</option>
+              <option value="WI" <%= (locals.formData && formData?.state === "WI") ? 'selected' : '' %>>Wisconsin - WI</option>
+              <option value="WY" <%= (locals.formData && formData?.state === "WY") ? 'selected' : '' %>>Wyoming - WY</option>
             </select>
           </div>
         </div>
@@ -94,46 +121,80 @@
         <div class="signup-form-row">
           <div class="signup-form-group">
             <label class="signup-label" for="firstName">First Name:</label>
-            <input class="signup-input" type="text" id="firstName" name="firstName" required />
+            <input
+              class="signup-input"
+              type="text"
+              id="firstName"
+              name="firstName"
+              value="<%= (typeof formData !== 'undefined' && formData.firstName) ? formData.firstName : '' %>"
+              required
+            />
           </div>
 
           <div class="signup-form-group">
             <label class="signup-label" for="lastName">Last Name:</label>
-            <input class="signup-input" type="text" id="lastName" name="lastName" required />
+            <input
+              class="signup-input"
+              type="text"
+              id="lastName"
+              name="lastName"
+              value="<%= (typeof formData !== 'undefined' && formData.lastName) ? formData.lastName : '' %>"
+              required
+            />
           </div>
         </div>
 
         <div class="signup-form-row">
           <div class="signup-form-group">
             <label class="signup-label" for="password">Password:</label>
-            <input class="signup-input" type="password" id="password" name="password" required />
+            <input
+              class="signup-input"
+              type="password"
+              id="password"
+              name="password"
+              value="<%= (typeof formData !== 'undefined' && formData.password) ? formData.password : '' %>"
+              required
+            />
           </div>
 
           <div class="signup-form-group">
-            <label class="signup-label" for="passwordConf">Confirm Password:</label>
-            <input class="signup-input" type="password" id="passwordConf" name="passwordConf" required />
+            <label class="signup-label" for="passwordConf"
+              >Confirm Password:</label
+            >
+            <input
+              class="signup-input"
+              type="password"
+              id="passwordConf"
+              name="passwordConf"
+              value="<%= (typeof formData !== 'undefined' && formData.passwordConf) ? formData.passwordConf : '' %>"
+              required
+            />
           </div>
         </div>
 
         <div class="signup-form-group">
           <% if (typeof errors !== "undefined" && errors.length > 0) { %>
-            <div class="error-messages">
-              <ul>
-                <% errors.forEach((error) => { %>
-                  <li><%= error %></li>
-                <% }) %>
-              </ul>
-            </div>
+          <div class="error-messages">
+            <ul>
+              <% errors.forEach((error) => { %>
+              <li><%= error %></li>
+              <% }) %>
+            </ul>
+          </div>
           <% } else { %>
-            <p>Password must contain at least 1 uppercase and lowercase letter, 1 number, and 1 special character</p>
+          <p>
+            Password must contain at least 1 uppercase and lowercase letter, 1
+            number, and 1 special character
+          </p>
           <% } %>
         </div>
 
         <div class="signup-form-group">
-          <button type="submit" class="signup-button" id="submit_button">Sign Up</button>
+          <button type="submit" class="signup-button" id="submit_button">
+            Sign Up
+          </button>
         </div>
       </form>
     </main>
   </body>
 </html>
-

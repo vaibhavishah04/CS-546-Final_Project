@@ -2,11 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/public/css/styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/public/css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/wicg-inert@3/inert.min.js"></script>
 
     <title>Reporting - NJ FloodNet</title>
@@ -31,15 +40,29 @@
     </div>
 
     <div class="btn-container">
-      <a href="#" class="btn" data-toggle="modal" data-target="#reportModal">+ Add A Flood Watch Report</a>
+      <a href="#" class="btn" data-toggle="modal" data-target="#reportModal"
+        >+ Add A Flood Watch Report</a
+      >
     </div>
 
-    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="reportModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="reportModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="reportModalLabel">Add Flood Report</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -47,30 +70,56 @@
             <form id="reportForm" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="reportText">Description</label>
-                <textarea class="form-control" id="reportText" name="reportText" placeholder="Enter description" rows="2" required></textarea>
+                <textarea
+                  class="form-control"
+                  id="reportText"
+                  name="reportText"
+                  placeholder="Enter description"
+                  rows="2"
+                  required
+                ></textarea>
               </div>
 
               <div class="form-group">
                 <label for="reportLocation">Location</label>
-                <input type="text" class="form-control" id="reportLocation" name="reportLocation" placeholder="Enter location" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="reportLocation"
+                  name="reportLocation"
+                  placeholder="Enter location"
+                  required
+                />
               </div>
 
               <div class="form-group">
-                <label for="reportFile">Upload Image (Optional)</label>
-                <input type="file" class="form-control-file" id="reportFile" name="reportFile" accept="image/*">
+                <label for="reportImage">Upload Image (Optional)</label>
+                <input type="file" class="form-control-file" id="reportImage" name="reportImage" accept="image/*">
               </div>
 
               <div class="form-group">
                 <label for="altText">Alt Text for Image (Optional)</label>
-                <input type="text" class="form-control" id="altText" placeholder="Provide an alt text for the image" />
+                <input type="text" class="form-control" name= "alt_text" id="altText" placeholder="Provide an alt text for the image" />
               </div>
 
-              <div id="error-message" class="text-danger mt-3" style="display: none;"></div>
+              <div
+                id="error-message"
+                class="text-danger mt-3"
+                style="display: none"
+              ></div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" form="reportForm" class="btn btn-primary">Submit</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" form="reportForm" class="btn btn-primary">
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -86,7 +135,7 @@
       const errorMsg = document.getElementById("error-message");
 
       function setInertState(isInert) {
-        document.querySelectorAll('body > *:not(.modal)').forEach((element) => {
+        document.querySelectorAll("body > *:not(.modal)").forEach((element) => {
           element.inert = isInert;
         });
       }
@@ -98,33 +147,34 @@
 
       $(reportModal).on("hidden.bs.modal", function () {
         setInertState(false);
+        reportForm.reset();
         document.querySelector('.btn[data-target="#reportModal"]').focus();
       });
 
       function validateFile(file) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const maxSize = 5 * 1024 * 1024; 
+        const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+        const maxSize = 5 * 1024 * 1024;
 
         if (!allowedTypes.includes(file.type)) {
-          return "Only JPG, PNG, and GIF images are allowed.";
+          alert("Only JPG, PNG, and GIF images are allowed.");
         }
 
         if (file.size > maxSize) {
-          return "The file size exceeds the 5MB limit.";
+          alert("The file size exceeds the 5MB limit.");
         }
 
-        return null; 
+        return null;
       }
 
       reportForm.addEventListener("submit", async (e) => {
-        e.preventDefault();  
-        errorMsg.style.display = "none";  
+        e.preventDefault();
+        errorMsg.style.display = "none";
         errorMsg.innerText = "";
 
         const reportText = document.getElementById("reportText").value;
         const reportLocation = document.getElementById("reportLocation").value;
         const altText = document.getElementById("altText").value;
-        const reportFile = document.getElementById("reportFile").files[0];
+        const reportImage = document.getElementById("reportImage").files[0];
 
         if (!reportText || !reportLocation) {
           errorMsg.innerText = "Description and Location are required.";
@@ -132,14 +182,14 @@
           return;
         }
 
-        if (reportFile && !altText) {
+        if (reportImage && !altText) {
           errorMsg.innerText = "Alt text is required if an image is uploaded.";
           errorMsg.style.display = "block";
           return;
         }
 
-        if (reportFile) {
-          const fileError = validateFile(reportFile);
+        if (reportImage) {
+          const fileError = validateFile(reportImage);
           if (fileError) {
             errorMsg.innerText = fileError;
             errorMsg.style.display = "block";
@@ -162,7 +212,7 @@
           if (response.ok) {
             alert("Report submitted successfully!");
             $(reportModal).modal("hide");
-            reportForm.reset(); 
+            reportForm.reset();
           } else {
             errorMsg.innerText = result.error || "Submission failed.";
             errorMsg.style.display = "block";
@@ -173,5 +223,8 @@
         }
       });
     </script>
+
+  <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
+
   </body>
 </html>

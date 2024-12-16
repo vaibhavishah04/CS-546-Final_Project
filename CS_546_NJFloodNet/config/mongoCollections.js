@@ -13,9 +13,6 @@ const getCollectionFn = (collection) => {
   };
 };
 
-// TODO: Make this whatever collections we have
 export const reports = getCollectionFn("Reports");
 export const users = getCollectionFn("Users");
-export const sensors = getCollectionFn("Sensors")
-
-
+export const sensors = getCollectionFn("Sensors");

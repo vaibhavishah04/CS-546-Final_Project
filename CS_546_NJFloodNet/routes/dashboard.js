@@ -1,6 +1,6 @@
 import { Router } from "express";
-import sensordata from "../data/sensors.js";
-import measurementdata from "../data/measurements.js";
+import sensorData from "../data/sensors.js";
+// import measurementdata from "../data/measurements.js";
 const router = Router();
 
 router.route("/").get(
@@ -8,14 +8,12 @@ router.route("/").get(
     next();
   },
   async (req, res) => {
-    try{
-
-      const sensors1 = await sensordata.getAllSensors();
+    try {
+      const sensors = await sensorData.getAllSensors();
       //const measurements = await measurementdata.getMeasurements();
-      return res.render("pages/dashboard", {sensors: sensors1});
-    }
-    catch(e){
-        res.status(404).send({error: 'No Result Found!'});
+      return res.render("pages/dashboard", { sensors });
+    } catch (e) {
+      return res.status(500).json({ error: e });
     }
   }
 );

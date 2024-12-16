@@ -114,7 +114,7 @@ router.route("/:sensorId").get(async (req, res) => {
   try {
     sensor = sensorData.getSensorByIdOrName(sensorId);
   } catch (e) {
-    return res.status(404).json({ error: e });
+    return res.status(404).render("pages/error");
   }
 
   // TODO: Add measurement page?
