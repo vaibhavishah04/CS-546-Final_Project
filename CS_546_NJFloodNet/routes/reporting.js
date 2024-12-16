@@ -49,12 +49,12 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   try {
     alt_text = validation.verifyStr(alt_text, `alt_text`);
   } catch (e) {
-    errors.push(e.message);
+    if (reportImage) errors.push(e.message);
   }
   try {
     reportImage = validation.imageValidation(reportImage);
   } catch (e) {
-    errors.push(e.message);
+    if (reportImage) errors.push(e.message);
   }
 
   if (errors.length > 0) {
