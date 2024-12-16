@@ -232,11 +232,11 @@
         addImageToGallery(result.path, altText || "Flood report image");
       }  
           } else {
-            errorMsg.innerText = result.error || "Submission failed.";
+            errorMsg.innerText = `${result.error}` || "Submission failed.";
             errorMsg.style.display = "block";
           }
         } catch (error) {
-          errorMsg.innerText = "An unexpected error occurred.";
+          errorMsg.innerText = `An unexpected error occurred.`;
           errorMsg.style.display = "block";
         }
       });
