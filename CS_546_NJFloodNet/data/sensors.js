@@ -176,6 +176,38 @@ const addNoteToSensor = async (sensorId, note, username) => {
   }
 };
 
+// Update a specific note
+const updateNote = async (sensorId, noteId, newText, username) => {
+  const sensorCollection = await sensors();
+  const objectId = new ObjectId(sensorId);
+
+  const result = await sensorCollection.updateOne(
+    { _id: objectId, "notes._id": new ObjectId(noteId), "notes.author": username },
+    { $set: { "notes.$.text": newText, "notes.$.timestamp": new Date() } }
+  );
+
+  if (result.modifiedCount === 0) {
+    throw new Error("Unauthorized or note not found.");
+  }
+  return await getSensorByMongoId(objectId);
+};
+
+// Delete a specific note
+const deleteNote = async (sensorId, noteId, username) => {
+  const sensorCollection = await sensors();
+  const objectId = new ObjectId(sensorId);
+
+  const result = await sensorCollection.updateOne(
+    { _id: objectId },
+    { $pull: { notes: { _id: new ObjectId(noteId), author: username } } }
+  );
+
+  if (result.modifiedCount === 0) {
+    throw new Error("Unauthorized or note not found.");
+  }
+  return await getSensorByMongoId(objectId);
+};
+
 
 export default {
   addSensor,
@@ -186,4 +218,6 @@ export default {
   getSensorByMongoId,
   getSensorByMongoIdStr,
   addNoteToSensor,
+  updateNote,
+  deleteNote,
 };

@@ -355,4 +355,59 @@ router.route("/:id/notes").post(async (req, res) => {
   }
 });
 
+// Update a note
+router.route("/:sensorId/notes/:noteId").put(async (req, res) => {
+  if (!req.session || !req.session.userInfo) {
+    return res.status(401).json({ error: "You must log in to update a note." });
+  }
+
+  let { sensorId, noteId } = req.params;
+  let { newText } = req.body;
+  const username = req.session.userInfo.username;
+
+  sensorId = xss(sensorId);
+  noteId = xss(noteId);
+  newText = xss(newText);
+
+  try {
+    sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
+    noteId = validation.verifyMongoId_str(noteId, "noteId");
+    newText = validation.verifyStr(newText, "newText");
+
+    const updatedSensor = await sensorData.updateNote(sensorId, noteId, newText, username);
+    if (!updatedSensor) throw new Error("Note not found or unauthorized.");
+
+    return res.json({ success: true, newText });
+  } catch (e) {
+    console.error("Error updating note:", e.message);
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+// Delete a note
+router.route("/:sensorId/notes/:noteId").delete(async (req, res) => {
+  if (!req.session || !req.session.userInfo) {
+    return res.status(401).json({ error: "You must log in to delete a note." });
+  }
+
+  let { sensorId, noteId } = req.params;
+  const username = req.session.userInfo.username;
+
+  sensorId = xss(sensorId);
+  noteId = xss(noteId);
+
+  try {
+    sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
+    noteId = validation.verifyMongoId_str(noteId, "noteId");
+
+    const updatedSensor = await sensorData.deleteNote(sensorId, noteId, username);
+    if (!updatedSensor) throw new Error("Note not found or unauthorized.");
+
+    return res.json({ success: true });
+  } catch (e) {
+    console.error("Error deleting note:", e.message);
+    return res.status(500).json({ error: e.message });
+  }
+});
+
 export default router;
