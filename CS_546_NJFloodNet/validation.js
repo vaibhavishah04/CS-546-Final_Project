@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import path from 'path';
 
 /**
  * Verifies that a given string is a non-empty string, and trims it
@@ -172,7 +173,7 @@ const verifySensorNumber = (sensorNumber) => {
 const verifyReportText = (reportText) => {
   const maxReportTextLength = 500;
 
-  reportText = verifyStr(report, `report`);
+  reportText = verifyStr(reportText, `report`);
   if (reportText.length > maxReportTextLength)
     throw new Error(
       `Reports must be less than ${maxReportTextLength} characters, this was ${reportText.length}`
@@ -180,37 +181,27 @@ const verifyReportText = (reportText) => {
   return reportText;
 };
 
-const imageValidation = (body , file )=>{
-  if (!body.reportText || !body.location) {
-    throw "Description and Location can't be empty." ;
-  }
+const imageValidation = ( reportImage )=>{
 
-  if (reportFile && !["image/jpeg", "image/png", "image/gif"].includes(reportFile.mimetype)) {
+  if (reportImage && !["image/jpeg", "image/png", "image/gif"].includes(reportImage.mimetype)) {
     throw "Invalid file type. Only images are allowed.";
   }
-  if (!file) {
+  if (!reportImage) {
     return true;
   }
 
   const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
 
-  if (!allowedMimes.includes(file.mimetype)) {
+  if (!allowedMimes.includes(reportImage.mimetype)) {
     throw new Error('Invalid file type. Only JPEG, PNG, and GIF files are allowed.');
   }
 
   const maxSize = 5 * 1024 * 1024; // 5MB
-  if (file.size > maxSize) {
+  if (reportImage.size > maxSize) {
     throw new Error('File is too large. Max size is 5MB.');
   }
 
-  const fileExt = path.extname(file.originalname).toLowerCase();
-  if (!allowedMimes.some((mime) => mime.endsWith(fileExt))) {
-    throw new Error('Invalid file extension. Allowed extensions are .jpg, .jpeg, .png, .gif.');
-  }
-
   return true;
-
-
 };
 
 export default {

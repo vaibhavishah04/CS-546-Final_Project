@@ -93,24 +93,13 @@
               </div>
 
               <div class="form-group">
-                <label for="reportFile">Upload Image (Optional)</label>
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="reportFile"
-                  name="reportFile"
-                  accept="image/*"
-                />
+                <label for="reportImage">Upload Image (Optional)</label>
+                <input type="file" class="form-control-file" id="reportImage" name="reportImage" accept="image/*">
               </div>
 
               <div class="form-group">
                 <label for="altText">Alt Text for Image (Optional)</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="altText"
-                  placeholder="Provide an alt text for the image"
-                />
+                <input type="text" class="form-control" name= "alt_text" id="altText" placeholder="Provide an alt text for the image" />
               </div>
 
               <div
@@ -158,6 +147,7 @@
 
       $(reportModal).on("hidden.bs.modal", function () {
         setInertState(false);
+        reportForm.reset();
         document.querySelector('.btn[data-target="#reportModal"]').focus();
       });
 
@@ -166,11 +156,11 @@
         const maxSize = 5 * 1024 * 1024;
 
         if (!allowedTypes.includes(file.type)) {
-          return "Only JPG, PNG, and GIF images are allowed.";
+          alert("Only JPG, PNG, and GIF images are allowed.");
         }
 
         if (file.size > maxSize) {
-          return "The file size exceeds the 5MB limit.";
+          alert("The file size exceeds the 5MB limit.");
         }
 
         return null;
@@ -184,7 +174,7 @@
         const reportText = document.getElementById("reportText").value;
         const reportLocation = document.getElementById("reportLocation").value;
         const altText = document.getElementById("altText").value;
-        const reportFile = document.getElementById("reportFile").files[0];
+        const reportImage = document.getElementById("reportImage").files[0];
 
         if (!reportText || !reportLocation) {
           errorMsg.innerText = "Description and Location are required.";
@@ -192,14 +182,14 @@
           return;
         }
 
-        if (reportFile && !altText) {
+        if (reportImage && !altText) {
           errorMsg.innerText = "Alt text is required if an image is uploaded.";
           errorMsg.style.display = "block";
           return;
         }
 
-        if (reportFile) {
-          const fileError = validateFile(reportFile);
+        if (reportImage) {
+          const fileError = validateFile(reportImage);
           if (fileError) {
             errorMsg.innerText = fileError;
             errorMsg.style.display = "block";
@@ -233,5 +223,8 @@
         }
       });
     </script>
+
+  <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
+
   </body>
 </html>
