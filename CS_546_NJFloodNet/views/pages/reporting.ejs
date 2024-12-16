@@ -133,7 +133,11 @@
         </div>
       </div>
     </div>
-
+    <div id="imageGallery" class="container mt-5">
+      <h3>Uploaded Flood Reports</h3>
+      <div class="row" id="galleryRow"></div>
+    </div>
+    
     <div><%- include('../partials/footer'); %></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -207,7 +211,7 @@
         }
 
         const formData = new FormData(reportForm);
-        console.log("Submitting form data...");
+//        console.log("Submitting form data...");
 
         try {
           const response = await fetch("/reporting/add", {
@@ -222,6 +226,11 @@
             alert("Report submitted successfully!");
             $(reportModal).modal("hide");
             reportForm.reset();
+
+
+          if (result.path) {
+        addImageToGallery(result.path, altText || "Flood report image");
+      }  
           } else {
             errorMsg.innerText = result.error || "Submission failed.";
             errorMsg.style.display = "block";
@@ -231,6 +240,20 @@
           errorMsg.style.display = "block";
         }
       });
+      function addImageToGallery(imageUrl, altText) {
+      const galleryRow = document.getElementById("galleryRow");
+
+      const colDiv = document.createElement("div");
+      colDiv.className = "col-md-4 mb-4";
+
+      const imgElement = document.createElement("img");
+      imgElement.src = imageUrl;
+      imgElement.alt = altText;
+      imgElement.className = "img-fluid rounded";
+
+      colDiv.appendChild(imgElement);
+      galleryRow.appendChild(colDiv);
+    }
     </script>
 
     <div
