@@ -12,11 +12,21 @@
     <header><%- include('../partials/header'); %></header>
 
     <main id="signin-container">
-    <h1 class="page-title">Sign In to Your Account</h1>
+      <h1 class="page-title">Sign In to Your Account</h1>
 
       <!-- Display warning message -->
       <% if (typeof warning !== "undefined" && warning) { %>
-        <div class="alert alert-warning" style="color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        <div
+          class="alert alert-warning"
+          style="
+            color: #856404;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+          "
+        >
           <%= warning %>
         </div>
       <% } %>
@@ -32,27 +42,37 @@
         </div>
       <% } %>
 
-    <form id="log_in_form" method="POST" action="/signin">
-      <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
-      </div>
+      <form id="log_in_form" method="POST" action="/signin">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="<%= (typeof formData !== 'undefined' && formData.username) ? formData.username : '' %>"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-      </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="<%= (typeof formData !== 'undefined' && formData.password) ? formData.password : '' %>"
+            required
+          />
+        </div>
 
-      <div class="form-group">
-        <button type="submit" id="submit_button">Sign In</button>
-      </div>
+        <div class="form-group">
+          <button type="submit" id="submit_button">Sign In</button>
+        </div>
 
-      <div class="form-group">
-        <a href="/signup">Create an Account</a>
-      </div>
-    </form>
-
-  </main>
-
+        <div class="form-group">
+          <a href="/signup">Create an Account</a>
+        </div>
+      </form>
+    </main>
   </body>
 </html>
