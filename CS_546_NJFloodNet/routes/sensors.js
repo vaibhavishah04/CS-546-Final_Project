@@ -301,15 +301,13 @@ router
   });
 
 router.route("/:id/notes").post(
-  async (req, res, next) => {
+  async (req, res) => {
     // Ensure the user is logged in
     if (!req.session || !req.session.userInfo) {
       // Store a warning message in the session
       req.session.warning = "You must log in to add a note.";
       return res.redirect("/signin"); // Redirect to the sign-in page
-    }
-  },
-  async (req, res) => {
+    } else { 
     let sensorId = req.params.id;
     let { note } = req.body;
 
@@ -341,12 +339,18 @@ router.route("/:id/notes").post(
         return res.status(500).json({ error: "Failed to add note to sensor" });
       }
 
-      return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+      //return res.redirect(`/sensors/${sensorId}`); // Reload the page after adding the note
+      return res.json({
+      success: true,
+      author: username,
+      note,
+      timestamp: new Date(),
+    });
     } catch (e) {
       console.error("Error adding note:", e.message || e);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
-);
+});
 
 export default router;
