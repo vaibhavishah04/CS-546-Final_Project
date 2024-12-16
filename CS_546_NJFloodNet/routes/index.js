@@ -11,7 +11,7 @@ import sensorData from "../data/sensors.js"; // Import your sensor data function
 const constructorMethod = (app) => {
   //User can not access reporting page withput sing in
   const isAuthenticated = (req, res, next) => {
-    if (!req.session || !req.session.user) {
+    if (!req.session || !req.session.userInfo) {
       return res.redirect("/signin");
     }
     next();
