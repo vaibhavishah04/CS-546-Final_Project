@@ -55,7 +55,7 @@
               <ul>
                 <% sensor.notes.forEach(note => { %>
                   <li>
-                    <strong><%= note.author %>:</strong> <%= note.text %> 
+                    <strong><%= note.author %>:</strong> <%= note.text %>
                     <small>(<%= new Date(note.timestamp).toLocaleString() %>)</small>
                   </li>
                 <% }) %>
@@ -82,9 +82,10 @@
               <input type="date" id="endDate" class="form-control" />
             </div>
           </div>
+          <div class="button-group">
           <button id="filterBtn" class="btn btn-primary">Filter Data</button>
           <button id="downloadBtn" class="btn btn-success ms-3">Download Data</button>
-
+        </div>
         </div>
       </div>
 
@@ -129,7 +130,7 @@
           </div>
         </form>
       </div>
-    </div>    
+    </div>
 
     <!-- Include footer -->
     <div><%- include('../partials/footer'); %></div>
@@ -228,18 +229,18 @@
       document.addEventListener("DOMContentLoaded", function () {
         const addNoteForm = document.getElementById("addNoteForm");
         const notesList = document.querySelector(".card-header ul") || createNotesList();
-    
+
         addNoteForm.addEventListener("submit", async (e) => {
           e.preventDefault(); // Prevent the default form submission
-    
+
           const noteText = document.getElementById("note").value.trim();
           const sensorId = "<%= sensor._id %>"; // Sensor ID passed dynamically
-    
+
           if (!noteText) {
             alert("Please enter a note.");
             return;
           }
-    
+
           try {
             const response = await fetch(`/sensors/${sensorId}/notes`, {
               method: "POST",
@@ -248,9 +249,9 @@
               },
               body: JSON.stringify({ note: noteText }),
             });
-    
+
             const result = await response.json();
-    
+
             if (response.ok) {
               // Add the new note dynamically to the list
               const newNote = document.createElement("li");
@@ -259,7 +260,7 @@
                 <small>(${new Date(result.timestamp).toLocaleString()})</small>
               `;
               notesList.appendChild(newNote);
-    
+
               document.getElementById("note").value = ""; // Clear the input field
               alert("Note added successfully!");
             } else {
@@ -270,7 +271,7 @@
             alert("An error occurred while adding the note. Please check if you are signed in or try again.");
           }
         });
-    
+
         // Helper function to create a notes list if it doesn't already exist
         function createNotesList() {
           const notesSection = document.querySelector(".card-header");
