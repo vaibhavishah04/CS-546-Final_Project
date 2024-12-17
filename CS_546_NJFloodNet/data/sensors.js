@@ -156,6 +156,7 @@ const addNoteToSensor = async (sensorId, note, username) => {
 
   try {
     const noteObject = {
+      _id: new ObjectId(),
       text: note,
       author: username,
       timestamp: new Date().toISOString(),
@@ -182,7 +183,11 @@ const updateNote = async (sensorId, noteId, newText, username) => {
   const objectId = new ObjectId(sensorId);
 
   const result = await sensorCollection.updateOne(
-    { _id: objectId, "notes._id": new ObjectId(noteId), "notes.author": username },
+    {
+      _id: objectId,
+      "notes._id": new ObjectId(noteId),
+      "notes.author": username,
+    },
     { $set: { "notes.$.text": newText, "notes.$.timestamp": new Date() } }
   );
 
@@ -207,7 +212,6 @@ const deleteNote = async (sensorId, noteId, username) => {
   }
   return await getSensorByMongoId(objectId);
 };
-
 
 export default {
   addSensor,
