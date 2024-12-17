@@ -1,5 +1,18 @@
 # NJFloodNet - Real-Time Flood and Rainfall Data Monitoring
 
+## How To Run Web App
+
+Step 1: make sure you are currently in the correct file, run 
+'cd CS_546_NJFloodNet' if not in file
+
+Step 2: run 'npm i' or 'npm install' in terminal
+
+Step 3: run 'node app.js'
+
+Step 4: Start browsing the NJFlood Data!
+
+(There is no seed data since the website's database is using Mongo Atlas)
+
 ## Github link: 
 https://github.com/vaibhavishah04/CS-546-Final_Project/
 
