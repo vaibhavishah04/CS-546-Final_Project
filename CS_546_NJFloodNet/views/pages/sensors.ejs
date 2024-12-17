@@ -55,7 +55,7 @@
               <ul id="notesList">
                 <% sensor.notes.forEach((note) => { %>
                   <li id="note-<%= note._id %>">
-                    <strong><%= note.author %>:</strong> <%= note.text %>
+                    <strong><%= note.author %>:</strong>
                     <span class="note-text"><%= note.text %></span>
                     
                     <small>(<%= new Date(note.timestamp).toLocaleString() %>)</small>
