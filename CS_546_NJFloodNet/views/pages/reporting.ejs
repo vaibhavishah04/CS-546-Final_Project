@@ -35,6 +35,7 @@
       </nav>
     </header>
 
+    <main>
     <div>
       <h2>Tracking flooding across the state</h2>
     </div>
@@ -136,9 +137,8 @@
       <h3>Uploaded Flood Reports</h3>
       <div class="row" id="galleryRow"></div>
     </div>
-    
-    <div><%- include('../partials/footer'); %></div>
 
+    </main>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -230,7 +230,7 @@
 
           if (result.path) {
         addImageToGallery(result.path, altText || "Flood report image");
-      }  
+      }
           } else {
             errorMsg.innerText = `${result.error}` || "Submission failed.";
             errorMsg.style.display = "block";
@@ -261,5 +261,7 @@
       class="alert alert-danger mt-3"
       style="display: none"
     ></div>
+    <footer><%- include('../partials/footer'); %></footer>
   </body>
+
 </html>
