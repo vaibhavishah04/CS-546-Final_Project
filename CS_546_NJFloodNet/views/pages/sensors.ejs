@@ -52,13 +52,32 @@
           <p>
             <strong>Notes:</strong>
             <% if (sensor.notes && sensor.notes.length > 0) { %>
-              <ul>
-                <% sensor.notes.forEach(note => { %>
-                  <li>
+              <ul id="notesList">
+                <% sensor.notes.forEach((note) => { %>
+                  <li id="note-<%= note._id %>">
                     <strong><%= note.author %>:</strong> <%= note.text %>
+                    <span class="note-text"><%= note.text %></span>
+                    
                     <small>(<%= new Date(note.timestamp).toLocaleString() %>)</small>
+          
+                    <!-- Buttons for edit and delete (only for note's author) -->
+                    <% if (session.userInfo && note.author === session.userInfo.username) { %>
+                      <button 
+                        class="btn btn-warning btn-sm edit-note" 
+                        data-id="<%= note._id %>" 
+                        data-text="<%= note.text %>"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        class="btn btn-danger btn-sm delete-note" 
+                        data-id="<%= note._id %>"
+                      >
+                        Delete
+                      </button>
+                    <% } %>
                   </li>
-                <% }) %>
+                <% }); %>
               </ul>
             <% } else { %>
               No notes available.
@@ -281,5 +300,70 @@
         }
       });
     </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sensorId = "<%= sensor._id %>"; // Pass the current sensor ID
+  
+    // Handle Delete Note
+    document.querySelectorAll(".delete-note").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const noteId = btn.getAttribute("data-id");
+  
+        if (confirm("Are you sure you want to delete this note?")) {
+          try {
+            const response = await fetch(`/sensors/${sensorId}/notes/${noteId}`, {
+              method: "DELETE",
+            });
+  
+            const result = await response.json();
+            if (response.ok) {
+              document.getElementById(`note-${noteId}`).remove();
+              alert("Note deleted successfully!");
+            } else {
+              alert(`Error: ${result.error}`);
+            }
+          } catch (err) {
+            console.error(`Error deleting note: ${err}`);
+            alert("Failed to delete note.");
+          }
+        }
+      });
+    });
+  
+    // Handle Edit Note
+    document.querySelectorAll(".edit-note").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const noteId = btn.getAttribute("data-id");
+        const currentText = btn.dataset.text;
+  
+        const newText = prompt("Edit your note:", currentText);
+        if (newText && newText.trim() !== currentText) {
+          try {
+            const response = await fetch(`/sensors/${sensorId}/notes/${noteId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ newText: newText.trim() }),
+            });
+  
+            const result = await response.json();
+            if (response.ok) {
+              const noteElement = document.querySelector(`#note-${noteId} .note-text`);
+              noteElement.textContent = newText.trim();
+              btn.dataset.text = newText.trim(); // Update data-text
+              alert("Note updated successfully!");
+            } else {
+              alert(`Error: ${result.error}`);
+            }
+          } catch (err) {
+            console.error("Error updating note:", err);
+            alert("Failed to update note.");
+          }
+        }
+      });
+    });
+  });
+  </script>
+  
   </body>
 </html>
