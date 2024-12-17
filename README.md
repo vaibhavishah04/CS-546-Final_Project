@@ -1,5 +1,11 @@
 # NJFloodNet - Real-Time Flood and Rainfall Data Monitoring
 
+## Github link: 
+https://github.com/vaibhavishah04/CS-546-Final_Project/
+
+## Seeding the Database:
+Seeding can be done with seed.js, but if you are running from a zip file, a .env will be provided that has the connection to our Atlas cluster with preset data that our group has used throughout the project.
+
 ## **Project Description**
 NJFloodNet is a web-based application designed to visualize and manage data from IoT-based flood sensors. This tool provides real-time insights into water levels and rainfall intensity, allowing users to view data via an interactive map, monitor sensor status, and access flood severity details. It also includes tools for reporting floods, downloading historical data, and receiving alerts.
 
