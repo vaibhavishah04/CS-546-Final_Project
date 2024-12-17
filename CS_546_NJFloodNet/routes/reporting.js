@@ -33,9 +33,10 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
   reportLocation = xss(reportLocation);
   reportText = xss(reportText);
   alt_text = xss(alt_text);
-  reportImage = xss(reportImage);
+  reportImage = xss(JSON.stringify(reportImage));
+  reportImage = JSON.parse(reportImage)
 
-  let errors = [];
+  const errors = [];
   try {
     reportLocation = validation.verifyStr(reportLocation, `reportLocation`);
   } catch (e) {
@@ -78,6 +79,7 @@ router.post("/add", upload.single("reportImage"), async (req, res) => {
       success: true,
       message: "Reporting submitted successfully!",
       report: addReportingData,
+      path :reportImage.path
     });
   } catch (e) {
     res

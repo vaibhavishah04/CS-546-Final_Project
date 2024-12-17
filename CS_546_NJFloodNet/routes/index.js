@@ -7,6 +7,7 @@ import signUpRoutes from "./signup.js";
 import reportingRoutes from "./reporting.js";
 import aboutRoutes from "./about.js";
 import sensorData from "../data/sensors.js"; // Import your sensor data functions
+import express from "express";
 
 const constructorMethod = (app) => {
   //User can not access reporting page withput sing in
@@ -44,6 +45,7 @@ const constructorMethod = (app) => {
   app.use("/users", usersRoutes);
   app.use("/dashboard", dashboardRoutes);
   app.use("/about", aboutRoutes);
+  app.use("/uploads", express.static("uploads"));
 
   app.use(isAuthenticated);
   app.use("/reporting", reportingRoutes);
