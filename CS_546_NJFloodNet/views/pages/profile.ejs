@@ -9,7 +9,19 @@
   </head>
 
   <body>
-    <header><%- include('../partials/header'); %></header>
+    <div><%- include('../partials/header'); %></div>
+
+    <header>
+      <div class="logo"></div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="/">Map</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/reporting">Reporting</a></li>
+          <li><a href="/about">About FloodNet</a></li>
+        </ul>
+      </nav>
+    </header>
 
     <main id="profile-container">
       <h1 class="profile-title">Profile Info</h1>
@@ -24,9 +36,9 @@
       <form action="/users/profile/subscription" method="POST">
         <div class="subscription-section">
           <label for="email-subscription">
-            <input 
-              type="checkbox" 
-              id="email-subscription" 
+            <input
+              type="checkbox"
+              id="email-subscription"
               name="emailSubscription"
               <%= userInfo.emailSubscription ? "checked" : "" %>
             >
