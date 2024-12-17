@@ -278,6 +278,19 @@
               newNote.innerHTML = `
                 <strong>${result.author}:</strong> ${result.note}
                 <small>(${new Date(result.timestamp).toLocaleString()})</small>
+                      <button 
+                        class="btn btn-warning btn-sm edit-note" 
+                        data-id="{result.note._id}" 
+                        data-text="{result.note.text}"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        class="btn btn-danger btn-sm delete-note" 
+                        data-id="{result.note._id}"
+                      >
+                        Delete
+                      </button>
               `;
               notesList.appendChild(newNote);
 
