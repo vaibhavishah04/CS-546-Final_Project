@@ -26,6 +26,7 @@
 // function deleteUserAccount(req, res) {}
 import userData from "../data/users.js";
 import { Router } from "express";
+import xss from 'xss';
 const router = Router();
 // TODO: Data functions
 // import { getMovieById, searchMoviesByTitle } from "../data/movies.js";
@@ -49,7 +50,7 @@ router.route("/profile").get(
 router.route("/profile/subscription").post(async (req, res) => {
   try {
     const emailSubscription = req.body.emailSubscription === "on"; // Checkbox returns "on" if checked
-    const username = req.session.userInfo.username;
+    let username = req.session.userInfo.username;
 
     username = xss(username);
 
