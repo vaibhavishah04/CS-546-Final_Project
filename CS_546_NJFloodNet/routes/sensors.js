@@ -406,16 +406,12 @@ router.route("/:sensorId/notes/:noteId").delete(async (req, res) => {
     sensorId = validation.verifyMongoId_str(sensorId, "sensorId");
     noteId = validation.verifyMongoId_str(noteId, "noteId");
 
-    console.log("test1");
-
     const updatedSensor = await sensorData.deleteNote(
       sensorId,
       noteId,
       username
     );
-    console.log("test2");
     if (!updatedSensor) throw new Error("Note not found or unauthorized.");
-    console.log("test3");
 
     return res.json({ success: true });
   } catch (e) {
